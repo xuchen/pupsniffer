@@ -14,6 +14,13 @@ public class Levenstein extends NeedlemanWunsch
 	public String toString() { return "[Levenstein]"; }
 
 	static public void main(String[] argv) {
-		doMain(new Levenstein(), argv);
+		Levenstein l = new Levenstein();
+		doMain(l, argv);
+		String[] diffPair = l.getDiffPair();
+
+		System.out.println("Diff Pair:");
+		for (String s:diffPair)
+			System.out.println(s);
+
 	}
 }
