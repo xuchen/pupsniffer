@@ -11,6 +11,8 @@ public abstract class MemoMatrix
 {
     private double[][] value;
     private boolean[][] computed;
+    private int columnNum;
+    private int rowNum;
     protected StringWrapper s;
     protected StringWrapper t;
     protected String cellFormat = "%3g";
@@ -25,6 +27,8 @@ public abstract class MemoMatrix
         this.t = t;
         value = new double[s.length()+1][t.length()+1];
         computed = new boolean[s.length()+1][t.length()+1];
+        columnNum = t.length();
+        rowNum = s.length();
     }
 	
     /** Compute a new element of the matrix.  This should be defined in
@@ -40,9 +44,44 @@ public abstract class MemoMatrix
 	    value[i][j] = compute(i,j);
 	    computed[i][j] = true;
         }
-        return value[i][j];
+        double debug  = value[i][j];
+        return debug;
     }
-	
+    
+    double getAbs(int i, int j) {
+    	return Math.abs(get(i,j));
+    }
+    
+    /** Get the number of columns */
+    int getColumnNum () {
+    	return columnNum;
+    }
+    
+    /** Return the length of T string, i.e. columnLen */
+    int getTlen () {
+    	return columnNum;
+    }
+    
+    /** Get the number of rows */
+    int getRowNum () {
+    	return rowNum;
+    }
+    
+    /** Return the length of S string, i.e. rowLen */
+    int getSlen () {
+    	return rowNum;
+    }
+    
+    /** Return String s */
+    public String getSstring () {
+    	return s.unwrap();
+    }
+        
+    /** Return String t */
+    public String getTstring () {
+    	return t.unwrap();
+    }
+    	
     /** Get i-th char of s, indexing s from 1..n */
     final protected char sAt(int i) { 
         return s.charAt(i-1);
