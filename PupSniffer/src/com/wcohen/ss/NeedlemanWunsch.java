@@ -1,5 +1,7 @@
 package com.wcohen.ss;
 
+import java.util.ArrayList;
+
 import com.wcohen.ss.api.*;
 
 /**
@@ -53,10 +55,10 @@ public class NeedlemanWunsch extends AbstractStringDistance
     	int minLen = Math.min(mat.getSlen(), mat.getTlen());
     	
     	for (int i=1; i< minLen; i++) {
-    		if (!(mat.getAbs(i, i) !=  mat.getAbs(i+1, i+1) &&
+    		if (!(mat.getAbs(i, i) ==  mat.getAbs(i+1, i+1) &&
     				mat.getAbs(i, i) <=  mat.getAbs(i, i+1) &&
     				mat.getAbs(i, i) <=  mat.getAbs(i+1, i))) {
-    			prefixEnd = i-1;
+    			prefixEnd = i;
     			break;
     		}
     	}
@@ -78,15 +80,19 @@ public class NeedlemanWunsch extends AbstractStringDistance
     /**
      * Get the difference pair between two strings. For instance,
      * {"asVega", "osAngle"} for "LasVegas" and "LosAngles".
-     * @return a string array with the 0th as the difference pair for S and 1st for T
+     * @return a string ArrayList with the 0th as the difference pair for S and 1st for T
      */
-    public String[] getDiffPair () {
+    public ArrayList<String> getDiffPair () {
 		int[] intPair = getDiffPrefixSuffix();
 		int prefixEnd = intPair[0], suffixStartS = intPair[1], suffixStartT = intPair[2];
 		String s = mat.getSstring(), t = mat.getTstring();
 		if (!(intPair[0] == 0 && intPair[1] == 0 && intPair[2] == 0)) {
-			String[] diffPair = new String[] {s.substring(prefixEnd, suffixStartS), 
-					t.substring(prefixEnd, suffixStartT)};
+//			String[] diffPair = new String[] {s.substring(prefixEnd, suffixStartS), 
+//					t.substring(prefixEnd, suffixStartT)};
+			ArrayList<String> diffPair = new ArrayList<String>();
+			diffPair.add(s.substring(prefixEnd, suffixStartS));
+			diffPair.add(t.substring(prefixEnd, suffixStartT));
+			
 			return diffPair;
 		}
 		return null;

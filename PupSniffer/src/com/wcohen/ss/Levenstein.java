@@ -15,12 +15,14 @@ public class Levenstein extends NeedlemanWunsch
 
 	static public void main(String[] argv) {
 		Levenstein l = new Levenstein();
-		doMain(l, argv);
-		String[] diffPair = l.getDiffPair();
+		if (argv.length!=2) {
+			System.out.println("usage: string1 string2");
+		} else {
+			l.explainScore(argv[0],argv[1]);
+		}
 
-		System.out.println("Diff Pair:");
-		for (String s:diffPair)
-			System.out.println(s);
+		System.out.println("Diff Pair: "+l.getDiffPair());
+
 
 	}
 }
