@@ -49,12 +49,18 @@ public class PupSniffer {
 		this.sites = new ArrayList<Site>();
 		
 		for (File f:files) {
+			if (f.getName().startsWith(".")) continue;
 			this.sites.add(new Site(f));
 		}
 		//this.files = new ArrayList<File>(Arrays.asList(files));
 	}
 	
 	public void run() {
+		sites.get(0).findPairs();
+//		for (Site site:sites) {
+//			log.info(site.getName());
+//			site.findPairs();
+//		}
 	}
 
 	public static void main (String[] args) {
