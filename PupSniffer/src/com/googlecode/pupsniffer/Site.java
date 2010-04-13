@@ -129,7 +129,7 @@ public class Site {
 			} else if (n==0) {
 				log.warn("No lookup from dict: "+s0);
 				continue;
-			}
+			}			
 			s1 = (String)dict.getValue(0);
 			l.score(s0, s1);
 			log.info(String.format("%d: ", i)+l.getDiffPair());
