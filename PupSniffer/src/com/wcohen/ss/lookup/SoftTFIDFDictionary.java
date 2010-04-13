@@ -332,7 +332,7 @@ public class SoftTFIDFDictionary implements FastLookup
 	LineNumberReader in = new LineNumberReader(new FileReader(file));
 	String line;
 	while ((line = in.readLine())!=null) {
-	    String[] parts = line.split("\\t");
+	    String[] parts = line.split("\\s+");
 	    for (int j=1; j<parts.length; j++) {
 		put( parts[j], parts[0] );
 	    }
@@ -629,6 +629,7 @@ public class SoftTFIDFDictionary implements FastLookup
             System.out.println("usage 3: aliasfile window1 window2 .... - explore different window sizes");
             System.out.println("usage 4: aliasfile savefile - convert to fast-loading savefile");
             System.out.println("usage 4: aliasfile - print some stats");
+            System.out.println("aliasfile must end with .list");
             System.exit(0);
         }
 
