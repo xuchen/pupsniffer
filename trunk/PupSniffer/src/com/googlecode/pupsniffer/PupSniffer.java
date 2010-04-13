@@ -5,7 +5,6 @@ package com.googlecode.pupsniffer;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
