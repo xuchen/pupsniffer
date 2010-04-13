@@ -47,7 +47,7 @@ public class NeedlemanWunsch extends AbstractStringDistance
      * 3 numbers are returned: {1,7,9}, indicating the the end of the common prefix
      * ("L"), the start of common suffix in string S ("s" in "LasVegas"), and the
      * start of the common suffix in string T ("s" in "LosAngeles").
-     * @return an int array
+     * @return an int array, counting with the first one starting from 1
      */
     public int[] getDiffPrefixSuffix () {
     	int[] pair = new int[2];
@@ -67,8 +67,13 @@ public class NeedlemanWunsch extends AbstractStringDistance
     		if (!(mat.getAbs(i, j) == mat.getAbs(i-1, j-1) &&
     				mat.getAbs(i, j) <= mat.getAbs(i, j-1) &&
     				mat.getAbs(i, j) <= mat.getAbs(i-1, j))) {
-    			suffixStartS = i;
-    			suffixStartT = j;
+    			if (mat.getAbs(i, j) == mat.getAbs(i-1, j-1)) {
+	    			suffixStartS = i-1;
+	    			suffixStartT = j-1;
+    			} else {
+    				suffixStartS = i;
+	    			suffixStartT = j;
+    			}
     			break;
     		}
     		
