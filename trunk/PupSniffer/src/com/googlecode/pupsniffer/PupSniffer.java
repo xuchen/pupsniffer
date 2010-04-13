@@ -47,15 +47,18 @@ public class PupSniffer {
 		
 		this.sites = new ArrayList<Site>();
 		
-		for (File f:files) {
-			if (f.getName().startsWith(".")) continue;
-			this.sites.add(new Site(f));
-		}
-		//this.files = new ArrayList<File>(Arrays.asList(files));
+//		for (File f:files) {
+//			if (f.getName().startsWith(".")) continue;
+//			this.sites.add(new Site(f));
+//		}
+		this.sites.add(new Site(files[0]));
+
+		log.info("Initializatio done.");
 	}
 	
 	public void run() {
-		sites.get(0).findPairs();
+		//sites.get(0).findPairs();
+		sites.get(0).lookupPairs();
 //		for (Site site:sites) {
 //			log.info(site.getName());
 //			site.findPairs();

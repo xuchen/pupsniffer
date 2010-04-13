@@ -584,6 +584,8 @@ public class SoftTFIDFDictionary implements FastLookup
 
     /** Get the time used in performing the lookup */
     public double getLookupTime() { return lookupTime; }
+    
+    public List getRawResult() { return result;}
 
     // for debug
     private void showLookup(int n)

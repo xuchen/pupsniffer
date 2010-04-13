@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 import com.wcohen.ss.Levenstein;
+import com.wcohen.ss.lookup.SoftTFIDFDictionary;
 
 /**
  * @author Xuchen Yao
@@ -26,13 +27,23 @@ public class Site {
 	 */
 	//private ArrayList<String> URLs;
 	
-	/** Each member is a list of URL strings of different langauge group. */
+	/** Each member is a list of URL strings of different language group. */
 	private ArrayList<ArrayList<String>> groupURLs;
 	
 	/** 
 	 * A file containing all URLs. 
 	 */
 	private File file;
+	
+	/**
+	 * Inverted index for the (larger) group.
+	 */
+	SoftTFIDFDictionary dict;
+	
+	/**
+	 * Threshold for dictionary lookup. Decrease this value returns more results.
+	 */
+	private final double threshold = 0.8;
 	
 	public Site (File f) {
 
@@ -43,7 +54,8 @@ public class Site {
 		if (groupURLs.size()==0) {
 			log.warn("Empty file "+f+"?");
 		}
-		
+		dict = new SoftTFIDFDictionary();
+		buildIndex();
 	}
 	
 	public void loadFile (File f) {
@@ -79,6 +91,54 @@ public class Site {
 	
 	public String getName() {return file.getAbsolutePath();}
 	
+	public void buildIndex() {
+		// first we suppose the second group is the larger one.
+		ArrayList<String> group1 = groupURLs.get(1);
+		String alias;
+		String[] splits;
+		for (String url:group1) {
+			splits = url.split("/");
+			// the last one, usually the filename, is used as an alias
+			alias = splits[splits.length-1];
+			dict.put(alias, url);
+		}
+		dict.freeze();
+	}
+	
+	/**
+	 * Look up and find pairs using an inverted index, O(n)
+	 */
+	public void lookupPairs() {
+		ArrayList<String> group0 = groupURLs.get(0);
+		String s0, s1;
+		String alias;
+		String[] splits;
+		Levenstein l = new Levenstein();
+		int n;
+		
+		for (int i=0; i<group0.size(); i++) {
+			s0 = group0.get(i);
+			splits = s0.split("/");
+			// the last one, usually the filename, is used as an alias
+			alias = splits[splits.length-1];
+			
+			n = dict.lookup(threshold, alias);
+			if (n>1) {
+				log.info("Multiple results retrieved:");
+				log.info(dict.getRawResult());
+			} else if (n==0) {
+				log.warn("No lookup from dict: "+s0);
+				continue;
+			}
+			s1 = (String)dict.getValue(0);
+			l.score(s0, s1);
+			log.info(String.format("%d: ", i)+l.getDiffPair());
+		}
+	}
+	
+	/**
+	 * Find and print pairs one by one, O(n^2)
+	 */
 	public void findPairs() {
 		ArrayList<String> group0 = groupURLs.get(0);
 		ArrayList<String> group1 = groupURLs.get(1);
