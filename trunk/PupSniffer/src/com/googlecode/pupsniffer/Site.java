@@ -123,15 +123,33 @@ public class Site {
 			alias = splits[splits.length-1];
 			
 			n = dict.lookup(threshold, alias);
-			if (n>1) {
-				log.info("Multiple results retrieved:");
-				log.info(dict.getRawResult());
-			} else if (n==0) {
+			
+			if (n==0) {
 				log.warn("No lookup from dict: "+s0);
 				continue;
-			}			
-			s1 = (String)dict.getValue(0);
-			l.score(s0, s1);
+			}
+
+			double minScore = 100000;
+			double score = 0;
+			int minJ = 0;
+			for (int j=0; j<n; j++) {
+				s1 = (String)dict.getValue(j);
+				score = l.scoreAbs(s0, s1);
+				if (score < minScore) {
+					minScore = score;
+					minJ = j;
+				}
+			}
+			if (n>1) {
+				s1 = (String)dict.getValue(minJ);
+				l.score(s0, s1);
+			}
+			
+			if (n>1) {
+				log.info("Multiple results retrieved:");
+				log.info("Using index "+minJ+": "+dict.getRawResult());
+			}
+			
 			log.info(String.format("%d: ", i)+l.getDiffPair());
 		}
 	}

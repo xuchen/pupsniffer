@@ -29,6 +29,11 @@ public abstract class AbstractStringDistance implements StringDistance,StringDis
 		return score(prepare(s), prepare(t));
 	}
 	
+	  /** Return the absolute value of the score*/
+	final public double scoreAbs(String s, String t) {
+		return Math.abs(score(prepare(s), prepare(t)));
+	}
+	
 	/** Scores are explained by converting Strings to StringWrappers
 	 * with the prepare function. */
 	final public String explainScore(String s, String t) {
