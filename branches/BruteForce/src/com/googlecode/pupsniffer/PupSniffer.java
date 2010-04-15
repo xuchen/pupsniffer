@@ -55,11 +55,14 @@ public class PupSniffer {
 	}
 	
 	public void run() {
+        long t0 = System.currentTimeMillis();
 		sites.get(0).findPairs();
 //		for (Site site:sites) {
 //			log.info(site.getName());
 //			site.findPairs();
 //		}
+        long tf = System.currentTimeMillis();
+        log.info("runtime = "+((tf-t0)/1000.0)+" sec");
 	}
 
 	public static void main (String[] args) {
