@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
@@ -38,21 +40,39 @@ public class Site {
 	/**
 	 * Inverted index for the (larger) group.
 	 */
-	SoftTFIDFDictionary dict;
+	private SoftTFIDFDictionary dict;
 	
 	/**
 	 * Threshold for dictionary lookup. Decrease this value returns more results.
 	 */
-	private final double threshold = 0.8;
+	private final double threshold = 1.0;
+	
+	//protected ArrayList<UrlPattern> patternList;
+	protected HashMap<HashMap<String, String>, Integer> patternMap;
+	
+	public Site() {
+		groupURLs = new ArrayList<ArrayList<String>>();
+		patternMap = new HashMap<HashMap<String, String>, Integer>();
+	}
 	
 	public Site (File f) {
-
+		this();
 		this.file = f;
-		groupURLs = new ArrayList<ArrayList<String>>();
-		
+ 
 		loadFile(f);
 		if (groupURLs.size()==0) {
 			log.warn("Empty file "+f+"?");
+		}
+		dict = new SoftTFIDFDictionary();
+		buildIndex();
+	}
+	
+	public Site (ArrayList<String> URLs) {
+		this();
+		if (URLs!=null) {
+			groupURLs.add(URLs);
+			// add it twice since we don't know the language category so fars
+			groupURLs.add(URLs);
 		}
 		dict = new SoftTFIDFDictionary();
 		buildIndex();
@@ -112,7 +132,8 @@ public class Site {
 		ArrayList<String> group0 = groupURLs.get(0);
 		String s0, s1;
 		String alias;
-		String[] splits;
+		String[] splits, diffs;
+		//ArrayList<String> diffs;
 		Levenstein l = new Levenstein();
 		int n;
 		
@@ -135,7 +156,7 @@ public class Site {
 			for (int j=0; j<n; j++) {
 				s1 = (String)dict.getValue(j);
 				score = l.scoreAbs(s0, s1);
-				if (score < minScore) {
+				if (score < minScore && score!=0.0) {
 					minScore = score;
 					minJ = j;
 				}
@@ -150,8 +171,53 @@ public class Site {
 				log.info("Using index "+minJ+": "+dict.getRawResult());
 			}
 			
-			log.info(String.format("%d: ", i)+l.getDiffPair());
+			diffs = l.getDiffPairAsArray();
+			//log.info(String.format("%d: ", i)+diffs);
+			
+			if (diffs != null) {
+				HashMap<String, String> m = Site.ArrayToHashMap(diffs);
+				if (patternMap.containsKey(m))
+					patternMap.put(m, patternMap.get(m)+1);
+				else
+					patternMap.put(m, 1);
+				log.info(m);
+			}
 		}
+		
+		log.info("\nAll Patterns found:");
+		log.info(patternMap);
+	}
+	
+	/**
+	 * Convert an ArrayList of size 2 to a HashMap
+	 * @param pair an ArrayList of size 2 
+	 * @return a HashMap with the key/value as <code>pair.get(0)/pair.get(1)</code>
+	 */
+	public static HashMap<String, String> ArrayListToHashMap(ArrayList<String> pair) {
+		if (pair.size() != 2) {
+			log.error("ArrayList "+pair+" must be of size 2.");
+			return null;
+		}
+		HashMap<String, String> map = new HashMap<String, String>(); 
+		map.put(pair.get(0), pair.get(1));
+		
+		return map;
+	}
+	
+	/**
+	 * Convert an ArrayList of size 2 to a HashMap
+	 * @param pair an ArrayList of size 2 
+	 * @return a HashMap with the key/value as <code>pair.get(0)/pair.get(1)</code>
+	 */
+	public static HashMap<String, String> ArrayToHashMap(String[] pair) {
+		if (pair.length != 2) {
+			log.error("Array "+pair+" must be of size 2.");
+			return null;
+		}
+		HashMap<String, String> map = new HashMap<String, String>(); 
+		map.put(pair[0], pair[1]);
+		
+		return map;
 	}
 	
 	/**
@@ -194,7 +260,7 @@ public class Site {
 			s0 = group0.get(i);
 			s1 = group1.get(j);
 			l.score(s0, s1);
-			log.info(String.format("%d <--> %d ", i, j)+l.getDiffPair());
+			log.info(String.format("%d <--> %d ", i, j)+l.getDiffPairAsArrayList());
 		}
 	}
 
