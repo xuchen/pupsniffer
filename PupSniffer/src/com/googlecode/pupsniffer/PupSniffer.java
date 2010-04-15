@@ -5,9 +5,16 @@ package com.googlecode.pupsniffer;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+
+import com.torunski.crawler.Crawler;
+import com.torunski.crawler.filter.*;
+import com.torunski.crawler.link.Link;
+import com.torunski.crawler.model.MaxDepthModel;
 
 /**
  * @author Xuchen Yao
@@ -21,7 +28,17 @@ public class PupSniffer {
 	 * The folder containing files of URLs.
 	 * Each file contains URLs from one site.
 	 */
-	private String dir;
+	private File dir;
+	
+	/**
+	 * An URL PupSniffer should sniff at.
+	 */
+	private String url;
+	
+	/**
+	 * The set of file extensions (such as "html", "css") to sniff at.
+	 */
+	private String[] fileExtList;
 	
 	//private ArrayList<File> files;
 	
@@ -30,10 +47,17 @@ public class PupSniffer {
 	 */
 	private ArrayList<Site> sites;
 	
-	public PupSniffer (String dir) {
+	public PupSniffer () {
 		PropertyConfigurator.configure("conf/log4j.properties");
 		log = Logger.getLogger(PupSniffer.class);
-		File[] files = new File(dir).listFiles();
+		this.sites = new ArrayList<Site>();
+		fileExtList = new String[]{"html", "htm"};
+	}
+	
+	public PupSniffer (File dir) {
+		this();
+
+		File[] files = dir.listFiles();
 		this.dir = dir;
 
 		if (files == null) {
@@ -45,8 +69,6 @@ public class PupSniffer {
 			System.exit(-1);
 		}
 		
-		this.sites = new ArrayList<Site>();
-		
 //		for (File f:files) {
 //			if (f.getName().startsWith(".")) continue;
 //			this.sites.add(new Site(f));
@@ -54,6 +76,60 @@ public class PupSniffer {
 		this.sites.add(new Site(files[0]));
 
 		log.info("Initializatio done.");
+	}
+	
+	public PupSniffer (String url) {
+		this();
+		if (url.endsWith("/"))
+			this.url = url.substring(0, url.length()-1);
+		else
+			this.url = url;
+
+		ILinkFilter fileExtFilter = new FileExtensionFilter(this.fileExtList);
+		ILinkFilter serverFilter = new ServerFilter(this.url);
+		
+		Crawler crawler = new Crawler();
+		crawler.setModel(new MaxDepthModel());
+		crawler.setLinkFilter(LinkFilterUtil.and(fileExtFilter, serverFilter));
+		crawler.start(this.url, "/");
+		
+		readLine();
+		
+		ArrayList<String> URLs = new ArrayList<String>();
+		String visit;
+		
+        Collection<Link> visitedLinks = crawler.getModel().getVisitedURIs();
+        //log.info("Links visited=" + visitedLinks.size());
+        
+        Iterator<Link> list = visitedLinks.iterator();
+        while (list.hasNext()) {
+        	visit = list.next().getURI();
+        	URLs.add(visit);
+        	log.info(visit);
+        }
+        
+        Collection<Link> notVisitedLinks = crawler.getModel().getToVisitURIs();
+
+        //log.info("Links NOT visited=" + notVisitedLinks.size());
+        Iterator<Link> listNot = notVisitedLinks.iterator();
+        while (listNot.hasNext()) {
+        	visit = listNot.next().getURI();
+        	URLs.add(visit);
+        	log.info(visit);
+        }
+
+        
+        log.info("Crawling Website "+this.url+" done.");
+        
+		
+//		for (File f:files) {
+//			if (f.getName().startsWith(".")) continue;
+//			this.sites.add(new Site(f));
+//		}
+		this.sites.add(new Site(URLs));
+
+		log.info("Initialization done.");
+		readLine();
 	}
 	
 	public void run() {
@@ -64,27 +140,51 @@ public class PupSniffer {
 //			site.findPairs();
 //		}
 	}
+	
+	protected String readLine() {
+        try {
+            return new java.io.BufferedReader(new
+                java.io.InputStreamReader(System.in)).readLine();
+        }
+        catch(java.io.IOException e) {
+            return new String("");
+        }
+    }
+
 
 	public static void main (String[] args) {
 		int i = 0;
 		String arg;
-		String dir = ".";
+		File dir = null;
+		String url = null;
 
 		while (i < args.length && args[i].startsWith("-")) {
 			arg = args[i++];
 
 			if (arg.equals("-d")) {
 				if (i < args.length)
-					dir = args[i++];
+					dir = new File(args[i++]);
 				else
 					System.err.println("-d requires a filename");
+			} else if (arg.equals("-u")) {
+				if (i < args.length)
+					url = args[i++];
+				else
+					System.err.println("-u requires a URL");
 			}
 		}
-		if (i != args.length)
+		if (i != args.length) {
+			System.err.println("Usage: ");
 			System.err.println("Usage: PupSniffer -d dir_with_url_list");
+			System.err.println("Usage: PupSniffer -u URL");
+		}
 		
-		PupSniffer s = new PupSniffer(dir);
-		s.run();
+		PupSniffer sniffer;
+		if (url!=null)
+			sniffer = new PupSniffer(url);
+		else 
+			sniffer = new PupSniffer(dir);
+		sniffer.run();
 
 	}
 

@@ -88,6 +88,11 @@ public class NeedlemanWunsch extends AbstractStringDistance
      * @return a string ArrayList with the 0th as the difference pair for S and 1st for T
      */
     public ArrayList<String> getDiffPair () {
+		return getDiffPairAsArrayList();
+    }
+    
+    
+    public ArrayList<String> getDiffPairAsArrayList () {
 		int[] intPair = getDiffPrefixSuffix();
 		int prefixEnd = intPair[0], suffixStartS = intPair[1], suffixStartT = intPair[2];
 		String s = mat.getSstring(), t = mat.getTstring();
@@ -97,6 +102,20 @@ public class NeedlemanWunsch extends AbstractStringDistance
 			ArrayList<String> diffPair = new ArrayList<String>();
 			diffPair.add(s.substring(prefixEnd, suffixStartS));
 			diffPair.add(t.substring(prefixEnd, suffixStartT));
+			
+			return diffPair;
+		}
+		return null;
+    }
+    
+    public String[] getDiffPairAsArray() {
+		int[] intPair = getDiffPrefixSuffix();
+		int prefixEnd = intPair[0], suffixStartS = intPair[1], suffixStartT = intPair[2];
+		String s = mat.getSstring(), t = mat.getTstring();
+		if (!(intPair[0] == 0 && intPair[1] == 0 && intPair[2] == 0)) {
+			String[] diffPair = new String[] {
+					prefixEnd-suffixStartS==1?"":s.substring(prefixEnd, suffixStartS), 
+					prefixEnd-suffixStartT==1?"":t.substring(prefixEnd, suffixStartT)};
 			
 			return diffPair;
 		}
