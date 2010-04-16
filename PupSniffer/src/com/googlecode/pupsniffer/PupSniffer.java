@@ -34,10 +34,7 @@ public class PupSniffer {
 	 * An URL PupSniffer should sniff at.
 	 */
 	private String url;
-	// sdfja
-	/* *
-	 */
-	private String uuu;
+	
 	/**
 	 * The set of file extensions (such as "html", "css") to sniff at.
 	 */
@@ -176,7 +173,10 @@ public class PupSniffer {
 				if (i < args.length)
 					url = args[i++];
 				else
-					System.err.println("-u requires a URL");
+					log.error("-u requires a URL");
+				if (!url.startsWith("http://")) {
+					log.error("-u URL must start with http://");
+				}
 			}
 		}
 		if (i != args.length) {

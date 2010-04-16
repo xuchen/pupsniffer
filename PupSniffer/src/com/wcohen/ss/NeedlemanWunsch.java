@@ -67,7 +67,7 @@ public class NeedlemanWunsch extends AbstractStringDistance
     		if (!(mat.getAbs(i, j) == mat.getAbs(i-1, j-1) &&
     				mat.getAbs(i, j) <= mat.getAbs(i, j-1) &&
     				mat.getAbs(i, j) <= mat.getAbs(i-1, j))) {
-    			if (mat.getAbs(i, j) == mat.getAbs(i-1, j-1)) {
+    			if (mat.sAt(i) == mat.tAt(j)) {
 	    			suffixStartS = i-1;
 	    			suffixStartT = j-1;
     			} else {
@@ -93,19 +93,14 @@ public class NeedlemanWunsch extends AbstractStringDistance
     
     
     public ArrayList<String> getDiffPairAsArrayList () {
-		int[] intPair = getDiffPrefixSuffix();
-		int prefixEnd = intPair[0], suffixStartS = intPair[1], suffixStartT = intPair[2];
-		String s = mat.getSstring(), t = mat.getTstring();
-		if (!(intPair[0] == 0 && intPair[1] == 0 && intPair[2] == 0)) {
-//			String[] diffPair = new String[] {s.substring(prefixEnd, suffixStartS), 
-//					t.substring(prefixEnd, suffixStartT)};
-			ArrayList<String> diffPair = new ArrayList<String>();
-			diffPair.add(s.substring(prefixEnd, suffixStartS));
-			diffPair.add(t.substring(prefixEnd, suffixStartT));
-			
-			return diffPair;
-		}
-		return null;
+    	String[] diffs = getDiffPairAsArray();
+    	if (diffs == null) return null;
+    	
+    	ArrayList<String> diffPair = new ArrayList<String>();
+    	for (String d:diffs)
+    		diffPair.add(d);
+    	
+    	return diffPair;
     }
     
     public String[] getDiffPairAsArray() {

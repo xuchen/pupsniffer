@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
@@ -45,7 +44,7 @@ public class Site {
 	/**
 	 * Threshold for dictionary lookup. Decrease this value returns more results.
 	 */
-	private final double threshold = 1.0;
+	private final double threshold = 0.99;
 	
 	//protected ArrayList<UrlPattern> patternList;
 	protected HashMap<HashMap<String, String>, Integer> patternMap;
@@ -130,7 +129,7 @@ public class Site {
 	 */
 	public void lookupPairs() {
 		ArrayList<String> group0 = groupURLs.get(0);
-		String s0, s1;
+		String s0, s1=null;
 		String alias;
 		String[] splits, diffs;
 		//ArrayList<String> diffs;
@@ -164,11 +163,10 @@ public class Site {
 			if (n>1) {
 				s1 = (String)dict.getValue(minJ);
 				l.score(s0, s1);
-			}
-			
-			if (n>1) {
-				log.info("Multiple results retrieved:");
+				log.info("Multiple results retrieved for " + s0);
 				log.info("Using index "+minJ+": "+dict.getRawResult());
+			} else {
+				log.info(s0+" <-> "+s1);
 			}
 			
 			diffs = l.getDiffPairAsArray();
