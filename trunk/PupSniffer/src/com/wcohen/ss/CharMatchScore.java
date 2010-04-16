@@ -17,6 +17,14 @@ abstract public class CharMatchScore
 		}
 	};
 	
+	/** Scores match as 0, mismatch as -2. */
+	static public CharMatchScore DIST_02 = 
+	new CharMatchScore() {
+		public double matchScore(char c,char d) {
+			return Character.toLowerCase(c)==Character.toLowerCase(d) ? 0 : -2;
+		}
+	};
+	
 	/** Scores match as +2, mismatch as -1. */
 	static public CharMatchScore DIST_21 = 
 	new CharMatchScore() {
