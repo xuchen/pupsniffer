@@ -46,12 +46,18 @@ public class Site {
 	 */
 	private final double threshold = 0.99;
 	
+	/**
+	 * A URL encoding detector.
+	 */
+	private EncodingDetector detector;
+	
 	//protected ArrayList<UrlPattern> patternList;
 	protected HashMap<HashMap<String, String>, Integer> patternMap;
 	
 	public Site() {
 		groupURLs = new ArrayList<ArrayList<String>>();
 		patternMap = new HashMap<HashMap<String, String>, Integer>();
+		detector = new EncodingDetector();
 	}
 	
 	public Site (File f) {
@@ -75,6 +81,13 @@ public class Site {
 		}
 		dict = new SoftTFIDFDictionary();
 		buildIndex();
+		try {
+			for (String u:URLs) {
+				log.info(detector.detect(u));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void loadFile (File f) {
