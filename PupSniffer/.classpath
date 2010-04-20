@@ -14,5 +14,7 @@
 	<classpathentry kind="lib" path="lib/cpdetector_1.0.7.jar"/>
 	<classpathentry kind="lib" path="lib/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/chardet.jar"/>
+	<classpathentry kind="lib" path="lib/htmlparser.jar"/>
+	<classpathentry kind="lib" path="lib/htmllexer.jar"/>
 	<classpathentry kind="output" path="src"/>
 </classpath>
