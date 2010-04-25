@@ -66,7 +66,7 @@ public class HTML2TEXT {
 	public static void main(String[] args) {
 		//String fileName = "/home/xcyao/CityU/work/welcome.html";
 		String url = "http://news.sina.com.cn";
-		url = "http://www.cas.gov.hk/sctext/welcome.html";
+		//url = "http://www.cas.gov.hk/sctext/welcome.html";
 		
 		System.out.println(HTML2TEXT.getText(url));
 
