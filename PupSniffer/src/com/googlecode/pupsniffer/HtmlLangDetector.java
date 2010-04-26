@@ -29,25 +29,35 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Properties;
-import java.util.Set;
 
-import cue.lang.CharIterator;
 import cue.lang.Counter;
 import cue.lang.NonAsciiCharIterator;
 import cue.lang.WordIterator;
 import cue.lang.stop.StopWords;
 
 /**
- *
+ * Modified from cue.language
+ * TODO: add word weighting in respect to frequencies as described in:
+ * http://www.mozilla.org/projects/intl/UniversalCharsetDetection.html
  * @author Xuchen Yao
  *
  */
 public class HtmlLangDetector
 {
-
 	public static final String propertyFile = "conf/lang.properties";
 	protected HashMap<String, HashSet<String>> langMap;
 	protected HashSet<String> excepWords;
+
+	public static final String CHINESE_TRADITIONAL = "chinesetraditional";
+	public static final String CHINESE_SIMPLIFIED = "chinesesimplified";
+	public static final String ENGLISH = "english";
+	public static final String JAPANESE = "japanese";
+	public static final String KOREAN = "korean";
+
+	public String detect(final String url) {
+		String text = HTML2TEXT.getText(url);
+		return guess(text);
+	}
 
 	public String guess(final String text)
 	{
@@ -87,9 +97,19 @@ public class HtmlLangDetector
 					}
 				}
 			}
-			double norm = count*1.0/stopWords.size();
-			if (norm > currentMax)
-			{
+			//double norm = count*1.0/stopWords.size();
+			// don't do normalization yet.
+			/*
+			 * Normalization has a negative effect on short text: shorter
+			 * text has a higher chance to be wrongly classified into another
+			 * language, especially when the word list of that language is
+			 * small. Thus, if we don't divide the count factor with
+			 * the stopWords size, then languages provided with a bigger
+			 * stopWords (such as English, Chinese, which we favor in this
+			 * project) are more likely recognized.
+			 */
+			double norm = count*1.0;
+			if (norm > currentMax) {
 				currentWinner = lang;
 				currentMax = norm;
 			}
@@ -97,28 +117,29 @@ public class HtmlLangDetector
 		return currentWinner;
 	}
 
-	private HtmlLangDetector()
+	public HtmlLangDetector()
 	{
 		Properties prop = new Properties();
 		try {
-            prop.load(new FileInputStream(propertyFile));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+			prop.load(new FileInputStream(propertyFile));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-    	langMap = new HashMap<String, HashSet<String>>();
+		langMap = new HashMap<String, HashSet<String>>();
 
-        String exceptionFile = prop.getProperty("exception");
-        if (exceptionFile!=null && !exceptionFile.equals("")) {
-        	excepWords = loadLanguage(exceptionFile, true);
-        }
-        String[] langList = prop.getProperty("lang").split(",");
-        HashSet<String> h;
-        for (String l:langList) {
-        	h = loadLanguage(l, false);
-        	if (h!=null)
-        		langMap.put(l, h);
-        }
+		String exceptionFile = prop.getProperty("exception");
+		if (exceptionFile!=null && !exceptionFile.equals("")) {
+			excepWords = loadLanguage(exceptionFile, true);
+		}
+		String[] langList = prop.getProperty("lang").split(",");
+		HashSet<String> h;
+		for (String l:langList) {
+			l = l.toLowerCase(Locale.ENGLISH);
+			h = loadLanguage(l, false);
+			if (h!=null)
+				langMap.put(l, h);
+		}
 	}
 
 	public static boolean isStopWord(final String s, HashSet<String> stopwords)
@@ -174,8 +195,8 @@ public class HtmlLangDetector
 	}
 
 	/**
-	    * Get the contents of a URL and return it as a string.
-	    */
+	 * Get the contents of a URL and return it as a string.
+	 */
 	public static String fetch(final String address)
 	{
 		try
@@ -210,10 +231,11 @@ public class HtmlLangDetector
 		String url, html;
 		HtmlLangDetector detector = new HtmlLangDetector();
 		//fileName = "/home/xcyao/CityU/work/welcome.html";
-		//url = "http://news.sina.com.cn";
-		url = "http://ngramj.sourceforge.net/use_ngramj.html";
-		url = "http://www.let.rug.nl/~vannoord/TextCat/ShortTexts/dutch.txt";
+		url = "http://news.sina.com.cn";
+		//		url = "http://ngramj.sourceforge.net/use_ngramj.html";
+		//		url = "http://www.let.rug.nl/~vannoord/TextCat/ShortTexts/dutch.txt";
 		url = "http://alias-i.com/lingpipe/demos/tutorial/langid/read-me.html";
+		url = "http://www.cas.gov.hk/eng/notice/notice_remove.html";
 
 		//html = HtmlLangDetector.fetch(url);
 		//html = "证券简称,今日开盘价,昨日收盘价,最近成交价,最高成交价,最低成交价,买入价";

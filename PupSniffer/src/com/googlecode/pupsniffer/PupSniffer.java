@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.pupsniffer;
 
@@ -21,63 +21,41 @@ import com.torunski.crawler.model.MaxDepthModel;
  *
  */
 public class PupSniffer {
-	
+
 	/** Apache logger */
 	private static Logger log;
-	/** 
-	 * The folder containing files of URLs.
-	 * Each file contains URLs from one site.
-	 */
-	private File dir;
-	
+
 	/**
 	 * An URL PupSniffer should sniff at.
 	 */
 	private String url;
-	
+
 	/**
 	 * The set of file extensions (such as "html", "css") to sniff at.
 	 */
 	private String[] fileExtList;
-	
+
 	//private ArrayList<File> files;
-	
+
 	/**
 	 * An ArrayList of all sites to be sniffed.
 	 */
 	private ArrayList<Site> sites;
-	
+
+	private static EncodingDetector encDetector;
+
+	private static HtmlLangDetector langDetector;
+
 	public PupSniffer () {
 		PropertyConfigurator.configure("conf/log4j.properties");
 		log = Logger.getLogger(PupSniffer.class);
 		this.sites = new ArrayList<Site>();
 		fileExtList = new String[]{"html", "htm"};
+		encDetector = new EncodingDetector();
+		langDetector = new HtmlLangDetector();
 	}
-	
-	public PupSniffer (File dir) {
-		this();
 
-		File[] files = dir.listFiles();
-		this.dir = dir;
 
-		if (files == null) {
-			log.error("-d option "+this.dir+" isn't a directory!");
-			System.exit(-1);
-		}
-		if (files.length == 0) {
-			log.error("Directory "+dir+" doesn't contain any files!");
-			System.exit(-1);
-		}
-		
-//		for (File f:files) {
-//			if (f.getName().startsWith(".")) continue;
-//			this.sites.add(new Site(f));
-//		}
-		this.sites.add(new Site(files[0]));
-
-		log.info("Initializatio done.");
-	}
-	
 	public PupSniffer (String url) {
 		this();
 		if (url.endsWith("/"))
@@ -87,27 +65,27 @@ public class PupSniffer {
 
 		ILinkFilter fileExtFilter = new FileExtensionFilter(this.fileExtList);
 		ILinkFilter serverFilter = new ServerFilter(this.url);
-		
+
 		Crawler crawler = new Crawler();
 		crawler.setModel(new MaxDepthModel());
 		crawler.setLinkFilter(LinkFilterUtil.and(fileExtFilter, serverFilter));
 		crawler.start(this.url, "/");
-		
+
 		readLine();
-		
+
 		ArrayList<String> URLs = new ArrayList<String>();
 		String visit;
-		
+
         Collection<Link> visitedLinks = crawler.getModel().getVisitedURIs();
         //log.info("Links visited=" + visitedLinks.size());
-        
+
         Iterator<Link> list = visitedLinks.iterator();
         while (list.hasNext()) {
         	visit = list.next().getURI();
         	URLs.add(visit);
         	log.info(visit);
         }
-        
+
         Collection<Link> notVisitedLinks = crawler.getModel().getToVisitURIs();
 
         //log.info("Links NOT visited=" + notVisitedLinks.size());
@@ -118,24 +96,24 @@ public class PupSniffer {
         	log.info(visit);
         }
 
-        
+
         log.info("Crawling Website "+this.url+" done.");
-        
-		
-//		for (File f:files) {
-//			if (f.getName().startsWith(".")) continue;
-//			this.sites.add(new Site(f));
-//		}
-		this.sites.add(new Site(URLs));
+
+
+        long t0 = System.currentTimeMillis();
+		this.sites.add(new Site(URLs, encDetector, langDetector));
 
 		log.info("Initialization done.");
+        long tf = System.currentTimeMillis();
+        log.info("runtime = "+((tf-t0)/1000.0)+" sec");
+
 		readLine();
 	}
-	
+
 	public void run() {
         long t0 = System.currentTimeMillis();
 		//sites.get(0).findPairs();
-		sites.get(0).lookupPairs();
+		//sites.get(0).lookupPairs();
 //		for (Site site:sites) {
 //			log.info(site.getName());
 //			site.findPairs();
@@ -143,7 +121,7 @@ public class PupSniffer {
         long tf = System.currentTimeMillis();
         log.info("runtime = "+((tf-t0)/1000.0)+" sec");
 	}
-	
+
 	protected String readLine() {
         try {
             return new java.io.BufferedReader(new
@@ -158,18 +136,12 @@ public class PupSniffer {
 	public static void main (String[] args) {
 		int i = 0;
 		String arg;
-		File dir = null;
 		String url = null;
 
 		while (i < args.length && args[i].startsWith("-")) {
 			arg = args[i++];
 
-			if (arg.equals("-d")) {
-				if (i < args.length)
-					dir = new File(args[i++]);
-				else
-					System.err.println("-d requires a filename");
-			} else if (arg.equals("-u")) {
+			if (arg.equals("-u")) {
 				if (i < args.length)
 					url = args[i++];
 				else
@@ -181,15 +153,12 @@ public class PupSniffer {
 		}
 		if (i != args.length) {
 			System.err.println("Usage: ");
-			System.err.println("Usage: PupSniffer -d dir_with_url_list");
 			System.err.println("Usage: PupSniffer -u URL");
 		}
-		
+
 		PupSniffer sniffer;
-		if (url!=null)
-			sniffer = new PupSniffer(url);
-		else 
-			sniffer = new PupSniffer(dir);
+		sniffer = new PupSniffer(url);
+
 		sniffer.run();
 
 	}
