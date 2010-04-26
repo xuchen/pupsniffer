@@ -6,6 +6,7 @@ package com.googlecode.pupsniffer;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 
@@ -22,7 +23,7 @@ public class Site {
 
 	/** Each member is a list of URL strings of different language group. */
 
-	protected HashMap<String, ArrayList<String>> groupURLs;
+	protected HashMap<String, HashSet<String>> groupURLs;
 
 	/**
 	 * Inverted index for the (larger) group.
@@ -66,7 +67,7 @@ public class Site {
 	public Site() {
 		patternMap = new HashMap<HashMap<String, String>, Integer>();
 		groupDict = new HashMap<String, SoftTFIDFDictionary>();
-		groupURLs = new HashMap<String, ArrayList<String>>();
+		groupURLs = new HashMap<String, HashSet<String>>();
 	}
 
 	public Site (ArrayList<String> URLs, EncodingDetector encDetector,
@@ -103,14 +104,16 @@ public class Site {
 					}
 				}
 				if (!groupURLs.containsKey(lang)) {
-					groupURLs.put(lang, new ArrayList<String>());
+					groupURLs.put(lang, new HashSet<String>());
 					groupDict.put(lang, new SoftTFIDFDictionary());
 				} else {
-					groupURLs.get(lang).add(url);
-					splits = url.split("/");
-					// the last one, usually the filename, is used as an alias
-					alias = splits[splits.length-1];
-					groupDict.get(lang).put(alias, url);
+					if (!groupURLs.get(lang).contains(url)) {
+						groupURLs.get(lang).add(url);
+						splits = url.split("/");
+						// the last one, usually the filename, is used as an alias
+						alias = splits[splits.length-1];
+						groupDict.get(lang).put(alias, url);
+					}
 				}
 			} catch (FileNotFoundException e) {
 				log.warn("URL doesn't exist: "+url);
@@ -165,7 +168,7 @@ public class Site {
 
 		if (this.refLang == null)
 			log.warn("There's no reference language in this list. Does this" +
-					"website contain pages of only 1 langauge?");
+			"website contain pages of only 1 langauge?");
 	}
 
 	protected void freezeDict() {
@@ -177,66 +180,72 @@ public class Site {
 	/**
 	 * Look up and find pairs using an inverted index, O(n)
 	 */
-	/*
+
 	public void lookupPairs() {
-		ArrayList<String> group0 = groupURLs.get(0);
-		String s0, s1=null;
+		HashSet<String> refURLs = groupURLs.get(refLang);
+		String s1=null;
 		String alias;
 		String[] splits, diffs;
 		//ArrayList<String> diffs;
 		Levenstein l = new Levenstein();
-		int n;
+		SoftTFIDFDictionary dict;
+		int n, minJ;
+		double minScore, score;
 
-		for (int i=0; i<group0.size(); i++) {
-			s0 = group0.get(i);
+		for (String s0:refURLs) {
 			splits = s0.split("/");
 			// the last one, usually the filename, is used as an alias
 			alias = splits[splits.length-1];
 
-			n = dict.lookup(threshold, alias);
+			for (String lang : groupDict.keySet()) {
+				if (lang.equals(this.refLang)) continue;
 
-			if (n==0) {
-				log.warn("No lookup from dict: "+s0);
-				continue;
-			}
+				dict = groupDict.get(lang);
+				n = dict.lookup(threshold, alias);
 
-			double minScore = 100000;
-			double score = 0;
-			int minJ = 0;
-			for (int j=0; j<n; j++) {
-				s1 = (String)dict.getValue(j);
-				score = l.scoreAbs(s0, s1);
-				if (score < minScore && score!=0.0) {
-					minScore = score;
-					minJ = j;
+				if (n==0) {
+					log.warn("No lookup from dict: "+s0);
+					continue;
 				}
-			}
-			if (n>1) {
-				s1 = (String)dict.getValue(minJ);
-				l.score(s0, s1);
-				log.info("Multiple results retrieved for " + s0);
-				log.info("Using index "+minJ+": "+dict.getRawResult());
-			} else {
-				log.info(s0+" <-> "+s1);
-			}
 
-			diffs = l.getDiffPairAsArray();
-			//log.info(String.format("%d: ", i)+diffs);
+				minScore = 100000;
+				score = 0;
+				minJ = 0;
+				for (int j=0; j<n; j++) {
+					s1 = (String)dict.getValue(j);
+					score = l.scoreAbs(s0, s1);
+					if (score < minScore && score!=0.0) {
+						minScore = score;
+						minJ = j;
+					}
+				}
+				if (n>1) {
+					s1 = (String)dict.getValue(minJ);
+					l.score(s0, s1);
+					log.info("Multiple results retrieved for " + s0);
+					log.info("Using index "+minJ+": "+dict.getRawResult());
+				} else {
+					log.info(s0+" <-> "+s1);
+				}
 
-			if (diffs != null) {
-				HashMap<String, String> m = Site.ArrayToHashMap(diffs);
-				if (patternMap.containsKey(m))
-					patternMap.put(m, patternMap.get(m)+1);
-				else
-					patternMap.put(m, 1);
-				log.info(m);
+				diffs = l.getDiffPairAsArray();
+				//log.info(String.format("%d: ", i)+diffs);
+
+				if (diffs != null) {
+					HashMap<String, String> m = Site.ArrayToHashMap(diffs);
+					if (patternMap.containsKey(m))
+						patternMap.put(m, patternMap.get(m)+1);
+					else
+						patternMap.put(m, 1);
+					log.info(m);
+				}
 			}
 		}
 
 		log.info("\nAll Patterns found:");
 		log.info(patternMap);
 	}
-	 */
+
 	/**
 	 * Convert an ArrayList of size 2 to a HashMap
 	 * @param pair an ArrayList of size 2
@@ -269,48 +278,5 @@ public class Site {
 		return map;
 	}
 
-	/**
-	 * Find and print pairs one by one, O(n^2)
-	 */
-	public void findPairs() {
-		ArrayList<String> group0 = groupURLs.get(0);
-		ArrayList<String> group1 = groupURLs.get(1);
-		ArrayList<ArrayList<Integer>> groupLowestIndices = new ArrayList<ArrayList<Integer>>();
-		String s0, s1;
-		Levenstein l = new Levenstein();
-
-		for (int i=0; i<group0.size(); i++) {
-			s0 = group0.get(i);
-			ArrayList<Integer> lowestIndices = new ArrayList<Integer>();
-			double lowest, oldLowest=1000;
-			for (int j=0; j<group1.size(); j++) {
-				s1 = group1.get(j);
-				lowest = Math.abs(l.score(s0, s1));
-				if (lowest < oldLowest) {
-					oldLowest = lowest;
-					lowestIndices.clear();
-					lowestIndices.add(j);
-				} else if (lowest == oldLowest) {
-					lowestIndices.add(j);
-				}
-			}
-			groupLowestIndices.add(lowestIndices);
-		}
-
-		if (group0.size()!=groupLowestIndices.size())
-			log.error(String.format("Error: the size of group0(%d) and " +
-					"groupLowestIndices(%d) should match!", group0.size(), groupLowestIndices.size()));
-
-		for (int i=0; i<groupLowestIndices.size(); i++) {
-			ArrayList<Integer> group1Lowest = groupLowestIndices.get(i);
-			if (group1Lowest.size()>1)
-				log.warn("Warning: the correspoing group1's size exceeds 1: "+group1Lowest);
-			int j = group1Lowest.get(0);
-			s0 = group0.get(i);
-			s1 = group1.get(j);
-			l.score(s0, s1);
-			log.info(String.format("%d <--> %d ", i, j)+l.getDiffPairAsArrayList());
-		}
-	}
 
 }

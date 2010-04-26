@@ -113,7 +113,7 @@ public class PupSniffer {
 	public void run() {
         long t0 = System.currentTimeMillis();
 		//sites.get(0).findPairs();
-		//sites.get(0).lookupPairs();
+		sites.get(0).lookupPairs();
 //		for (Site site:sites) {
 //			log.info(site.getName());
 //			site.findPairs();
