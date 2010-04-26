@@ -4,6 +4,10 @@ package com.googlecode.pupsniffer;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.SortedMap;
 
 import info.monitorenter.cpdetector.io.*;
 
@@ -17,12 +21,12 @@ public class EncodingDetector {
 
 	public EncodingDetector() {
 		detector = CodepageDetectorProxy.getInstance(); // A singleton.
-		// Add the implementations of info.monitorenter.cpdetector.io.ICodepageDetector: 
-		// This one is quick if we deal with unicode codepages: 
-		detector.add(new ByteOrderMarkDetector()); 
+		// Add the implementations of info.monitorenter.cpdetector.io.ICodepageDetector:
+		// This one is quick if we deal with unicode codepages:
+		detector.add(new ByteOrderMarkDetector());
 		// The first instance delegated to tries to detect the meta charset attribut in html pages.
 		detector.add(new ParsingDetector(false)); // be verbose about parsing.
-		// This one does the tricks of exclusion and frequency detection, if first implementation is 
+		// This one does the tricks of exclusion and frequency detection, if first implementation is
 		// unsuccessful:
 		detector.add(JChardetFacade.getInstance()); // Another singleton.
 		detector.add(ASCIIDetector.getInstance()); // Fallback, see javadoc.
@@ -31,14 +35,14 @@ public class EncodingDetector {
 	/**
 	 * Detect the encoding of a URL
 	 * @param url the URL address
-	 * @return the encoding in uppder case
-	 * @throws IOException 
-	 * @throws MalformedURLException 
+	 * @return the encoding in upper case
+	 * @throws IOException
+	 * @throws MalformedURLException
 	 */
 	public String detect(String url) throws MalformedURLException, IOException {
 
-		// Work with the configured proxy: 
-		java.nio.charset.Charset charset = null;
+		// Work with the configured proxy:
+		Charset charset = null;
 
 		charset = detector.detectCodepage(new URL(url));
 		if(charset == null){
@@ -53,6 +57,23 @@ public class EncodingDetector {
 	}
 
 	/**
+	 * List the supported encoding on your system. For debugging and coding.
+	 */
+	public static void supportedEncoding () {
+		// http://www.java2s.com/Code/Java/File-Input-Output/ListtheCharsetinyoursystem.htm
+		SortedMap charsets = Charset.availableCharsets();
+	    Set names = charsets.keySet();
+	    for (Iterator e = names.iterator(); e.hasNext();) {
+	      String name = (String) e.next();
+	      Charset charset = (Charset) charsets.get(name);
+	      System.out.println(charset);
+	      Set aliases = charset.aliases();
+	      for (Iterator ee = aliases.iterator(); ee.hasNext();) {
+	        System.out.println("    " + ee.next());
+	      }
+	    }
+	}
+	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -65,6 +86,7 @@ public class EncodingDetector {
 			e.printStackTrace();
 		}
 
+		supportedEncoding();
 	}
 
 }
