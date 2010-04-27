@@ -21,6 +21,8 @@ public class Levenstein extends NeedlemanWunsch
 //		t = "http://www.cas.gov.hk/etext/notice.html";
 		s = "http://www.cas.gov.hk/en/about/about_service.html";
 		t = "http://www.cas.gov.hk/ad/tc/about/about_service.html";
+		s = "http://www.wsd.gov.hk/tc/water_resources/raw_water_sources/water_sources_in_hong_kong/water_from_dongjiang_at_guangdong/index.html";
+		t = "http://www.wsd.gov.hk/tc/water_resources/raw_water_sources/water_sources_in_hong_kong/water_from_dongjiang_at_guangdong/shenzhen_water_supply_schematic_diagram/index.html";
 		Levenstein l = new Levenstein();
 		l.explainScore(s, t);
 

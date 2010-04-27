@@ -2,6 +2,8 @@ package com.wcohen.ss;
 
 import java.util.ArrayList;
 
+import org.jfree.util.Log;
+
 import com.wcohen.ss.api.*;
 
 /**
@@ -87,9 +89,17 @@ public class NeedlemanWunsch extends AbstractStringDistance
 		}
 
 		if (!(prefixEnd == 0 && suffixStartS == 0 && suffixStartT == 0)) {
-			String[] diffPair = new String[] {s.substring(prefixEnd, suffixStartS), t.substring(prefixEnd, suffixStartT)};
-
-			return diffPair;
+			try {
+				String[] diffPair = new String[] {
+						suffixStartS-prefixEnd==-1?"":s.substring(prefixEnd, suffixStartS),
+						suffixStartT-prefixEnd==-1?"":t.substring(prefixEnd, suffixStartT)};
+				return diffPair;
+			} catch (java.lang.StringIndexOutOfBoundsException e) {
+				e.printStackTrace();
+				System.out.println("s: "+s);
+				System.out.println("t: "+t);
+				System.out.println(String.format("prefixEnd: %d, suffixStartS: %d, suffixStartT: %d", prefixEnd, suffixStartS, suffixStartT));
+			}
 		}
 		return null;
     }

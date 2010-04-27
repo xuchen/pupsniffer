@@ -83,6 +83,7 @@ public class Site {
 			try {
 				lang = null;
 				enc = encDetector.detect(url);
+
 				if (enc.startsWith("EUC-JP")) {
 					log.warn("Japanese is not supported, abandoning "+url);
 					continue;
@@ -96,30 +97,31 @@ public class Site {
 					// double check
 					if (lang.equals(HtmlLangDetector.CHINESE_TRADITIONAL) &&
 							!(enc.startsWith("BIG5") || enc.startsWith("UTF"))) {
-						log.warn("Language detection and encoding mismatch: "+lang+"/"+enc);
+						log.warn("Language detection and encoding mismatch: "+lang+"/"+enc+" in "+url);
 					} else if (lang.equals(HtmlLangDetector.CHINESE_SIMPLIFIED) &&
 							!(enc.startsWith("GB") || enc.startsWith("UTF"))) {
 						// GB2312, GB18030, GBK
-						log.warn("Language detection and encoding mismatch: "+lang+"/"+enc);
+						log.warn("Language detection and encoding mismatch: "+lang+"/"+enc+" in "+url);
 					}
 				}
 				if (!groupURLs.containsKey(lang)) {
 					groupURLs.put(lang, new HashSet<String>());
 					groupDict.put(lang, new SoftTFIDFDictionary());
-				} else {
-					if (!groupURLs.get(lang).contains(url)) {
-						groupURLs.get(lang).add(url);
-						splits = url.split("/");
-						// the last one, usually the filename, is used as an alias
-						alias = splits[splits.length-1];
-						groupDict.get(lang).put(alias, url);
-					}
+				}
+				if (!groupURLs.get(lang).contains(url)) {
+					groupURLs.get(lang).add(url);
+					splits = url.split("/");
+					// the last one, usually the filename, is used as an alias
+					alias = splits[splits.length-1];
+					groupDict.get(lang).put(alias, url);
 				}
 			} catch (FileNotFoundException e) {
 				log.warn("URL doesn't exist: "+url);
+				//e.printStackTrace();
 				continue;
 			} catch (NullPointerException e) {
 				log.warn("Detecting language of URL failed: "+url);
+				//e.printStackTrace();
 				continue;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -134,6 +136,7 @@ public class Site {
 			num = groupURLs.get(l).size();
 			this.numURL += num;
 			log.info(l+": "+num);
+			log.info(groupURLs.get(l));
 		}
 		this.numLang = groupURLs.size();
 
@@ -147,7 +150,7 @@ public class Site {
 		for (String l: groupURLs.keySet()) {
 			num = groupURLs.get(l).size();
 			if (num < thresh) {
-				log.warn(l+" has two few webpages, removing...");
+				log.warn(l+"("+num+") has too few webpages, removing...");
 				//log.warn(groupURLs.get(l));
 				remove.add(l);
 			}
@@ -156,6 +159,7 @@ public class Site {
 			this.numLang--;
 			this.numURL -= groupURLs.get(l).size();
 			groupURLs.remove(l);
+			groupDict.remove(l);
 		}
 
 		int min = this.numURL;
@@ -163,6 +167,7 @@ public class Site {
 			num = groupURLs.get(l).size();
 			if (num < min) {
 				this.refLang = l;
+				min = num;
 			}
 		}
 
@@ -204,7 +209,7 @@ public class Site {
 				n = dict.lookup(threshold, alias);
 
 				if (n==0) {
-					log.warn("No lookup from dict: "+s0);
+					log.warn("No lookup from dict for " + lang + ": "+s0);
 					continue;
 				}
 
@@ -222,7 +227,7 @@ public class Site {
 				if (n>1) {
 					s1 = (String)dict.getValue(minJ);
 					l.score(s0, s1);
-					log.info("Multiple results retrieved for " + s0);
+					log.info("Multiple results retrieved for " + lang +": " + s0);
 					log.info("Using index "+minJ+": "+dict.getRawResult());
 				} else {
 					log.info(s0+" <-> "+s1);
