@@ -4,6 +4,7 @@
 package com.googlecode.pupsniffer;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -70,6 +71,12 @@ public class Site {
 		groupURLs = new HashMap<String, HashSet<String>>();
 	}
 
+	public Site(EncodingDetector encDetector, HtmlLangDetector langDetector) {
+		this();
+		this.encDetector = encDetector;
+		this.langDetector = langDetector;
+	}
+
 	public Site (ArrayList<String> URLs, EncodingDetector encDetector,
 			HtmlLangDetector langDetector) {
 		this();
@@ -127,6 +134,109 @@ public class Site {
 				e.printStackTrace();
 			}
 		}
+
+		freezeDict();
+
+		int num;
+		log.info("Language group sizes:");
+		for (String l: groupURLs.keySet()) {
+			num = groupURLs.get(l).size();
+			this.numURL += num;
+			log.info(l+": "+num);
+			log.info(groupURLs.get(l));
+		}
+		this.numLang = groupURLs.size();
+
+		/*
+		 * Remove any languages that have too little presence, which most
+		 * likely due to wrong language detection or some random rare
+		 * web pages with a different language.
+		 */
+		double thresh = this.numURL*0.5/this.numLang;
+		ArrayList<String> remove = new ArrayList<String>();
+		for (String l: groupURLs.keySet()) {
+			num = groupURLs.get(l).size();
+			if (num < thresh) {
+				log.warn(l+"("+num+") has too few webpages, removing...");
+				//log.warn(groupURLs.get(l));
+				remove.add(l);
+			}
+		}
+		for (String l:remove) {
+			this.numLang--;
+			this.numURL -= groupURLs.get(l).size();
+			groupURLs.remove(l);
+			groupDict.remove(l);
+		}
+
+		int min = this.numURL;
+		for (String l: groupURLs.keySet()) {
+			num = groupURLs.get(l).size();
+			if (num < min) {
+				this.refLang = l;
+				min = num;
+			}
+		}
+
+		if (this.refLang == null)
+			log.warn("There's no reference language in this list. Does this" +
+			" website contain pages of only 1 langauge?");
+	}
+
+	public void addUrl (String url, String oriEnc, String raw) {
+		String lang, alias, enc;
+		String[] splits;
+
+		try {
+			enc = encDetector.detectFromRaw(raw, oriEnc);
+			raw = new String(raw.getBytes(oriEnc), enc);
+
+			if (enc != null) {
+				if (enc.startsWith("EUC-JP")) {
+					log.warn("Japanese is not supported, abandoning "+url);
+					return;
+				} else if (enc.startsWith("EUC-KR")) {
+					log.warn("Korean is not supported, abandoning "+url);
+					return;
+				}
+			}
+
+			// go to language detector
+			lang = langDetector.detectFromRaw(raw);
+
+			// double check
+			if (lang.equals(HtmlLangDetector.CHINESE_TRADITIONAL) &&
+					!(enc.startsWith("BIG5") || enc.startsWith("UTF"))) {
+				log.warn("Language detection and encoding mismatch: "+lang+"/"+enc+" in "+url);
+			} else if (lang.equals(HtmlLangDetector.CHINESE_SIMPLIFIED) &&
+					!(enc.startsWith("GB") || enc.startsWith("UTF"))) {
+				// GB2312, GB18030, GBK
+				log.warn("Language detection and encoding mismatch: "+lang+"/"+enc+" in "+url);
+			}
+
+			if (!groupURLs.containsKey(lang)) {
+				groupURLs.put(lang, new HashSet<String>());
+				groupDict.put(lang, new SoftTFIDFDictionary());
+			}
+			if (!groupURLs.get(lang).contains(url)) {
+				groupURLs.get(lang).add(url);
+				splits = url.split("/");
+				// the last one, usually the filename, is used as an alias
+				alias = splits[splits.length-1];
+				groupDict.get(lang).put(alias, url);
+			}
+		} catch (NullPointerException e) {
+			log.warn("Detecting language of URL failed: "+url);
+			//e.printStackTrace();
+			return;
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void freezeSite () {
 
 		freezeDict();
 

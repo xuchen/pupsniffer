@@ -1,7 +1,10 @@
 
 package com.googlecode.pupsniffer;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -54,6 +57,34 @@ public class EncodingDetector {
 			// Read from it, do sth., whatever you desire. The character are now - hopefully - correct..
 			return charset.name().toUpperCase();
 		}
+	}
+
+	public String detectFromRaw(String raw, String encoding) throws IOException {
+
+		// Work with the configured proxy:
+		Charset charset = null;
+		InputStream is;
+		byte[] bs;
+
+		// convert String to inputstream
+		try {
+			bs = raw.getBytes(encoding);
+            is = new ByteArrayInputStream(bs);
+
+    		charset = detector.detectCodepage(is, bs.length);
+    		if(charset == null){
+    			return null;
+    		} else{
+    			// Open the document in the given code page:
+    			//java.io.Reader reader = new java.io.InputStreamReader(new java.io.FileInputStream(document),charset);
+    			// Read from it, do sth., whatever you desire. The character are now - hopefully - correct..
+    			return charset.name().toUpperCase();
+    		}
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+
 	}
 
 	/**

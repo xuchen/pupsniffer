@@ -149,7 +149,8 @@ public class PupSniffer {
 		 * http://htmlparser.sourceforge.net/javadoc/org/htmlparser/lexer/Lexer.html
 		 * In this way files do not need to be read from disk so time-saving.
 		 */
-        crawler.addParserListener(new DownloadEventListener(mapping));
+		Site site = new Site(encDetector, langDetector);
+        crawler.addParserListener(new PupDownloadEventListener(mapping, site));
 
 		crawler.start(this.urlList[0], "/");
 
@@ -183,7 +184,9 @@ public class PupSniffer {
 
 
         long t0 = System.currentTimeMillis();
-		this.sites.add(new Site(URLs, encDetector, langDetector));
+		//this.sites.add(new Site(URLs, encDetector, langDetector));
+        site.freezeSite();
+        this.sites.add(site);
 
 		log.info("Initialization done.");
         long tf = System.currentTimeMillis();

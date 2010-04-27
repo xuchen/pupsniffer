@@ -59,6 +59,11 @@ public class HtmlLangDetector
 		return guess(text);
 	}
 
+	public String detectFromRaw(final String raw) {
+		String text = HTML2TEXT.getTextFromRaw(raw);
+		return guess(text);
+	}
+
 	public String guess(final String text)
 	{
 		return guess(new Counter<String>(new WordIterator(text)), new Counter<String>(new NonAsciiCharIterator(text)));
