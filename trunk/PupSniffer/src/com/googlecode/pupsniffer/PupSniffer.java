@@ -4,17 +4,25 @@
 package com.googlecode.pupsniffer;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.torunski.crawler.Crawler;
+import com.torunski.crawler.events.DownloadEventListener;
 import com.torunski.crawler.filter.*;
 import com.torunski.crawler.link.Link;
 import com.torunski.crawler.model.MaxDepthModel;
+import com.torunski.crawler.model.MaxIterationsModel;
+import com.torunski.crawler.parser.httpclient.SimpleHttpClientParser;
 
 /**
  * @author Xuchen Yao
@@ -25,10 +33,13 @@ public class PupSniffer {
 	/** Apache logger */
 	private static Logger log;
 
+	/** Cconfiguration file. */
+	public static final String propertyFile = "conf/pupsniffer.properties";
+
 	/**
-	 * An URL PupSniffer should sniff at.
+	 * A URL list PupSniffer should sniff at.
 	 */
-	private String url;
+	private String[] urlList;
 
 	/**
 	 * The set of file extensions (such as "html", "css") to sniff at.
@@ -42,34 +53,88 @@ public class PupSniffer {
 	 */
 	private ArrayList<Site> sites;
 
+	/**
+	 * Webpage encoding detection.
+	 */
 	private static EncodingDetector encDetector;
 
+	/**
+	 * Webpage language detection.
+	 */
 	private static HtmlLangDetector langDetector;
+
+	/**
+	 * A directory to save all downloaded files.
+	 */
+	private String saveDir;
 
 	public PupSniffer () {
 		PropertyConfigurator.configure("conf/log4j.properties");
 		log = Logger.getLogger(PupSniffer.class);
 		this.sites = new ArrayList<Site>();
-		fileExtList = new String[]{"html", "htm"};
+
 		encDetector = new EncodingDetector();
 		langDetector = new HtmlLangDetector();
-	}
+		Properties prop = new Properties();
+		try {
+			prop.load(new FileInputStream(propertyFile));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
+		urlList = prop.getProperty("urlList").split(",");
+		if (urlList==null || urlList.length==0) {
+			log.error("urlList in conf/pussniffer.properties has the " +
+					"no entry. Exiting.");
+			System.exit(-1);
+		}
 
-	public PupSniffer (String url) {
-		this();
-		if (url.endsWith("/"))
-			this.url = url.substring(0, url.length()-1);
+		for (int i=0; i<urlList.length; i++) {
+			if (!urlList[i].startsWith("http://")) {
+				urlList[i] = "http://"+urlList[i];
+			}
+		}
+
+		fileExtList = prop.getProperty("suffixList").split(",");
+		if (fileExtList==null || fileExtList.length==0) {
+			log.error("suffixList in conf/pussniffer.properties has the " +
+					"wrong format. Using defaults (html,htm)");
+			fileExtList = new String[]{"html", "htm"};
+		}
+
+		saveDir = prop.getProperty("saveDir");
+		if (!saveDir.endsWith("/"))
+			saveDir += "/";
+		// TODO: complete the loop through urlList.
+		if (urlList[0].endsWith("/"))
+			this.urlList[0] = urlList[0].substring(0, urlList[0].length()-1);
 		else
-			this.url = url;
+			this.urlList[0] = urlList[0];
 
 		ILinkFilter fileExtFilter = new FileExtensionFilter(this.fileExtList);
-		ILinkFilter serverFilter = new ServerFilter(this.url);
+		ILinkFilter serverFilter = new ServerFilter(this.urlList[0]);
 
 		Crawler crawler = new Crawler();
-		crawler.setModel(new MaxDepthModel());
+        crawler.setParser(new SimpleHttpClientParser());
+		crawler.setModel(new MaxIterationsModel(MaxIterationsModel.NO_LIMIT_ITERATIONS));
 		crawler.setLinkFilter(LinkFilterUtil.and(fileExtFilter, serverFilter));
-		crawler.start(this.url, "/");
+
+		HashMap<String,String> mapping = new HashMap<String,String>();
+
+		// remove http:// in the front
+		for (int i=0; i<urlList.length; i++) {
+			String url = urlList[i];
+			String dir = saveDir+url.substring(7);
+			File f = new File(dir);
+			if(!f.exists() && !f.mkdirs()) {
+				log.error("Mkdir "+dir+" failed. Aborting.");
+				System.exit(-1);
+			}
+			mapping.put(url, dir);
+		}
+        crawler.addParserListener(new DownloadEventListener(mapping));
+
+		crawler.start(this.urlList[0], "/");
 
 		readLine();
 
@@ -77,7 +142,7 @@ public class PupSniffer {
 		String visit;
 
         Collection<Link> visitedLinks = crawler.getModel().getVisitedURIs();
-        //log.info("Links visited=" + visitedLinks.size());
+        log.info("Links visited=" + visitedLinks.size());
 
         Iterator<Link> list = visitedLinks.iterator();
         while (list.hasNext()) {
@@ -88,7 +153,7 @@ public class PupSniffer {
 
         Collection<Link> notVisitedLinks = crawler.getModel().getToVisitURIs();
 
-        //log.info("Links NOT visited=" + notVisitedLinks.size());
+        log.info("Links NOT visited=" + notVisitedLinks.size());
         Iterator<Link> listNot = notVisitedLinks.iterator();
         while (listNot.hasNext()) {
         	visit = listNot.next().getURI();
@@ -97,7 +162,7 @@ public class PupSniffer {
         }
 
 
-        log.info("Crawling Website "+this.url+" done.");
+        log.info("Crawling Website "+this.urlList[0]+" done.");
 
 
         long t0 = System.currentTimeMillis();
@@ -109,6 +174,8 @@ public class PupSniffer {
 
 		readLine();
 	}
+
+
 
 	public void run() {
         long t0 = System.currentTimeMillis();
@@ -134,30 +201,8 @@ public class PupSniffer {
 
 
 	public static void main (String[] args) {
-		int i = 0;
-		String arg;
-		String url = null;
-
-		while (i < args.length && args[i].startsWith("-")) {
-			arg = args[i++];
-
-			if (arg.equals("-u")) {
-				if (i < args.length)
-					url = args[i++];
-				else
-					log.error("-u requires a URL");
-				if (!url.startsWith("http://")) {
-					log.error("-u URL must start with http://");
-				}
-			}
-		}
-		if (i != args.length) {
-			System.err.println("Usage: ");
-			System.err.println("Usage: PupSniffer -u URL");
-		}
-
 		PupSniffer sniffer;
-		sniffer = new PupSniffer(url);
+		sniffer = new PupSniffer();
 
 		sniffer.run();
 

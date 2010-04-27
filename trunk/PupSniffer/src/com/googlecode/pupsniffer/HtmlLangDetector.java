@@ -78,7 +78,7 @@ public class HtmlLangDetector
 		for (final String lang : langMap.keySet())
 		{
 			stopWords = langMap.get(lang);
-			int count = 0;
+			int count = 0, newcount = 0;
 			for (final String word : chars)
 			{
 				if (isStopWord(word, stopWords))
@@ -86,17 +86,18 @@ public class HtmlLangDetector
 					count++;
 				}
 			}
+			newcount = 0;
 			if (count < 10 && words != null)
 			{
-				count = 0;
 				for (final String word : words)
 				{
 					if (isStopWord(word, stopWords))
 					{
-						count++;
+						newcount++;
 					}
 				}
 			}
+			count = newcount>count?newcount:count;
 			//double norm = count*1.0/stopWords.size();
 			// don't do normalization yet.
 			/*
@@ -236,6 +237,8 @@ public class HtmlLangDetector
 		//		url = "http://www.let.rug.nl/~vannoord/TextCat/ShortTexts/dutch.txt";
 		url = "http://alias-i.com/lingpipe/demos/tutorial/langid/read-me.html";
 		url = "http://www.cas.gov.hk/eng/notice/notice_remove.html";
+		url = "http://www.wsd.gov.hk/tc/job_opportunities/index_t.html";
+		url = "http://www.wsd.gov.hk/sc/customer_services_and_water_bills/application_for_water_supply/water_supply_for_new_buildings/index_t.html";
 
 		//html = HtmlLangDetector.fetch(url);
 		//html = "证券简称,今日开盘价,昨日收盘价,最近成交价,最高成交价,最低成交价,买入价";

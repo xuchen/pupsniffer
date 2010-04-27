@@ -1,0 +1,2 @@
+April 27, 2010
+    Add a NO_LIMIT_ITERATIONS field to class MaxIterationsModel to support no limited iterations.
