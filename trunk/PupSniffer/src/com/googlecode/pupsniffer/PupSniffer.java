@@ -115,7 +115,13 @@ public class PupSniffer {
 		ILinkFilter serverFilter = new ServerFilter(this.urlList[0]);
 
 		Crawler crawler = new Crawler();
+		/*
+		 * SimpleHttpClientParser is the default parser for crawler.
+		 * But since HTML2TEXT uses htmlparser, maybe we can also
+		 * use htmlparser here for better integration?
+		 */
         crawler.setParser(new SimpleHttpClientParser());
+        // use MaxIterationsModel instead of MaxDepthModel for high speed and low memory.
 		crawler.setModel(new MaxIterationsModel(MaxIterationsModel.NO_LIMIT_ITERATIONS));
 		crawler.setLinkFilter(LinkFilterUtil.and(fileExtFilter, serverFilter));
 
@@ -132,6 +138,17 @@ public class PupSniffer {
 			}
 			mapping.put(url, dir);
 		}
+		/*
+		 * TODO: rewrite parse() of DownloadEventListener.java so that
+		 * every time before a file is saved, the strings of that file
+		 * is re-directed to HTML2TEXT to extract plain text from the
+		 * raw strings. To let HTML2TEXT extract from raw html strings,
+		 * the StringBean class
+		 * http://htmlparser.sourceforge.net/javadoc/org/htmlparser/beans/StringBean.html
+		 * must be re-written to use a Lexer to accept raw Strings.
+		 * http://htmlparser.sourceforge.net/javadoc/org/htmlparser/lexer/Lexer.html
+		 * In this way files do not need to be read from disk so time-saving.
+		 */
         crawler.addParserListener(new DownloadEventListener(mapping));
 
 		crawler.start(this.urlList[0], "/");
