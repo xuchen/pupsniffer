@@ -66,7 +66,7 @@ public class HTML2TEXT {
     	return text;
     }
 
-    public static String getTextFromStrings(String s) {
+    public static String getTextFromRaw(String s) {
     	String text=null;
         StringBean sb;
 
@@ -115,7 +115,7 @@ public class HTML2TEXT {
 		} catch (Exception e) {
 			e.printStackTrace ();
 		}
-		System.out.println(HTML2TEXT.getTextFromStrings(html));
+		System.out.println(HTML2TEXT.getTextFromRaw(html));
 
 	}
 
