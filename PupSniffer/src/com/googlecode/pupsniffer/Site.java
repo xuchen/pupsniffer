@@ -58,17 +58,20 @@ public class Site {
 
 	/**
 	 * the language taken as a reference in pair matching. Ususally
-	 * it's the langauge that has the fewest webpages.
+	 * it's the language that has the most webpages.
 	 */
 	private String refLang;
 
 	//protected ArrayList<UrlPattern> patternList;
 	protected HashMap<HashMap<String, String>, Integer> patternMap;
 
+	protected UrlPattern pattern;
+
 	public Site() {
 		patternMap = new HashMap<HashMap<String, String>, Integer>();
 		groupDict = new HashMap<String, SoftTFIDFDictionary>();
 		groupURLs = new HashMap<String, HashSet<String>>();
+		pattern = new UrlPattern();
 	}
 
 	public Site(EncodingDetector encDetector, HtmlLangDetector langDetector) {
@@ -272,18 +275,23 @@ public class Site {
 			groupDict.remove(l);
 		}
 
-		int min = this.numURL;
+		int max = 0;
 		for (String l: groupURLs.keySet()) {
 			num = groupURLs.get(l).size();
-			if (num < min) {
+			if (num > max) {
 				this.refLang = l;
-				min = num;
+				max = num;
 			}
 		}
 
-		if (this.refLang == null)
-			log.warn("There's no reference language in this list. Does this" +
-			"website contain pages of only 1 langauge?");
+		if (groupURLs.size()<=1)
+			log.warn("This website seems to contain pages of no more than 1 langauge.");
+		else {
+			for (String l: groupURLs.keySet()) {
+				if (l.equals(refLang)) continue;
+				pattern.initLangPair(l, refLang);
+			}
+		}
 	}
 
 	protected void freezeDict() {
@@ -298,28 +306,34 @@ public class Site {
 
 	public void lookupPairs() {
 		HashSet<String> refURLs = groupURLs.get(refLang);
+		HashSet<String> fromURLs;
 		String s1=null;
 		String alias;
 		String[] splits, diffs;
 		//ArrayList<String> diffs;
-		Levenstein l = new Levenstein();
+		Levenstein levenstein = new Levenstein();
 		SoftTFIDFDictionary dict;
+		SoftTFIDFDictionary refDict = groupDict.get(refLang);
 		int n, minJ;
 		double minScore, score;
 
-		for (String s0:refURLs) {
-			splits = s0.split("/");
-			// the last one, usually the filename, is used as an alias
-			alias = splits[splits.length-1];
+		/*
+		 * every other language is compared against refLang,
+		 * which has the most URLs
+		 */
+		for (String fromLang: groupURLs.keySet()) {
+			if (fromLang.equals(refLang)) continue;
+			fromURLs = groupURLs.get(fromLang);
 
-			for (String lang : groupDict.keySet()) {
-				if (lang.equals(this.refLang)) continue;
+			for (String s0:fromURLs) {
+				splits = s0.split("/");
+				// the last one, usually the filename, is used as an alias
+				alias = splits[splits.length-1];
 
-				dict = groupDict.get(lang);
-				n = dict.lookup(threshold, alias);
+				n = refDict.lookup(threshold, alias);
 
 				if (n==0) {
-					log.warn("No lookup from dict for " + lang + ": "+s0);
+					log.warn("No lookup from dict for " + fromLang + ": "+s0);
 					continue;
 				}
 
@@ -327,38 +341,41 @@ public class Site {
 				score = 0;
 				minJ = 0;
 				for (int j=0; j<n; j++) {
-					s1 = (String)dict.getValue(j);
-					score = l.scoreAbs(s0, s1);
+					s1 = (String)refDict.getValue(j);
+					score = levenstein.scoreAbs(s0, s1);
 					if (score < minScore && score!=0.0) {
 						minScore = score;
 						minJ = j;
 					}
 				}
 				if (n>1) {
-					s1 = (String)dict.getValue(minJ);
-					l.score(s0, s1);
-					log.info("Multiple results retrieved for " + lang +": " + s0);
-					log.info("Using index "+minJ+": "+dict.getRawResult());
+					s1 = (String)refDict.getValue(minJ);
+					levenstein.score(s0, s1);
+					log.info("Multiple results retrieved for " + fromLang +": " + s0);
+					log.info("Using index "+minJ+": "+refDict.getRawResult());
 				} else {
 					log.info(s0+" <-> "+s1);
 				}
 
-				diffs = l.getDiffPairAsArray();
+				diffs = levenstein.getDiffPairAsArray();
 				//log.info(String.format("%d: ", i)+diffs);
 
 				if (diffs != null) {
-					HashMap<String, String> m = Site.ArrayToHashMap(diffs);
-					if (patternMap.containsKey(m))
-						patternMap.put(m, patternMap.get(m)+1);
-					else
-						patternMap.put(m, 1);
-					log.info(m);
+					pattern.addPattern(fromLang, refLang, diffs[0], diffs[1], s0, s1);
+					log.info(diffs[0]+":"+diffs[1]);
 				}
 			}
+
 		}
 
-		log.info("\nAll Patterns found:");
-		log.info(patternMap);
+	}
+
+	public void printPatterns () {
+		log.info(pattern);
+	}
+
+	public boolean prune () {
+		return this.pattern.prune();
 	}
 
 	/**
