@@ -20,7 +20,10 @@ import com.wcohen.ss.lookup.SoftTFIDFDictionary;
  */
 public class Site {
 
-	private static Logger log = Logger.getLogger(Site.class);;
+	private static Logger log = Logger.getLogger(Site.class);
+
+	/** The main url of this site. */
+	protected String mainUrl;
 
 	/** Each member is a list of URL strings of different language group. */
 
@@ -67,124 +70,20 @@ public class Site {
 
 	protected UrlPattern pattern;
 
-	public Site() {
+	public Site(String mainUrl) {
 		patternMap = new HashMap<HashMap<String, String>, Integer>();
 		groupDict = new HashMap<String, SoftTFIDFDictionary>();
 		groupURLs = new HashMap<String, HashSet<String>>();
-		pattern = new UrlPattern();
+		pattern = new UrlPattern(mainUrl);
+		this.mainUrl = mainUrl;
 	}
 
-	public Site(EncodingDetector encDetector, HtmlLangDetector langDetector) {
-		this();
+	public Site(String mainUrl, EncodingDetector encDetector, HtmlLangDetector langDetector) {
+		this(mainUrl);
 		this.encDetector = encDetector;
 		this.langDetector = langDetector;
 	}
 
-	public Site (ArrayList<String> URLs, EncodingDetector encDetector,
-			HtmlLangDetector langDetector) {
-		this();
-		this.encDetector = encDetector;
-		this.langDetector = langDetector;
-		String enc, lang, alias;
-		String[] splits;
-
-
-		for (String url:URLs) {
-			try {
-				lang = null;
-				enc = encDetector.detect(url);
-
-				if (enc.startsWith("EUC-JP")) {
-					log.warn("Japanese is not supported, abandoning "+url);
-					continue;
-				} else if (enc.startsWith("EUC-KR")) {
-					log.warn("Korean is not supported, abandoning "+url);
-					continue;
-				} else {
-					// go to language detector
-					lang = langDetector.detect(url);
-
-					// double check
-					if (lang.equals(HtmlLangDetector.CHINESE_TRADITIONAL) &&
-							!(enc.startsWith("BIG5") || enc.startsWith("UTF"))) {
-						log.warn("Language detection and encoding mismatch: "+lang+"/"+enc+" in "+url);
-					} else if (lang.equals(HtmlLangDetector.CHINESE_SIMPLIFIED) &&
-							!(enc.startsWith("GB") || enc.startsWith("UTF"))) {
-						// GB2312, GB18030, GBK
-						log.warn("Language detection and encoding mismatch: "+lang+"/"+enc+" in "+url);
-					}
-				}
-				if (!groupURLs.containsKey(lang)) {
-					groupURLs.put(lang, new HashSet<String>());
-					groupDict.put(lang, new SoftTFIDFDictionary());
-				}
-				if (!groupURLs.get(lang).contains(url)) {
-					groupURLs.get(lang).add(url);
-					splits = url.split("/");
-					// the last one, usually the filename, is used as an alias
-					alias = splits[splits.length-1];
-					groupDict.get(lang).put(alias, url);
-				}
-			} catch (FileNotFoundException e) {
-				log.warn("URL doesn't exist: "+url);
-				//e.printStackTrace();
-				continue;
-			} catch (NullPointerException e) {
-				log.warn("Detecting language of URL failed: "+url);
-				//e.printStackTrace();
-				continue;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		freezeDict();
-
-		int num;
-		log.info("Language group sizes:");
-		for (String l: groupURLs.keySet()) {
-			num = groupURLs.get(l).size();
-			this.numURL += num;
-			log.info(l+": "+num);
-			log.info(groupURLs.get(l));
-		}
-		this.numLang = groupURLs.size();
-
-		/*
-		 * Remove any languages that have too little presence, which most
-		 * likely due to wrong language detection or some random rare
-		 * web pages with a different language.
-		 */
-		double thresh = this.numURL*0.5/this.numLang;
-		ArrayList<String> remove = new ArrayList<String>();
-		for (String l: groupURLs.keySet()) {
-			num = groupURLs.get(l).size();
-			if (num < thresh) {
-				log.warn(l+"("+num+") has too few webpages, removing...");
-				//log.warn(groupURLs.get(l));
-				remove.add(l);
-			}
-		}
-		for (String l:remove) {
-			this.numLang--;
-			this.numURL -= groupURLs.get(l).size();
-			groupURLs.remove(l);
-			groupDict.remove(l);
-		}
-
-		int min = this.numURL;
-		for (String l: groupURLs.keySet()) {
-			num = groupURLs.get(l).size();
-			if (num < min) {
-				this.refLang = l;
-				min = num;
-			}
-		}
-
-		if (this.refLang == null)
-			log.warn("There's no reference language in this list. Does this" +
-			" website contain pages of only 1 langauge?");
-	}
 
 	public void addUrl (String url, String oriEnc, String raw) {
 		String lang, alias, enc;
@@ -244,13 +143,6 @@ public class Site {
 		freezeDict();
 
 		int num;
-		log.info("Language group sizes:");
-		for (String l: groupURLs.keySet()) {
-			num = groupURLs.get(l).size();
-			this.numURL += num;
-			log.info(l+": "+num);
-			log.info(groupURLs.get(l));
-		}
 		this.numLang = groupURLs.size();
 
 		/*
@@ -291,6 +183,15 @@ public class Site {
 				if (l.equals(refLang)) continue;
 				pattern.initLangPair(l, refLang);
 			}
+		}
+
+		log.info("Website of "+mainUrl);
+		log.info("Language group sizes:");
+		for (String l: groupURLs.keySet()) {
+			num = groupURLs.get(l).size();
+			this.numURL += num;
+			log.info(l+": "+num);
+			log.info(groupURLs.get(l));
 		}
 	}
 
@@ -370,10 +271,46 @@ public class Site {
 
 	}
 
+	/**
+	 * Print Details and Summary of patterns.
+	 */
 	public void printPatterns () {
-		log.info(pattern);
+		log.info(pattern.toString());
 	}
 
+	/**
+	 * Print Summary of patterns.
+	 */
+	public void printSummary () {
+		int num;
+		log.info("Website of "+mainUrl);
+		log.info("Language group sizes:");
+		for (String l: groupURLs.keySet()) {
+			num = groupURLs.get(l).size();
+			log.info(l+": "+num);
+		}
+		log.info(pattern.getSummary());
+	}
+
+	/**
+	 * Print Details of patterns.
+	 */
+	public void printDetails () {
+		int num;
+		log.info("Website of "+mainUrl);
+		log.info("Language group sizes:");
+		for (String l: groupURLs.keySet()) {
+			num = groupURLs.get(l).size();
+			log.info(l+": "+num);
+		}
+		log.info(pattern.getDetails());
+	}
+
+	/**
+	 * Prune patterns by removing too few ones (number of instances
+	 * is less than 20% of average).
+	 * @return whether pruning is performed.
+	 */
 	public boolean prune () {
 		return this.pattern.prune();
 	}

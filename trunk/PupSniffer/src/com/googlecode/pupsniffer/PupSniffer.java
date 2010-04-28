@@ -17,7 +17,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.torunski.crawler.Crawler;
-import com.torunski.crawler.events.DownloadEventListener;
 import com.torunski.crawler.filter.*;
 import com.torunski.crawler.link.Link;
 import com.torunski.crawler.model.MaxDepthModel;
@@ -68,9 +67,21 @@ public class PupSniffer {
 	 */
 	private String saveDir;
 
+	/**
+	 * A mapping from URL to directory where the URL is saved.
+	 */
+	protected HashMap<String,String> saveMapping;
+
+	/**
+	 * A mapping from URL to its corresponding Site.
+	 */
+	protected HashMap<String,Site> siteMapping;
+
 	public PupSniffer () {
+		long t0 = System.currentTimeMillis();
 		PropertyConfigurator.configure("conf/log4j.properties");
 		log = Logger.getLogger(PupSniffer.class);
+		//log.addAppender(new Appender());
 		this.sites = new ArrayList<Site>();
 
 		encDetector = new EncodingDetector();
@@ -93,7 +104,10 @@ public class PupSniffer {
 			if (!urlList[i].startsWith("http://")) {
 				urlList[i] = "http://"+urlList[i];
 			}
+			if (urlList[i].endsWith("/"))
+				this.urlList[i] = urlList[i].substring(0, urlList[i].length()-1);
 		}
+
 
 		fileExtList = prop.getProperty("suffixList").split(",");
 		if (fileExtList==null || fileExtList.length==0) {
@@ -105,14 +119,14 @@ public class PupSniffer {
 		saveDir = prop.getProperty("saveDir");
 		if (!saveDir.endsWith("/"))
 			saveDir += "/";
-		// TODO: complete the loop through urlList.
-		if (urlList[0].endsWith("/"))
-			this.urlList[0] = urlList[0].substring(0, urlList[0].length()-1);
-		else
-			this.urlList[0] = urlList[0];
 
 		ILinkFilter fileExtFilter = new FileExtensionFilter(this.fileExtList);
 		ILinkFilter serverFilter = new ServerFilter(this.urlList[0]);
+
+		// add serverFilter
+		for (int i=1; i<urlList.length; i++) {
+			serverFilter = LinkFilterUtil.or(serverFilter, new ServerFilter(this.urlList[i]));
+		}
 
 		Crawler crawler = new Crawler();
 		/*
@@ -125,21 +139,26 @@ public class PupSniffer {
 		crawler.setModel(new MaxIterationsModel(MaxIterationsModel.NO_LIMIT_ITERATIONS));
 		crawler.setLinkFilter(LinkFilterUtil.and(fileExtFilter, serverFilter));
 
-		HashMap<String,String> mapping = new HashMap<String,String>();
+		saveMapping = new HashMap<String,String>();
+		siteMapping = new HashMap<String,Site>();
 
-		// remove http:// in the front
 		for (int i=0; i<urlList.length; i++) {
+
 			String url = urlList[i];
+			// remove http:// in the front
 			String dir = saveDir+url.substring(7);
 			File f = new File(dir);
 			if(!f.exists() && !f.mkdirs()) {
 				log.error("Mkdir "+dir+" failed. Aborting.");
 				System.exit(-1);
 			}
-			mapping.put(url, dir);
+			saveMapping.put(url, dir);
+			Site site = new Site(url, encDetector, langDetector);
+			siteMapping.put(url, site);
+			crawler.getModel().add(null, url);
 		}
 		/*
-		 * TODO: rewrite parse() of DownloadEventListener.java so that
+		 * DONE: rewrite parse() of DownloadEventListener.java so that
 		 * every time before a file is saved, the strings of that file
 		 * is re-directed to HTML2TEXT to extract plain text from the
 		 * raw strings. To let HTML2TEXT extract from raw html strings,
@@ -149,12 +168,10 @@ public class PupSniffer {
 		 * http://htmlparser.sourceforge.net/javadoc/org/htmlparser/lexer/Lexer.html
 		 * In this way files do not need to be read from disk so time-saving.
 		 */
-		Site site = new Site(encDetector, langDetector);
-        crawler.addParserListener(new PupDownloadEventListener(mapping, site));
 
-		crawler.start(this.urlList[0], "/");
+        crawler.addParserListener(new PupDownloadEventListener(saveMapping, siteMapping));
 
-		readLine();
+        crawler.start();
 
 		ArrayList<String> URLs = new ArrayList<String>();
 		String visit;
@@ -180,16 +197,19 @@ public class PupSniffer {
         }
 
 
-        log.info("Crawling Website "+this.urlList[0]+" done.");
+        log.info("Crawling Websites done: "+this.saveMapping.keySet());
 
+        long tf = System.currentTimeMillis();
+        log.info("runtime = "+((tf-t0)/1000.0)+" sec");
 
-        long t0 = System.currentTimeMillis();
-		//this.sites.add(new Site(URLs, encDetector, langDetector));
-        site.freezeSite();
-        this.sites.add(site);
+        t0 = System.currentTimeMillis();
+
+        for (Site site:siteMapping.values()) {
+        	site.freezeSite();
+        }
 
 		log.info("Initialization done.");
-        long tf = System.currentTimeMillis();
+        tf = System.currentTimeMillis();
         log.info("runtime = "+((tf-t0)/1000.0)+" sec");
 
 		readLine();
@@ -199,24 +219,36 @@ public class PupSniffer {
 
 	public void run() {
         long t0 = System.currentTimeMillis();
-		//sites.get(0).findPairs();
-		sites.get(0).lookupPairs();
-//		for (Site site:sites) {
-//			log.info(site.getName());
-//			site.findPairs();
-//		}
+
+        for (Site site:siteMapping.values()) {
+        	site.lookupPairs();
+        }
+
         long tf = System.currentTimeMillis();
+        log.info("Computing patterns done.");
         log.info("runtime = "+((tf-t0)/1000.0)+" sec");
         readLine();
-		log.info("\nAll Patterns found:");
-		sites.get(0).printPatterns();
-		if (sites.get(0).prune()) {
-			log.info("\nAll Patterns after pruning:");
-			sites.get(0).printPatterns();
-		}
+		log.info("\nAll Patterns found (in detail):");
+        for (Site site:siteMapping.values()) {
+        	site.printDetails();
+        }
+
+		log.info("\nAll Patterns found (in summary):");
+        for (Site site:siteMapping.values()) {
+        	site.printSummary();
+        	if (site.prune()) {
+        		log.info("\nAll Patterns after pruning:");
+        		site.printSummary();
+        	}
+        }
+
 	}
 
-	protected String readLine() {
+	/**
+	 * Pause the program and continue after any keyboard input.
+	 * @return a string of input
+	 */
+	public String readLine() {
         try {
             return new java.io.BufferedReader(new
                 java.io.InputStreamReader(System.in)).readLine();
