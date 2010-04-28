@@ -6,18 +6,29 @@ import java.util.HashSet;
 public class UrlPattern {
 
 	/**
-	 * HashMap0<String1, HashMap2<String2, Integer1>>
-	 * HashMap0: Mapping from a language pair (String1) to all pattern pairs (HashMap2)
-	 * String1: Mapping from language 1 to language 2 in the form of "from:to"
-	 * HashMap2: Mapping from pattern pairs (HashMap3) to counts (Integer1)
-	 * HashMap3: Mapping from language 1 pattern (String3) to language 2 pattern (String4)
+	 * I confess this is a piece of code written in C style ;-)
+	 * HashMap1<String1, HashMap2<String2, HashSet1<String3>>>
+	 * HashMap1: Mapping from a language pair (String1) to all pattern pairs (HashMap2)
+	 * String1: Mapping from language 1 to language 2 in the form such as "chinese<->english"
+	 * HashMap2: Mapping from pattern pairs (String2) to all sets of this pattern (HashSet1)
+	 * String2: Mapping from pattern 1 to pattern 2 in the form such as "sc<->en"
+	 * HashSet1: A collection of all URL mapping under patterns specified by String1 and String2
+	 * String3: Mapping from URL 1 to URL 2 in the form such as "url1<->url2"
 	 */
-	// I confess this is a piece of code written in C style ;-)
+
 	protected HashMap<String, HashMap<String, HashSet<String>>> pattern;
 
 	protected static final String PAIR_DELIMITER = "<->";
 
-	public UrlPattern () {
+	/** the main URL this pattern is about */
+	protected String mainUrl;
+
+	/**
+	 * Constructor
+	 * @param mainUrl the main URL this pattern is about
+	 */
+	public UrlPattern (String mainUrl) {
+		this.mainUrl = mainUrl;
 		pattern = new HashMap<String, HashMap<String, HashSet<String>>>();
 	}
 
@@ -35,11 +46,13 @@ public class UrlPattern {
 	}
 
 	/**
-	 * Add a pattern pair such as sc:en to the language pair such as chinese:english
+	 * Add a pattern pair such as sc:en under URL pari such as url1:url2 to the language pair such as chinese:english
 	 * @param fromLang "chinese"
 	 * @param toLang "english"
 	 * @param fromPattern "sc"
 	 * @param toPattern "en"
+	 * @param fromUrl url1
+	 * @param toUrl url2
 	 */
 	public void addPattern(String fromLang, String toLang,
 			String fromPattern, String toPattern, String fromUrl, String toUrl) {
@@ -69,15 +82,22 @@ public class UrlPattern {
 
 		double thresh = size*0.2/categ;
 		boolean pruned = false;
+		HashSet<String> removed = new HashSet<String>();
 
 		for (String langPair:pattern.keySet()) {
 			patternMap = pattern.get(langPair);
+			removed.clear();
 			for (String patternPair:patternMap.keySet()) {
 				size=patternMap.get(patternPair).size();
 				if (size<thresh) {
-					patternMap.remove(patternPair);
-					pruned = true;
+					removed.add(patternPair);
 				}
+			}
+			if(removed.size() != 0) {
+				for (String s:removed) {
+					patternMap.remove(s);
+				}
+				pruned = true;
 			}
 		}
 
@@ -89,9 +109,11 @@ public class UrlPattern {
 		StringBuilder text = new StringBuilder();
 		HashMap<String, HashSet<String>> patternMap;
 
+		//text.append("Website of "+mainUrl+":\n");
+
 		text.append("==========Details==========\n");
 		for (String langPair:pattern.keySet()) {
-			text.append(langPair+"\n");
+			text.append(langPair+":\n");
 			patternMap = pattern.get(langPair);
 			for (String patternPair:patternMap.keySet()) {
 				text.append(patternPair+"\n");
@@ -103,13 +125,51 @@ public class UrlPattern {
 
 		text.append("==========Summary==========\n");
 		for (String langPair:pattern.keySet()) {
-			text.append(langPair+"\n");
+			text.append(langPair+":\n");
 			patternMap = pattern.get(langPair);
 			for (String patternPair:patternMap.keySet()) {
 				text.append(patternPair+"="+patternMap.get(patternPair).size()+"\n");
 			}
 		}
 
+
+		return text.toString();
+	}
+
+	public String getSummary() {
+		StringBuilder text = new StringBuilder();
+		HashMap<String, HashSet<String>> patternMap;
+
+//		text.append("Website of "+mainUrl+":\n");
+		text.append("==========Summary==========\n");
+		for (String langPair:pattern.keySet()) {
+			text.append(langPair+":\n");
+			patternMap = pattern.get(langPair);
+			for (String patternPair:patternMap.keySet()) {
+				text.append(patternPair+"="+patternMap.get(patternPair).size()+"\n");
+			}
+		}
+
+
+		return text.toString();
+	}
+
+	public String getDetails() {
+		StringBuilder text = new StringBuilder();
+		HashMap<String, HashSet<String>> patternMap;
+
+		//text.append("Website of "+mainUrl+":\n");
+		text.append("==========Details==========\n");
+		for (String langPair:pattern.keySet()) {
+			text.append(langPair+":\n");
+			patternMap = pattern.get(langPair);
+			for (String patternPair:patternMap.keySet()) {
+				text.append(patternPair+"\n");
+				for (String urlPair:patternMap.get(patternPair)) {
+					text.append(urlPair+"\n");
+				}
+			}
+		}
 
 		return text.toString();
 	}

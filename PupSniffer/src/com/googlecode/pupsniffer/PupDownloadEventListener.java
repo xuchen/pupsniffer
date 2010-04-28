@@ -5,6 +5,7 @@ package com.googlecode.pupsniffer;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -33,11 +34,12 @@ public class PupDownloadEventListener extends DownloadEventListener {
     /** the mapping of the URIs to the file system destination. */
     private UriFileSystemMapperUtil mappingUtil;
 
-    private Site site;
+    private HashMap<String, Site> siteMapping;
 
 	public void parse(ParserEvent event) {
         PageData page = event.getPageData();
         String enc;
+        Site site;
         // is the page data available and OK?
         if ((page.getStatus() == PageData.OK) || (page.getStatus() == PageData.NOT_MODIFIED)) {
             Link link = page.getLink();
@@ -52,6 +54,8 @@ public class PupDownloadEventListener extends DownloadEventListener {
                         File file = new File(dest);
                         if (page instanceof PageDataHttpClient) {
                         	enc = ((PageDataHttpClient) page).getCharSet();
+                        	site = getSite(link.getURI());
+                        	if (site==null) return;
                         	site.addUrl(link.getURI(), enc, (String) obj);
                             FileUtil.save(file, (String) obj, enc, link.getTimestamp());
                         } else {
@@ -69,9 +73,22 @@ public class PupDownloadEventListener extends DownloadEventListener {
         }
     }
 
-	public PupDownloadEventListener(Map mapping, Site site) {
-		super(mapping);
-		this.site = site;
+	/**
+	 * Constructor.
+	 * @param saveMapping a mapping from URL to the saving directory.
+	 * @param siteMapping a mapping from URL to its Site structure.
+	 */
+	public PupDownloadEventListener(Map saveMapping, Map siteMapping) {
+		super(saveMapping);
+		this.siteMapping = (HashMap<String, Site>)siteMapping;
+	}
+
+	private Site getSite(String url) {
+		for (String s:siteMapping.keySet()) {
+			if(url.startsWith(s))
+				return siteMapping.get(s);
+		}
+		return null;
 	}
 
 }
