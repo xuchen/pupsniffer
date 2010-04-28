@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 
+import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.SimpleLayout;
 
 import com.torunski.crawler.Crawler;
 import com.torunski.crawler.filter.*;
@@ -32,9 +33,6 @@ public class PupSniffer {
 	/** Apache logger */
 	private static Logger log;
 
-	/** Cconfiguration file. */
-	public static final String propertyFile = "conf/pupsniffer.properties";
-
 	/**
 	 * A URL list PupSniffer should sniff at.
 	 */
@@ -44,13 +42,6 @@ public class PupSniffer {
 	 * The set of file extensions (such as "html", "css") to sniff at.
 	 */
 	private String[] fileExtList;
-
-	//private ArrayList<File> files;
-
-	/**
-	 * An ArrayList of all sites to be sniffed.
-	 */
-	private ArrayList<Site> sites;
 
 	/**
 	 * Webpage encoding detection.
@@ -77,21 +68,35 @@ public class PupSniffer {
 	 */
 	protected HashMap<String,Site> siteMapping;
 
-	public PupSniffer () {
+	/**
+	 * Constructor
+	 * @param configFile a configFile
+	 */
+	public PupSniffer (String configFile) {
 		long t0 = System.currentTimeMillis();
 		PropertyConfigurator.configure("conf/log4j.properties");
 		log = Logger.getLogger(PupSniffer.class);
 		//log.addAppender(new Appender());
-		this.sites = new ArrayList<Site>();
 
 		encDetector = new EncodingDetector();
-		langDetector = new HtmlLangDetector();
+		langDetector = new HtmlLangDetector(configFile);
 		Properties prop = new Properties();
 		try {
-			prop.load(new FileInputStream(propertyFile));
+			prop.load(new FileInputStream(configFile));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		// external logging
+		String logFile = prop.getProperty("log");
+		SimpleLayout layout = new SimpleLayout();
+
+		FileAppender appender = null;
+		try {
+			appender = new FileAppender(layout, logFile, false);
+		} catch(Exception e) {e.printStackTrace();}
+
+		log.addAppender(appender);
 
 		urlList = prop.getProperty("urlList").split(",");
 		if (urlList==null || urlList.length==0) {
@@ -261,7 +266,17 @@ public class PupSniffer {
 
 	public static void main (String[] args) {
 		PupSniffer sniffer;
-		sniffer = new PupSniffer();
+
+		if (args.length != 1) {
+			System.out.println("must specify a config file.");
+		}
+
+		File f = new File(args[0]);
+		if(!f.exists()) {
+			System.out.println(args[0]+" must exist.");
+		}
+
+		sniffer = new PupSniffer(args[0]);
 
 		sniffer.run();
 

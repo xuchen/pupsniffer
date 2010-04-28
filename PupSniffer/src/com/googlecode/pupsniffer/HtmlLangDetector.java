@@ -44,7 +44,6 @@ import cue.lang.stop.StopWords;
  */
 public class HtmlLangDetector
 {
-	public static final String propertyFile = "conf/lang.properties";
 	protected HashMap<String, HashSet<String>> langMap;
 	protected HashSet<String> excepWords;
 
@@ -123,11 +122,11 @@ public class HtmlLangDetector
 		return currentWinner;
 	}
 
-	public HtmlLangDetector()
+	public HtmlLangDetector(String configFile)
 	{
 		Properties prop = new Properties();
 		try {
-			prop.load(new FileInputStream(propertyFile));
+			prop.load(new FileInputStream(configFile));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -235,7 +234,7 @@ public class HtmlLangDetector
 	public static void main(final String[] args)
 	{
 		String url, html;
-		HtmlLangDetector detector = new HtmlLangDetector();
+		HtmlLangDetector detector = new HtmlLangDetector("conf/lang.properties");
 		//fileName = "/home/xcyao/CityU/work/welcome.html";
 		url = "http://news.sina.com.cn";
 		//		url = "http://ngramj.sourceforge.net/use_ngramj.html";
