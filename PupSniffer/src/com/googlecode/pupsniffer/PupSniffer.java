@@ -18,6 +18,8 @@ import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.SimpleLayout;
 
 import com.torunski.crawler.Crawler;
+import com.torunski.crawler.MultiThreadedCrawler;
+import com.torunski.crawler.core.AbstractCrawler;
 import com.torunski.crawler.filter.*;
 import com.torunski.crawler.link.Link;
 import com.torunski.crawler.model.MaxDepthModel;
@@ -73,6 +75,7 @@ public class PupSniffer {
 	 * @param configFile a configFile
 	 */
 	public PupSniffer (String configFile) {
+		boolean multithread = false;
 		long t0 = System.currentTimeMillis();
 		PropertyConfigurator.configure("conf/log4j.properties");
 		log = Logger.getLogger(PupSniffer.class);
@@ -133,7 +136,12 @@ public class PupSniffer {
 			serverFilter = LinkFilterUtil.or(serverFilter, new ServerFilter(this.urlList[i]));
 		}
 
-		Crawler crawler = new Crawler();
+
+		AbstractCrawler crawler = null;
+		if (!multithread)
+			crawler = new Crawler();
+		else
+			crawler = new MultiThreadedCrawler(4, 1);
 		/*
 		 * SimpleHttpClientParser is the default parser for crawler.
 		 * But since HTML2TEXT uses htmlparser, maybe we can also
@@ -206,6 +214,8 @@ public class PupSniffer {
 
         long tf = System.currentTimeMillis();
         log.info("runtime = "+((tf-t0)/1000.0)+" sec");
+
+        readLine();
 
         t0 = System.currentTimeMillis();
 
