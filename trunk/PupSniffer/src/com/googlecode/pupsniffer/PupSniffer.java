@@ -207,6 +207,13 @@ public class PupSniffer {
 //		}
         long tf = System.currentTimeMillis();
         log.info("runtime = "+((tf-t0)/1000.0)+" sec");
+        readLine();
+		log.info("\nAll Patterns found:");
+		sites.get(0).printPatterns();
+		if (sites.get(0).prune()) {
+			log.info("\nAll Patterns after pruning:");
+			sites.get(0).printPatterns();
+		}
 	}
 
 	protected String readLine() {
