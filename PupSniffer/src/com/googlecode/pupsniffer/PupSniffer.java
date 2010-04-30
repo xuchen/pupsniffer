@@ -28,7 +28,7 @@ import com.torunski.crawler.parser.httpclient.SimpleHttpClientParser;
 
 /**
  * @author Xuchen Yao
- *
+ * @since 2010-03-30
  */
 public class PupSniffer {
 
@@ -77,10 +77,12 @@ public class PupSniffer {
 	public PupSniffer (String configFile) {
 		boolean multithread = false;
 		long t0 = System.currentTimeMillis();
-		// the dir "conf" is added to classpath so no need to specify its path.
+		/*
+		 * the directory "conf" is added to the classpath in
+		 * both eclipse and ant, so no need to specify its path.
+		 */
 		//PropertyConfigurator.configure("conf/log4j.properties");
 		log = Logger.getLogger(PupSniffer.class);
-		//log.addAppender(new Appender());
 
 		encDetector = new EncodingDetector();
 		langDetector = new HtmlLangDetector(configFile);
@@ -92,15 +94,15 @@ public class PupSniffer {
 		}
 
 		// external logging
-		String logFile = prop.getProperty("log");
-		SimpleLayout layout = new SimpleLayout();
-
-		FileAppender appender = null;
-		try {
-			appender = new FileAppender(layout, logFile, false);
-		} catch(Exception e) {e.printStackTrace();}
-
-		log.addAppender(appender);
+//		String logFile = prop.getProperty("log");
+//		SimpleLayout layout = new SimpleLayout();
+//
+//		FileAppender appender = null;
+//		try {
+//			appender = new FileAppender(layout, logFile, false);
+//		} catch(Exception e) {e.printStackTrace();}
+//
+//		log.addAppender(appender);
 
 		urlList = prop.getProperty("urlList").split(",");
 		if (urlList==null || urlList.length==0) {
@@ -216,7 +218,7 @@ public class PupSniffer {
         long tf = System.currentTimeMillis();
         log.info("runtime = "+((tf-t0)/1000.0)+" sec");
 
-        readLine();
+        //readLine();
 
         t0 = System.currentTimeMillis();
 
@@ -228,7 +230,7 @@ public class PupSniffer {
         tf = System.currentTimeMillis();
         log.info("runtime = "+((tf-t0)/1000.0)+" sec");
 
-		readLine();
+		//readLine();
 	}
 
 
@@ -243,7 +245,7 @@ public class PupSniffer {
         long tf = System.currentTimeMillis();
         log.info("Computing patterns done.");
         log.info("runtime = "+((tf-t0)/1000.0)+" sec");
-        readLine();
+        //readLine();
 		log.info("\nAll Patterns found (in detail):");
         for (Site site:siteMapping.values()) {
         	site.printDetails();
@@ -256,6 +258,8 @@ public class PupSniffer {
         		log.info("\nAll Patterns after pruning:");
         		site.printSummary();
         	}
+        	// save it after pruning
+        	site.savePatternList(saveMapping.get(site.getMainUrl()));
         }
 
 	}
@@ -286,6 +290,7 @@ public class PupSniffer {
 		File f = new File(args[0]);
 		if(!f.exists()) {
 			System.out.println(args[0]+" must exist.");
+			System.exit(-1);
 		}
 
 		sniffer = new PupSniffer(args[0]);

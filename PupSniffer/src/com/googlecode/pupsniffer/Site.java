@@ -3,6 +3,7 @@
  */
 package com.googlecode.pupsniffer;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import com.wcohen.ss.lookup.SoftTFIDFDictionary;
 
 /**
  * @author Xuchen Yao
- *
+ * @since 2010-03-30
  */
 public class Site {
 
@@ -84,6 +85,7 @@ public class Site {
 		this.langDetector = langDetector;
 	}
 
+	public String getMainUrl() {return mainUrl;}
 
 	public void addUrl (String url, String oriEnc, String raw) {
 		String lang, alias, enc;
@@ -304,6 +306,14 @@ public class Site {
 			log.info(l+": "+num);
 		}
 		log.info(pattern.getDetails());
+	}
+
+	/**
+	 * Save all patterns and URL list to <code>dir</code>
+	 * @param dir the directory to save to
+	 */
+	public void savePatternList (String dir) {
+		pattern.savePatternList(dir);
 	}
 
 	/**

@@ -7,9 +7,6 @@ suffixList=html,htm
 # the directory to save all downloaded files
 saveDir=/tmp
 
-# where you want to save the log file
-log=PupSniffer.log
-
 # Supported languages:
 # Arabic, Catalan, Croatian, Czech, ChineseSimplified,
 #	ChineseTraditional, Dutch,

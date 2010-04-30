@@ -1,9 +1,22 @@
 package com.googlecode.pupsniffer;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.apache.log4j.Logger;
+
+/**
+ * A URL Pattern class.
+ * @author Xuchen Yao
+ * @since 2010-03-30
+ */
 public class UrlPattern {
+
+	private static Logger log = Logger.getLogger(UrlPattern.class);
 
 	/**
 	 * I confess this is a piece of code written in C style ;-)
@@ -140,7 +153,7 @@ public class UrlPattern {
 		StringBuilder text = new StringBuilder();
 		HashMap<String, HashSet<String>> patternMap;
 
-//		text.append("Website of "+mainUrl+":\n");
+		//		text.append("Website of "+mainUrl+":\n");
 		text.append("==========Summary==========\n");
 		for (String langPair:pattern.keySet()) {
 			text.append(langPair+":\n");
@@ -172,5 +185,47 @@ public class UrlPattern {
 		}
 
 		return text.toString();
+	}
+
+	/**
+	 * Save all patterns and URL list to <code>dir</code>
+	 * @param dir the directory to save to
+	 */
+	public void savePatternList (String dir) {
+		dir = dir+"/PupSnifferPatterns";
+		File f = new File(dir);
+		if (!f.exists() && !f.mkdir()) {
+			log.error("Making dir "+dir+" failed when saving the pattern list!");
+			return;
+		}
+
+		StringBuilder text;
+		String fileName;
+		HashMap<String, HashSet<String>> patternMap;
+
+
+		for (String langPair:pattern.keySet()) {
+			text = new StringBuilder();
+			// for every language pair write to a file
+			fileName = dir+"/"+langPair.replaceAll("<->", "_")+".txt";
+
+			patternMap = pattern.get(langPair);
+			for (String patternPair:patternMap.keySet()) {
+				text.append("# Pattern: "+patternPair+"\n");
+				for (String urlPair:patternMap.get(patternPair)) {
+					text.append(urlPair+"\n");
+				}
+			}
+
+			try {
+				BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
+				out.write(text.toString());
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 }

@@ -40,7 +40,7 @@ import cue.lang.stop.StopWords;
  * TODO: add word weighting in respect to frequencies as described in:
  * http://www.mozilla.org/projects/intl/UniversalCharsetDetection.html
  * @author Xuchen Yao
- *
+ * @since 2010-03-30
  */
 public class HtmlLangDetector
 {
