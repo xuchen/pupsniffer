@@ -4,7 +4,7 @@ urlList=www.cas.gov.hk
 # suffix list of web pages to download, separated with , (no spaces allowed)
 suffixList=html,htm
 
-# the directory to save all downloaded files
+# the directory to save all downloaded files, a list of matching URLs are also written
 saveDir=/tmp
 
 # Supported languages:

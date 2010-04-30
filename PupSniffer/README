@@ -29,7 +29,9 @@ Accuracy: It retrieves 98% true parallel webpages on 20 selected Hong
 How to Run it
 ------------------
 
-Under Linux:
+Modify config.txt accordingly.
+
+Under Linux/Mac:
     ./run.sh
 
 Under Windows:
