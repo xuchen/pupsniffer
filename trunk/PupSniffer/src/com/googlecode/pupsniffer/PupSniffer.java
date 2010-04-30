@@ -77,7 +77,8 @@ public class PupSniffer {
 	public PupSniffer (String configFile) {
 		boolean multithread = false;
 		long t0 = System.currentTimeMillis();
-		PropertyConfigurator.configure("conf/log4j.properties");
+		// the dir "conf" is added to classpath so no need to specify its path.
+		//PropertyConfigurator.configure("conf/log4j.properties");
 		log = Logger.getLogger(PupSniffer.class);
 		//log.addAppender(new Appender());
 
@@ -278,7 +279,8 @@ public class PupSniffer {
 		PupSniffer sniffer;
 
 		if (args.length != 1) {
-			System.out.println("must specify a config file.");
+			System.out.println("Error: must specify a config file.");
+			System.exit(-1);
 		}
 
 		File f = new File(args[0]);
