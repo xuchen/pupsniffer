@@ -17,7 +17,7 @@ import info.monitorenter.cpdetector.io.*;
 /**
  * A simple encoding detector based on cpdetector.sf.net
  * @author Xuchen Yao
- *
+ * @since 2010-03-30
  */
 public class EncodingDetector {
 	protected CodepageDetectorProxy detector;

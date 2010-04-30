@@ -21,8 +21,10 @@ import com.torunski.crawler.util.FileUtil;
 import com.torunski.crawler.util.UriFileSystemMapperUtil;
 
 /**
+ * A modified download listener to add parsing/encoding detection/language detection
+ * during a download.
  * @author Xuchen Yao
- *
+ * @since 2010-03-30
  */
 public class PupDownloadEventListener extends DownloadEventListener {
 

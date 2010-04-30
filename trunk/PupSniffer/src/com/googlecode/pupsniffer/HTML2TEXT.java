@@ -16,18 +16,18 @@ import org.htmlparser.util.ParserException;
 
 /**
  * This class extracts plain-text from html pages. JSP files also have
- * limited support. See:
+ * limited support. See:<br/>
  * http://htmlparser.sourceforge.net/faq.html#jsp
- * <p/>
- * Things I've tried to convert HTML to plain text:
- * 1. use HTMLEditorKit to parse HTML and get only text --> too much noise from markups
- * 2. use replaceAll() method to strip off all markups --> too slow (but generally works ok).
- * 3. process string char by char and strip off all markups --> also too slow
- * 4. use stringextractor from htmlparser.sf.net, it's quick, though with a little noise.
- * Reference: http://stackoverflow.com/questions/240546/removing-html-from-a-java-string
+ * <p>
+ * Things I've tried to convert HTML to plain text:<br/>
+ * 1. use HTMLEditorKit to parse HTML and get only text --> too much noise from markups.<br/>
+ * 2. use replaceAll() method to strip off all markups --> too slow (but generally works ok).<br/>
+ * 3. process string char by char and strip off all markups --> also too slow.<br/>
+ * 4. use stringextractor from htmlparser.sf.net, it's quick, though with a little noise.<br/>
+ * Reference: http://stackoverflow.com/questions/240546/removing-html-from-a-java-string<br/>
  *
  * @author Xuchen Yao
- *
+ * @since 2010-03-30
  */
 public class HTML2TEXT {
 

@@ -42,6 +42,7 @@
     <target name="clean">
         <delete dir="build"/>
     	<delete file="${ant.project.name}.jar"/>
+    	<delete file="PupSniffer.log"/>
     </target>
     <target depends="clean" name="cleanall"/>
     <target depends="build-subprojects,build-project" name="build"/>
