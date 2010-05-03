@@ -75,8 +75,7 @@ public class PupSniffer {
 	 * @param configFile a configFile
 	 */
 	public PupSniffer (String configFile) {
-		boolean multithread = false;
-		long t0 = System.currentTimeMillis();
+
 		/*
 		 * the directory "conf" is added to the classpath in
 		 * both eclipse and ant, so no need to specify its path.
@@ -112,7 +111,7 @@ public class PupSniffer {
 		}
 
 		for (int i=0; i<urlList.length; i++) {
-			if (!urlList[i].startsWith("http://")) {
+			if (!urlList[i].startsWith("http")) {
 				urlList[i] = "http://"+urlList[i];
 			}
 			if (urlList[i].endsWith("/"))
@@ -131,136 +130,111 @@ public class PupSniffer {
 		if (!saveDir.endsWith("/"))
 			saveDir += "/";
 
-		ILinkFilter fileExtFilter = new FileExtensionFilter(this.fileExtList);
-		ILinkFilter serverFilter = new ServerFilter(this.urlList[0]);
-
-		// add serverFilter
-		for (int i=1; i<urlList.length; i++) {
-			serverFilter = LinkFilterUtil.or(serverFilter, new ServerFilter(this.urlList[i]));
-		}
-
-
-		AbstractCrawler crawler = null;
-		if (!multithread)
-			crawler = new Crawler();
-		else
-			crawler = new MultiThreadedCrawler(4, 1);
-		/*
-		 * SimpleHttpClientParser is the default parser for crawler.
-		 * But since HTML2TEXT uses htmlparser, maybe we can also
-		 * use htmlparser here for better integration?
-		 */
-        crawler.setParser(new SimpleHttpClientParser());
-        // use MaxIterationsModel instead of MaxDepthModel for high speed and low memory.
-		crawler.setModel(new MaxIterationsModel(MaxIterationsModel.NO_LIMIT_ITERATIONS));
-		crawler.setLinkFilter(LinkFilterUtil.and(fileExtFilter, serverFilter));
-
-		saveMapping = new HashMap<String,String>();
-		siteMapping = new HashMap<String,Site>();
-
-		for (int i=0; i<urlList.length; i++) {
-
-			String url = urlList[i];
-			// remove http:// in the front
-			String dir = saveDir+url.substring(7);
-			File f = new File(dir);
-			if(!f.exists() && !f.mkdirs()) {
-				log.error("Mkdir "+dir+" failed. Aborting.");
-				System.exit(-1);
-			}
-			saveMapping.put(url, dir);
-			Site site = new Site(url, encDetector, langDetector);
-			siteMapping.put(url, site);
-			crawler.getModel().add(null, url);
-		}
-		/*
-		 * DONE: rewrite parse() of DownloadEventListener.java so that
-		 * every time before a file is saved, the strings of that file
-		 * is re-directed to HTML2TEXT to extract plain text from the
-		 * raw strings. To let HTML2TEXT extract from raw html strings,
-		 * the StringBean class
-		 * http://htmlparser.sourceforge.net/javadoc/org/htmlparser/beans/StringBean.html
-		 * must be re-written to use a Lexer to accept raw Strings.
-		 * http://htmlparser.sourceforge.net/javadoc/org/htmlparser/lexer/Lexer.html
-		 * In this way files do not need to be read from disk so time-saving.
-		 */
-
-        crawler.addParserListener(new PupDownloadEventListener(saveMapping, siteMapping));
-
-        crawler.start();
-
-		ArrayList<String> URLs = new ArrayList<String>();
-		String visit;
-
-        Collection<Link> visitedLinks = crawler.getModel().getVisitedURIs();
-        log.info("Links visited=" + visitedLinks.size());
-
-        Iterator<Link> list = visitedLinks.iterator();
-        while (list.hasNext()) {
-        	visit = list.next().getURI();
-        	URLs.add(visit);
-        	log.info(visit);
-        }
-
-        Collection<Link> notVisitedLinks = crawler.getModel().getToVisitURIs();
-
-        log.info("Links NOT visited=" + notVisitedLinks.size());
-        Iterator<Link> listNot = notVisitedLinks.iterator();
-        while (listNot.hasNext()) {
-        	visit = listNot.next().getURI();
-        	URLs.add(visit);
-        	log.info(visit);
-        }
-
-
-        log.info("Crawling Websites done: "+this.saveMapping.keySet());
-
-        long tf = System.currentTimeMillis();
-        log.info("runtime = "+((tf-t0)/1000.0)+" sec");
-
-        //readLine();
-
-        t0 = System.currentTimeMillis();
-
-        for (Site site:siteMapping.values()) {
-        	site.freezeSite();
-        }
-
-		log.info("Initialization done.");
-        tf = System.currentTimeMillis();
-        log.info("runtime = "+((tf-t0)/1000.0)+" sec");
-
-		//readLine();
 	}
 
 
 
 	public void run() {
-        long t0 = System.currentTimeMillis();
+		boolean multithread = false;
+		long t0 = System.currentTimeMillis();
+		AbstractCrawler crawler = null;
 
-        for (Site site:siteMapping.values()) {
-        	site.lookupPairs();
-        }
+		ILinkFilter fileExtFilter;
+		Site site;
+		fileExtFilter = new FileExtensionFilter(this.fileExtList);
+		ILinkFilter serverFilter;
+		File f;
+		String url, dir;
+		Collection<Link> visitedLinks, notVisitedLinks;
 
-        long tf = System.currentTimeMillis();
-        log.info("Computing patterns done.");
-        log.info("runtime = "+((tf-t0)/1000.0)+" sec");
-        //readLine();
-		log.info("\nAll Patterns found (in detail):");
-        for (Site site:siteMapping.values()) {
-        	site.printDetails();
-        }
+		saveMapping = new HashMap<String,String>();
+		siteMapping = new HashMap<String,Site>();
 
-		log.info("\nAll Patterns found (in summary):");
-        for (Site site:siteMapping.values()) {
-        	site.printSummary();
+		for (int i=0; i<urlList.length; i++) {
+			url = this.urlList[i];
+
+			if (!multithread)
+				crawler = new Crawler();
+			else
+				crawler = new MultiThreadedCrawler(4, 1);
+
+			// add serverFilter
+			serverFilter= new ServerFilter(url);
+
+			/*
+			 * SimpleHttpClientParser is the default parser for crawler.
+			 * But since HTML2TEXT uses htmlparser, maybe we can also
+			 * use htmlparser here for better integration?
+			 */
+	        crawler.setParser(new SimpleHttpClientParser());
+	        // use MaxIterationsModel instead of MaxDepthModel for high speed and low memory.
+			crawler.setModel(new MaxIterationsModel(MaxIterationsModel.NO_LIMIT_ITERATIONS));
+			crawler.setLinkFilter(LinkFilterUtil.and(fileExtFilter, serverFilter));
+
+			dir = saveDir+url.substring(7);
+			f = new File(dir);
+			if(!f.exists() && !f.mkdirs()) {
+				log.error("Mkdir "+dir+" failed. Aborting.");
+				System.exit(-1);
+			}
+			saveMapping.put(url, dir);
+			site = new Site(url, encDetector, langDetector);
+			siteMapping.put(url, site);
+			crawler.getModel().add(null, url);
+
+
+	        crawler.addParserListener(new PupDownloadEventListener(saveMapping, siteMapping));
+
+	        crawler.start();
+
+			ArrayList<String> URLs = new ArrayList<String>();
+			String visit;
+
+	        visitedLinks = crawler.getModel().getVisitedURIs();
+	        log.info("Links visited=" + visitedLinks.size());
+
+	        Iterator<Link> list = visitedLinks.iterator();
+	        while (list.hasNext()) {
+	        	visit = list.next().getURI();
+	        	URLs.add(visit);
+	        	log.info(visit);
+	        }
+
+	        notVisitedLinks = crawler.getModel().getToVisitURIs();
+
+	        log.info("Links NOT visited=" + notVisitedLinks.size());
+	        Iterator<Link> listNot = notVisitedLinks.iterator();
+	        while (listNot.hasNext()) {
+	        	visit = listNot.next().getURI();
+	        	URLs.add(visit);
+	        	log.info(visit);
+	        }
+
+
+	        log.info("Crawling Website done: "+this.saveMapping.keySet());
+
+	        long tf = System.currentTimeMillis();
+	        log.info("runtime = "+((tf-t0)/1000.0)+" sec");
+
+	        t0 = System.currentTimeMillis();
+	        site.freezeSite();
+	        site.lookupPairs();
+	        tf = System.currentTimeMillis();
+	        log.info("Computing patterns done.");
+	        log.info("runtime = "+((tf-t0)/1000.0)+" sec");
+	        //readLine();
+			log.info("\nAll Patterns found (in detail):");
+
+			site.printDetails();
+			log.info("\nAll Patterns found (in summary):");
+	       	site.printSummary();
         	if (site.prune()) {
         		log.info("\nAll Patterns after pruning:");
         		site.printSummary();
         	}
         	// save it after pruning
         	site.savePatternList(saveMapping.get(site.getMainUrl()));
-        }
+		}
 
 	}
 
