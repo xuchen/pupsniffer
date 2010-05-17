@@ -1,0 +1,54 @@
+This is Pup(Parallel URL Pattern) Sniffer, An Efficient Multilingual Web Corpus Tool.
+
+What is it
+------------------
+
+An implementation of the following paper (Kit and Ng 2007):
+  • Chunyu Kit and Jessica Y. H. Ng. 2007. An intelligent Web agent
+    to mine bilingual parallel pages via automatic discovery of URL
+    pairing patterns. In 2007 IEEE/WIC/ACM International
+    Conferences on Web Intelligence and Intelligent Agent Technology -
+    Workshops: Workshop on Agents and Data Mining Interaction
+    (ADMI-07), pp.526-529. Silicon Valley, California, November 2-5,
+    2007.
+
+It discovers URL patterns of parallel webpages and download
+them. For instance, it tells you the following two webpages
+have the same content but different languages:
+   • English:
+      http://www.cas.gov.hk/eng/org/org_volunteer.html
+   • Traditional Chinese:
+      http://www.cas.gov.hk/chi/org/org_volunteer.html
+
+
+Accuracy: It retrieves 98% true parallel webpages on 20 selected Hong
+ Kong websites (Kit and Ng 2007).
+
+
+
+How to Run it
+------------------
+
+Modify config.txt accordingly. You must have Java 1.6 to run!
+
+Under Linux/Mac:
+    ./run.sh
+
+Under Windows:
+    run.cmd
+
+
+
+Build Instructions
+------------------
+
+You can do either:
+
+1. Setup an Eclipse project with this package. Eclipse builds Pup Sniffer for you.
+2. run "ant jar" if you have ant installed.
+
+
+Author
+------------------
+Xuchen Yao
+yaoxuchen@gmail.com
