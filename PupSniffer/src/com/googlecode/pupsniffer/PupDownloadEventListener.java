@@ -4,7 +4,6 @@
 package com.googlecode.pupsniffer;
 
 import java.io.File;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +48,9 @@ public class PupDownloadEventListener extends DownloadEventListener {
             if ((saveFilter == null) || (saveFilter.accept(null, link.getURI()))) {
                 // get destination of file
                 String dest = getDestination(link);
+                // FIXME: we have to make sure the dest of a directory ends with a "/", how?
+                if (dest.endsWith("/"))
+                	dest+="index.html";
                 if (dest != null) {
                     Object obj = page.getData();
                     if (obj instanceof String) {
