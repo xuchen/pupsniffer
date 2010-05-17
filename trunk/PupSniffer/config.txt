@@ -1,5 +1,5 @@
 # list of websites to be crawled, separated with , (no spaces allowed)
-urlList=http://www.logisticshk.gov.hk/,www.cas.gov.hk
+urlList=http://www.epd.gov.hk/
 
 # suffix list of web pages to download, separated with , (no spaces allowed)
 suffixList=html,htm
