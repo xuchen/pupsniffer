@@ -29,7 +29,7 @@ Accuracy: It retrieves 98% true parallel webpages on 20 selected Hong
 How to Run it
 ------------------
 
-Modify config.txt accordingly.
+Modify config.txt accordingly. You must have Java 1.6 to run!
 
 Under Linux/Mac:
     ./run.sh
