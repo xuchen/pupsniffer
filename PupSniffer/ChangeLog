@@ -2,6 +2,7 @@
 
 	* Follow URL redirect
 	* Compute URL patterns, download/save site one by one
+	* Upgrade Java to OpenJDK 1.6
 
 2010-04-30  PupSniffer-1.0
 
