@@ -1,6 +1,0 @@
-May 17, 2010
-	In SimpleHttpClientParser set httpGet.setFollowRedirects(true);
-	Add workaround for <meta http-equiv="refresh" .../> meta tag to follow redirecting.
-	concrete description: https://crawler.dev.java.net/issues/show_bug.cgi?id=4
-April 27, 2010
-    Add a NO_LIMIT_ITERATIONS field to class MaxIterationsModel to support no limited iterations.
