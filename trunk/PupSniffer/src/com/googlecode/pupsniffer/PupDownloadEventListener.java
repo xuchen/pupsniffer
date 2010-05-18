@@ -48,6 +48,7 @@ public class PupDownloadEventListener extends DownloadEventListener {
             if ((saveFilter == null) || (saveFilter.accept(null, link.getURI()))) {
                 // get destination of file
                 String dest = getDestination(link);
+                if (dest == null) return;
                 // FIXME: we have to make sure the dest of a directory ends with a "/", how?
                 if (dest.endsWith("/"))
                 	dest+="index.html";
