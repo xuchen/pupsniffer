@@ -81,7 +81,7 @@ public class NeedlemanWunsch extends AbstractStringDistance
 		}
 
 		for (int i=sChars.length-1, j=tChars.length-1; i>=0 && j>=0; i--, j--) {
-			if (sChars[i] != tChars[j]) {
+			if (sChars[i] != tChars[j] || i<prefixEnd || j<prefixEnd) {
 				suffixStartS = i+1;
 				suffixStartT = j+1;
 				break;
