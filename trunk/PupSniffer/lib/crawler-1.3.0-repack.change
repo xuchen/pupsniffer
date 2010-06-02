@@ -1,3 +1,5 @@
+June 2, 2010
+    In Crawler.java, add IllegalArgumentException protection.
 May 17, 2010
 	In SimpleHttpClientParser set httpGet.setFollowRedirects(true);
 	Add workaround for <meta http-equiv="refresh" .../> meta tag to follow redirecting.
