@@ -236,6 +236,7 @@ public class PupSniffer {
         		site.printSummary();
         	}
         	// save it after pruning
+        	site.saveSummary(saveMapping.get(site.getMainUrl()));
         	site.savePatternList(saveMapping.get(site.getMainUrl()));
 		}
 
