@@ -3,8 +3,10 @@
  */
 package com.googlecode.pupsniffer;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -292,6 +294,40 @@ public class Site {
 			log.info(l+": "+num);
 		}
 		log.info(pattern.getSummary());
+	}
+
+	public String getSummary () {
+		StringBuilder text = new StringBuilder();
+		int num;
+		text.append("Website of "+mainUrl+"\n");
+		text.append("Language group sizes:\n");
+		for (String l: groupURLs.keySet()) {
+			num = groupURLs.get(l).size();
+			text.append(l+": "+num+"\n");
+		}
+		text.append(pattern.getSummary());
+
+		return text.toString();
+	}
+
+
+	public void saveSummary (String dir) {
+		dir = dir+"/PupSnifferPatterns";
+		File f = new File(dir);
+		if (!f.exists() && !f.mkdir()) {
+			log.error("Making dir "+dir+" failed when saving the pattern list!");
+			return;
+		}
+		String text = this.getSummary();
+		String fileName = dir+"/"+"summary.txt";
+
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
+			out.write(text);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
