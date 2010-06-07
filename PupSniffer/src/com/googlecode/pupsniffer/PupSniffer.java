@@ -184,8 +184,11 @@ public class PupSniffer {
 
 
 	        crawler.addParserListener(new PupDownloadEventListener(saveMapping, siteMapping));
-
-	        crawler.start();
+	        try {
+	        	crawler.start();
+	        } catch (java.lang.StringIndexOutOfBoundsException e) {
+	        	e.printStackTrace();
+	        }
 
 			ArrayList<String> URLs = new ArrayList<String>();
 			String visit;
