@@ -7,6 +7,9 @@ suffixList=html,htm
 # the directory to save all downloaded files, a list of matching URLs are also written
 saveDir=/tmp
 
+# Threshold for dictionary lookup. Decrease this value returns more results. Can't exceed 1.
+threshold=0.99
+
 # Supported languages:
 # Arabic, Catalan, Croatian, Czech, ChineseSimplified,
 #	ChineseTraditional, Dutch,

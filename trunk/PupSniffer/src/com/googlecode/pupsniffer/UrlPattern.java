@@ -68,10 +68,11 @@ public class UrlPattern {
 	 * @param toUrl url2
 	 */
 	public void addPattern(String fromLang, String toLang,
-			String fromPattern, String toPattern, String fromUrl, String toUrl) {
+			String fromPattern, String toPattern, String fromUrl, String toUrl,
+			double lookupScore) {
 		String langPair = fromLang+PAIR_DELIMITER+toLang;
 		String patternPair = fromPattern+PAIR_DELIMITER+toPattern;
-		String urlPair = fromUrl+PAIR_DELIMITER+toUrl;
+		String urlPair = fromUrl+PAIR_DELIMITER+toUrl+" "+lookupScore;
 
 		HashMap<String, HashSet<String>> pMap = pattern.get(langPair);
 		if (!pMap.containsKey(patternPair)) {

@@ -40,7 +40,7 @@ public class Site {
 	/**
 	 * Threshold for dictionary lookup. Decrease this value returns more results.
 	 */
-	private final double threshold = 0.99;
+	private double threshold = 1.0;
 
 	/**
 	 * A URL encoding detector.
@@ -73,16 +73,17 @@ public class Site {
 
 	protected UrlPattern pattern;
 
-	public Site(String mainUrl) {
+	public Site(String mainUrl, double threshold) {
 		patternMap = new HashMap<HashMap<String, String>, Integer>();
 		groupDict = new HashMap<String, SoftTFIDFDictionary>();
 		groupURLs = new HashMap<String, HashSet<String>>();
 		pattern = new UrlPattern(mainUrl);
 		this.mainUrl = mainUrl;
+		this.threshold = threshold;
 	}
 
-	public Site(String mainUrl, EncodingDetector encDetector, HtmlLangDetector langDetector) {
-		this(mainUrl);
+	public Site(String mainUrl, double threshold, EncodingDetector encDetector, HtmlLangDetector langDetector) {
+		this(mainUrl, threshold);
 		this.encDetector = encDetector;
 		this.langDetector = langDetector;
 	}
@@ -230,7 +231,7 @@ public class Site {
 		SoftTFIDFDictionary dict;
 		SoftTFIDFDictionary refDict = groupDict.get(refLang);
 		int n, minJ;
-		double minScore, score;
+		double minScore, score, lookupScore;
 
 		/*
 		 * every other language is compared against refLang,
@@ -271,12 +272,13 @@ public class Site {
 				} else {
 					log.info(s0+" <-> "+s1);
 				}
+				lookupScore = refDict.getScore(minJ);
 
 				diffs = levenstein.getDiffPairAsArray();
 				//log.info(String.format("%d: ", i)+diffs);
 
 				if (diffs != null) {
-					pattern.addPattern(fromLang, refLang, diffs[0], diffs[1], s0, s1);
+					pattern.addPattern(fromLang, refLang, diffs[0], diffs[1], s0, s1, lookupScore);
 					log.info(diffs[0]+":"+diffs[1]);
 				}
 			}
