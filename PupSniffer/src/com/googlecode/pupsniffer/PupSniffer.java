@@ -73,6 +73,11 @@ public class PupSniffer {
 	protected HashMap<String,Site> siteMapping;
 
 	/**
+	 * Threshold for dictionary lookup. Decrease this value returns more results.
+	 */
+	private double threshold = 1.0;
+
+	/**
 	 * Constructor
 	 * @param configFile a configFile
 	 */
@@ -132,6 +137,9 @@ public class PupSniffer {
 		if (!saveDir.endsWith("/"))
 			saveDir += "/";
 
+		threshold = Double.parseDouble(prop.getProperty("threshold"));
+		if (threshold > 1.0 || threshold <= 0) threshold = 1.0;
+
 	}
 
 
@@ -189,7 +197,7 @@ public class PupSniffer {
 				System.exit(-1);
 			}
 			saveMapping.put(url, dir);
-			site = new Site(url, encDetector, langDetector);
+			site = new Site(url, threshold, encDetector, langDetector);
 			siteMapping.put(url, site);
 			crawler.getModel().add(null, url);
 
