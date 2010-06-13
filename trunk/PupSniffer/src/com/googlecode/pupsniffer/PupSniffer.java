@@ -163,6 +163,8 @@ public class PupSniffer {
 		String summaryFile = saveDir+"/WebsiteSummary.txt";
 		BufferedWriter out = null;
 		try {
+			File sf = new File(summaryFile);
+			if (sf.exists()) sf.delete();
 			out = new BufferedWriter(new FileWriter(summaryFile, true));
 			out.write("#URL numOfLanguagesOfEachWebsite\n");
 		} catch (IOException e) {
