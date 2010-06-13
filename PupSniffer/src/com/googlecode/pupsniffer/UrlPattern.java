@@ -72,7 +72,7 @@ public class UrlPattern {
 			double lookupScore) {
 		String langPair = fromLang+PAIR_DELIMITER+toLang;
 		String patternPair = fromPattern+PAIR_DELIMITER+toPattern;
-		String urlPair = fromUrl+PAIR_DELIMITER+toUrl+" "+lookupScore;
+		String urlPair = fromUrl+PAIR_DELIMITER+toUrl+" "+String.format("%6.5f", lookupScore);;
 
 		HashMap<String, HashSet<String>> pMap = pattern.get(langPair);
 		if (!pMap.containsKey(patternPair)) {
