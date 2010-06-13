@@ -3,8 +3,10 @@
  */
 package com.googlecode.pupsniffer;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -150,6 +152,15 @@ public class PupSniffer {
 		saveMapping = new HashMap<String,String>();
 		siteMapping = new HashMap<String,Site>();
 
+		String summaryFile = saveDir+"/WebsiteSummary.txt";
+		BufferedWriter out = null;
+		try {
+			out = new BufferedWriter(new FileWriter(summaryFile, true));
+			out.write("#URL numOfLanguagesOfEachWebsite\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		for (int i=0; i<urlList.length; i++) {
 			url = this.urlList[i];
 
@@ -238,7 +249,21 @@ public class PupSniffer {
         	// save it after pruning
         	site.saveSummary(saveMapping.get(site.getMainUrl()));
         	site.savePatternList(saveMapping.get(site.getMainUrl()));
+
+    		try {
+    			if (out!=null)
+    				out.write(url+" "+site.numLanguages()+"\n");
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
 		}
+		try {
+			if (out!=null)
+				out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 
 	}
 
