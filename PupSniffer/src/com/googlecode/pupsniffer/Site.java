@@ -89,6 +89,16 @@ public class Site {
 
 	public String getMainUrl() {return mainUrl;}
 
+	public boolean isMultiLingual() {
+		if (groupURLs.size()<=1)
+			return false;
+		else return true;
+	}
+
+	public int numLanguages() {
+		return groupURLs.size();
+	}
+
 	public void addUrl (String url, String oriEnc, String raw) {
 		String lang, alias, enc;
 		String[] splits;
