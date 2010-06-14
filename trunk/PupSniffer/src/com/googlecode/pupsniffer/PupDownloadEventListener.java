@@ -15,6 +15,7 @@ import com.torunski.crawler.events.ParserEvent;
 import com.torunski.crawler.filter.ILinkFilter;
 import com.torunski.crawler.link.Link;
 import com.torunski.crawler.parser.PageData;
+import com.torunski.crawler.parser.filesystem.PageDataFileSystem;
 import com.torunski.crawler.parser.httpclient.PageDataHttpClient;
 import com.torunski.crawler.util.FileUtil;
 import com.torunski.crawler.util.UriFileSystemMapperUtil;
@@ -36,6 +37,8 @@ public class PupDownloadEventListener extends DownloadEventListener {
     private UriFileSystemMapperUtil mappingUtil;
 
     private HashMap<String, Site> siteMapping;
+
+    private boolean local;
 
 	public void parse(ParserEvent event) {
         PageData page = event.getPageData();
@@ -62,11 +65,20 @@ public class PupDownloadEventListener extends DownloadEventListener {
                         	site = getSite(link.getURI());
                         	if (site==null) return;
                         	site.addUrl(link.getURI(), enc, (String) obj);
-                            FileUtil.save(file, (String) obj, enc, link.getTimestamp());
+                        	if (!local)
+                        		FileUtil.save(file, (String) obj, enc, link.getTimestamp());
+                        } else if (page instanceof PageDataFileSystem) {
+                        	enc = ((PageDataFileSystem) page).getCharSet();
+                        	site = getSite(link.getURI());
+                        	if (site==null) return;
+                        	site.addUrl(link.getURI(), enc, (String) obj);
+                        	if (!local)
+                        		FileUtil.save(file, (String) obj, enc, link.getTimestamp());
                         } else {
                         	enc = null;
                         	//site.addUrl(link.getURI(), enc, (String) obj);
-                            FileUtil.save(file, (String) obj, null, -1L);
+                        	if (!local)
+                        		FileUtil.save(file, (String) obj, null, -1L);
                         }
                     } else {
                         LOG.warn("Page data has to be stored as a string. link=" + link);
@@ -83,9 +95,10 @@ public class PupDownloadEventListener extends DownloadEventListener {
 	 * @param saveMapping a mapping from URL to the saving directory.
 	 * @param siteMapping a mapping from URL to its Site structure.
 	 */
-	public PupDownloadEventListener(Map saveMapping, Map siteMapping) {
+	public PupDownloadEventListener(Map saveMapping, Map siteMapping, boolean local) {
 		super(saveMapping);
 		this.siteMapping = (HashMap<String, Site>)siteMapping;
+		this.local = local;
 	}
 
 	private Site getSite(String url) {

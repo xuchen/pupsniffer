@@ -68,7 +68,10 @@ public class EncodingDetector {
 
 		// convert String to inputstream
 		try {
-			bs = raw.getBytes(encoding);
+			if (encoding == null)
+				bs = raw.getBytes();
+			else
+				bs = raw.getBytes(encoding);
             is = new ByteArrayInputStream(bs);
 
     		charset = detector.detectCodepage(is, bs.length);
@@ -78,7 +81,7 @@ public class EncodingDetector {
     			// Open the document in the given code page:
     			//java.io.Reader reader = new java.io.InputStreamReader(new java.io.FileInputStream(document),charset);
     			// Read from it, do sth., whatever you desire. The character are now - hopefully - correct..
-    			return charset.name().toUpperCase();
+    			return charset.name();
     		}
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
