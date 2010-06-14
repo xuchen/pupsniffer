@@ -10,7 +10,7 @@
 #
 # If "local" is set to no, PupSniffer will crawl a list of websites indicated by
 # "urlList" and save it to "saveDir".
-local=no
+local=yes
 
 # list of websites to be crawled, separated with , (no spaces allowed)
 urlList=www.cas.gov.hk

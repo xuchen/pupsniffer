@@ -200,7 +200,7 @@ public class PupSniffer {
 			else {
 				FileSystemParser fileSystemParser = new FileSystemParser();
 				// could be either http:// or https://
-				String path = saveDir+url.substring(url.indexOf("/")+1);
+				String path = saveDir+url.substring(url.indexOf("/")+2);
 		    	fileSystemParser.addMapping(url, new File(path));
 		        crawler.setParser(fileSystemParser);
 			}
@@ -208,7 +208,7 @@ public class PupSniffer {
 			crawler.setModel(new MaxIterationsModel(MaxIterationsModel.NO_LIMIT_ITERATIONS));
 			crawler.setLinkFilter(LinkFilterUtil.and(fileExtFilter, serverFilter));
 
-			dir = saveDir+url.substring(url.indexOf("/")+1);
+			dir = saveDir+url.substring(url.indexOf("/")+2);
 			if (!local) {
 				f = new File(dir);
 				if(!f.exists() && !f.mkdirs()) {
