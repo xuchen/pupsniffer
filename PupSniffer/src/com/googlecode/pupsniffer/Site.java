@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -108,6 +109,7 @@ public class Site {
 			enc = encDetector.detectFromRaw(raw, oriEnc);
 			raw = new String(raw.getBytes(oriEnc), enc);
 
+			enc = enc.toUpperCase();
 			if (enc != null) {
 				if (enc.startsWith("EUC-JP")) {
 					log.warn("Japanese is not supported, abandoning "+url);

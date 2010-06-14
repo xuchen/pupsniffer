@@ -26,6 +26,7 @@ import com.torunski.crawler.filter.*;
 import com.torunski.crawler.link.Link;
 import com.torunski.crawler.model.MaxDepthModel;
 import com.torunski.crawler.model.MaxIterationsModel;
+import com.torunski.crawler.parser.filesystem.FileSystemParser;
 import com.torunski.crawler.parser.httpclient.SimpleHttpClientParser;
 
 /**
@@ -37,6 +38,8 @@ public class PupSniffer {
 	/** Apache logger */
 	private static Logger log;
 
+	/** crawl only local file system or online*/
+	private boolean local;
 	/**
 	 * A URL list PupSniffer should sniff at.
 	 */
@@ -110,6 +113,15 @@ public class PupSniffer {
 //
 //		log.addAppender(appender);
 
+		if (prop.getProperty("local").toLowerCase().equals("yes"))
+			local = true;
+		else if (prop.getProperty("local").toLowerCase().equals("no"))
+			local = false;
+		else {
+			log.error("local in conf/pussniffer.properties must be either yes or no");
+			System.exit(-1);
+		}
+
 		urlList = prop.getProperty("urlList").split(",");
 		if (urlList==null || urlList.length==0) {
 			log.error("urlList in conf/pussniffer.properties has the " +
@@ -147,7 +159,7 @@ public class PupSniffer {
 	public void run() {
 		boolean multithread = false;
 		long t0 = System.currentTimeMillis();
-		AbstractCrawler crawler = null;
+		Crawler crawler = null;
 
 		ILinkFilter fileExtFilter;
 		Site site;
@@ -176,27 +188,33 @@ public class PupSniffer {
 
 			if (!multithread)
 				crawler = new Crawler();
-			else
-				crawler = new MultiThreadedCrawler(4, 1);
+//			else
+//				crawler = new MultiThreadedCrawler(4, 1);
 
 			// add serverFilter
 			serverFilter= new ServerFilter(url);
 
-			/*
-			 * SimpleHttpClientParser is the default parser for crawler.
-			 * But since HTML2TEXT uses htmlparser, maybe we can also
-			 * use htmlparser here for better integration?
-			 */
-	        crawler.setParser(new SimpleHttpClientParser());
+
+			if (!local)
+				crawler.setParser(new SimpleHttpClientParser());
+			else {
+				FileSystemParser fileSystemParser = new FileSystemParser();
+				// could be either http:// or https://
+				String path = saveDir+url.substring(url.indexOf("/")+1);
+		    	fileSystemParser.addMapping(url, new File(path));
+		        crawler.setParser(fileSystemParser);
+			}
 	        // use MaxIterationsModel instead of MaxDepthModel for high speed and low memory.
 			crawler.setModel(new MaxIterationsModel(MaxIterationsModel.NO_LIMIT_ITERATIONS));
 			crawler.setLinkFilter(LinkFilterUtil.and(fileExtFilter, serverFilter));
 
-			dir = saveDir+url.substring(7);
-			f = new File(dir);
-			if(!f.exists() && !f.mkdirs()) {
-				log.error("Mkdir "+dir+" failed. Aborting.");
-				System.exit(-1);
+			dir = saveDir+url.substring(url.indexOf("/")+1);
+			if (!local) {
+				f = new File(dir);
+				if(!f.exists() && !f.mkdirs()) {
+					log.error("Mkdir "+dir+" failed. Aborting.");
+					System.exit(-1);
+				}
 			}
 			saveMapping.put(url, dir);
 			site = new Site(url, threshold, encDetector, langDetector);
@@ -204,9 +222,12 @@ public class PupSniffer {
 			crawler.getModel().add(null, url);
 
 
-	        crawler.addParserListener(new PupDownloadEventListener(saveMapping, siteMapping));
+	        crawler.addParserListener(new PupDownloadEventListener(saveMapping, siteMapping, local));
 	        try {
-	        	crawler.start();
+	        	if (!local)
+	        		crawler.start();
+	        	else
+	        		crawler.start(url, "/index.html");
 	        } catch (java.lang.StringIndexOutOfBoundsException e) {
 	        	e.printStackTrace();
 	        }
