@@ -1,3 +1,8 @@
+2010-06-14  PupSniffer-1.2
+
+	* add threshold option in config.txt, save lookup score of each pair
+	* local version, supporting crawling from filesystems
+
 2010-05-17  PupSniffer-1.1
 
 	* Follow URL redirect
