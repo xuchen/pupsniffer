@@ -1,5 +1,6 @@
 June 14, 2010
-    Modify FileSystemParser.java to read files with "ISO-8859-1" encoding.
+    Modify FileSystemParser.java to read files with "ISO-8859-1" encoding. More detail:
+    https://crawler.dev.java.net/issues/show_bug.cgi?id=6
 June 13, 2010
     Moving PageDataFileSystem out of FileSystemParser to be public
 June 2, 2010
