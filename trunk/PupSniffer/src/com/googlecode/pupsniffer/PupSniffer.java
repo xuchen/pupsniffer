@@ -50,6 +50,8 @@ public class PupSniffer {
 	 */
 	private String[] fileExtList;
 
+	private String[] fileExtExclusionList;
+
 	/**
 	 * Webpage encoding detection.
 	 */
@@ -154,6 +156,12 @@ public class PupSniffer {
 			fileExtList = new String[]{"html", "htm"};
 		}
 
+		fileExtExclusionList = prop.getProperty("noSuffixList").split(",");
+		if (fileExtExclusionList==null || fileExtExclusionList.length==0) {
+			log.error("suffixList in conf/pussniffer.properties has the " +
+					"wrong format. Using defaults (html,htm)");
+		}
+
 		saveDir = prop.getProperty("saveDir");
 		if (!saveDir.endsWith("/"))
 			saveDir += "/";
@@ -243,7 +251,7 @@ public class PupSniffer {
 	        		crawler.start(url, "/index.html");
 	        	} else {
 	        		// local and not useCrawler
-	        		FileTraveler traveler = new FileTraveler(url.substring(url.indexOf("/")+2), this.saveDir, site, this.fileExtList);
+	        		FileTraveler traveler = new FileTraveler(url.substring(url.indexOf("/")+2), this.saveDir, site, this.fileExtList, this.fileExtExclusionList);
 	        		traveler.start();
 	        		site = traveler.getSite();
 	        	}
