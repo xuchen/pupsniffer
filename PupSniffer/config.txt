@@ -23,6 +23,11 @@ urlList=www.cas.gov.hk
 # suffix list of web pages to download, separated with , (no spaces allowed)
 suffixList=html,htm
 
+# suffix list of web pages not to download, separated with , (no spaces allowed)
+# for now this option only works when local=yes and use_crawler_in_local_version=no
+# any webpages with a suffix satisfying suffixList OR noSuffixList are processed
+noSuffixList=jpeg,jpg,gif,avi,pdf
+
 # the directory to save all downloaded files, a list of matching URLs are also written
 saveDir=/tmp
 

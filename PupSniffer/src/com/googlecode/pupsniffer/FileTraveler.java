@@ -20,8 +20,9 @@ public class FileTraveler {
 	protected Site site;
 
 	HashSet<String> extSet;
+	HashSet<String> extExclusionSet;
 
-	public FileTraveler (String url, String saveDir, Site site, String[] fileExtList) {
+	public FileTraveler (String url, String saveDir, Site site, String[] fileExtList, String[] fileExtExclusionList) {
 		this.url = url;
 		this.saveDir = saveDir;
 		this.site = site;
@@ -29,6 +30,11 @@ public class FileTraveler {
 		if (fileExtList==null) return;
 		for (String ext:fileExtList) {
 			extSet.add(ext);
+		}
+		extExclusionSet = new HashSet<String>();
+		if (fileExtExclusionList==null || fileExtExclusionList.length==0) return;
+		for (String ext:fileExtExclusionList) {
+			extExclusionSet.add(ext);
 		}
 	}
 
@@ -67,6 +73,7 @@ public class FileTraveler {
 	private void onFile( final File f ) {
 		String ext = FileTraveler.getExtension(f);
 		if (!this.extSet.contains(ext)) return;
+		if (extExclusionSet.size() != 0 && extExclusionSet.contains(ext)) return;
 	    char[] buffer = new char[(int) f.length()];
 	    BufferedInputStream bis = null;
 		try {
