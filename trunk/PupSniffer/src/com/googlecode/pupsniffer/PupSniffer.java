@@ -82,6 +82,8 @@ public class PupSniffer {
 	 */
 	private double threshold = 1.0;
 
+	private String fileSeparator = System.getProperty("file.separator");
+
 	/**
 	 * Constructor
 	 * @param configFile a configFile
@@ -163,8 +165,8 @@ public class PupSniffer {
 		}
 
 		saveDir = prop.getProperty("saveDir");
-		if (!saveDir.endsWith("/"))
-			saveDir += "/";
+		if (!saveDir.endsWith(this.fileSeparator))
+			saveDir += this.fileSeparator;
 
 		threshold = Double.parseDouble(prop.getProperty("threshold"));
 		if (threshold > 1.0 || threshold <= 0) threshold = 1.0;
@@ -189,7 +191,7 @@ public class PupSniffer {
 		saveMapping = new HashMap<String,String>();
 		siteMapping = new HashMap<String,Site>();
 
-		String summaryFile = saveDir+"/WebsiteSummary.txt";
+		String summaryFile = saveDir+"WebsiteSummary.txt";
 		BufferedWriter out = null;
 		try {
 			File sf = new File(summaryFile);

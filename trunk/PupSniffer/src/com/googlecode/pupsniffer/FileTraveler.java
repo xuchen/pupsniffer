@@ -92,7 +92,7 @@ public class FileTraveler {
 		}
 		String raw = new String(buffer);
 		String uri = f.getPath().substring(this.saveDir.length());
-		site.addUrl(uri, null, raw);
+		site.addUrl(uri, "iso-8859-1", raw);
 	}
 
 	public static String getExtension(File f) {
