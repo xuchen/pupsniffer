@@ -72,8 +72,8 @@ public class FileTraveler {
 
 	private void onFile( final File f ) {
 		String ext = FileTraveler.getExtension(f);
-		if (!this.extSet.contains(ext)) return;
-		if (extExclusionSet.size() != 0 && extExclusionSet.contains(ext)) return;
+		if (!(this.extSet.contains(ext) ||
+				(extExclusionSet.size() != 0 && !extExclusionSet.contains(ext)))) return;
 	    char[] buffer = new char[(int) f.length()];
 	    BufferedInputStream bis = null;
 		try {
