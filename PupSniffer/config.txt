@@ -12,6 +12,11 @@
 # "urlList" and save it to "saveDir".
 local=yes
 
+# Whether to use the crawler when local=yes. If not using crawler, then PupSniffer
+# just recursively list and read all files in the saveDir. If option has no effect
+# when local=no
+use_crawler_in_local_version=no
+
 # list of websites to be crawled, separated with , (no spaces allowed)
 urlList=www.cas.gov.hk
 
