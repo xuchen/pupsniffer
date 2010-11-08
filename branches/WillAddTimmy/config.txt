@@ -1,0 +1,52 @@
+# local version or not. If "local" is set to yes, PupSniffer will crawl websites
+# from the file system. In this case, "saveDir" is the top directory with
+# all websites, while urlList is a list of sub-directory, indicating
+# each website's domain name. The whole directory looks like:
+#
+# saveDir/
+#    |---www.cas.gov.hk
+#    |---www.epd.gov.hk
+#    |---www....
+#
+# If "local" is set to no, PupSniffer will crawl a list of websites indicated by
+# "urlList" and save it to "saveDir".
+local=yes
+
+# Whether to use the crawler when local=yes. If not using crawler, then PupSniffer
+# just recursively list and read all files in the saveDir. If option has no effect
+# when local=no
+use_crawler_in_local_version=no
+
+# list of websites to be crawled, separated with , (no spaces allowed)
+urlList=www.cas.gov.hk
+
+# suffix list of web pages to download, separated with , (no spaces allowed)
+suffixList=html,htm
+
+# suffix list of web pages not to download, separated with , (no spaces allowed)
+# for now this option only works when local=yes and use_crawler_in_local_version=no
+# any webpages with a suffix satisfying suffixList OR noSuffixList are processed
+noSuffixList=jpeg,jpg,gif,avi,pdf
+
+# the directory to save all downloaded files, a list of matching URLs are also written
+saveDir=/tmp
+
+# Threshold for dictionary lookup. Decrease this value returns more results. Can't exceed 1.
+threshold=0.99
+
+# Supported languages:
+# Arabic, Catalan, Croatian, Czech, ChineseSimplified,
+#	ChineseTraditional, Dutch,
+#	Danish, English, Esperanto, Farsi, Finnish,
+#	French, German, Greek, Hindi, Hungarian,
+#	Italian, Latin, Norwegian, Polish, Portuguese,
+#	Romanian, Russian, Slovenian, Slovak, Spanish,
+#	Swedish, Hebrew, Turkish
+#
+# If you are sure that the website you want to sniff at contains
+# only certain languages, then it's good to specify no others below,
+# which brings both accuray and speed to language detection below.
+lang=English,ChineseSimplified,ChineseTraditional
+
+# a list of exception words, such as HTML tags
+exception=exception
