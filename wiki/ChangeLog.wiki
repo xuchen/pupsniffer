@@ -1,8 +1,7 @@
 #labels Featured
-2010-11-04  
+2010-11-04
 
-Add two classes,i.e, WebSiteManager & GetLink based on v1.2. 
-
+Add two classes,i.e, WebSiteManager and GetLink based on v1.2. 
 
 
 2010-05-17  v1.1
