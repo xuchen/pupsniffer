@@ -1,0 +1,838 @@
+<!-- Unchanged -->
+<html><!-- InstanceBegin template="/Templates/chi.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<meta http-equiv="Page-Enter" content="blendTrans(Duration=0.5)">
+<meta http-equiv="Page-Exit" content="blendTrans(Duration=0.5)">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>香港民眾安全服務隊</title>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../../lang_function.js"></script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function GIC_search(){ //GIC_search
+	var currentUrl = location.href.toString();
+	var url = "http://search.gov.hk/search.html";
+	var SearchWin;
+	var lang=document.form1.ui_lang.value; var charset=document.form1.ui_charset.value; var tplid=document.form1.tpl_id.value; var web=document.form1.web.value; var gp0=document.form1.gp0.value; var gp1=document.form1.gp1.value;
+	var qu = document.form1.query.value;
+	
+	SearchWin=window.open(eval('url +"?ui_lang=" + lang + "&ui_charset=" + charset + "&tpl_id=" + tplid + "&web=" + web + "&gp0=" + gp0 + "&gp1=" + gp1 + "&query=" + qu'));
+	document.location.href = currentUrl;
+	SearchWin.focus();
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_timelinePlay(tmLnName, myID) { //v1.2
+  //Copyright 1997, 2000 Macromedia, Inc. All rights reserved.
+  var i,j,tmLn,props,keyFrm,sprite,numKeyFr,firstKeyFr,propNum,theObj,firstTime=false;
+  if (document.MM_Time == null) MM_initTimelines(); //if *very* 1st time
+  tmLn = document.MM_Time[tmLnName];
+  if (myID == null) { myID = ++tmLn.ID; firstTime=true;}//if new call, incr ID
+  if (myID == tmLn.ID) { //if Im newest
+    setTimeout('MM_timelinePlay("'+tmLnName+'",'+myID+')',tmLn.delay);
+    fNew = ++tmLn.curFrame;
+    for (i=0; i<tmLn.length; i++) {
+      sprite = tmLn[i];
+      if (sprite.charAt(0) == 's') {
+        if (sprite.obj) {
+          numKeyFr = sprite.keyFrames.length; firstKeyFr = sprite.keyFrames[0];
+          if (fNew >= firstKeyFr && fNew <= sprite.keyFrames[numKeyFr-1]) {//in range
+            keyFrm=1;
+            for (j=0; j<sprite.values.length; j++) {
+              props = sprite.values[j]; 
+              if (numKeyFr != props.length) {
+                if (props.prop2 == null) sprite.obj[props.prop] = props[fNew-firstKeyFr];
+                else        sprite.obj[props.prop2][props.prop] = props[fNew-firstKeyFr];
+              } else {
+                while (keyFrm<numKeyFr && fNew>=sprite.keyFrames[keyFrm]) keyFrm++;
+                if (firstTime || fNew==sprite.keyFrames[keyFrm-1]) {
+                  if (props.prop2 == null) sprite.obj[props.prop] = props[keyFrm-1];
+                  else        sprite.obj[props.prop2][props.prop] = props[keyFrm-1];
+        } } } } }
+      } else if (sprite.charAt(0)=='b' && fNew == sprite.frame) eval(sprite.value);
+      if (fNew > tmLn.lastFrame) tmLn.ID = 0;
+  } }
+}
+
+function MM_timelineStop(tmLnName) { //v1.2
+  //Copyright 1997, 2000 Macromedia, Inc. All rights reserved.
+  if (document.MM_Time == null) MM_initTimelines(); //if *very* 1st time
+  if (tmLnName == null)  //stop all
+    for (var i=0; i<document.MM_Time.length; i++) document.MM_Time[i].ID = null;
+  else document.MM_Time[tmLnName].ID = null; //stop one
+}
+
+function MM_timelineGoto(tmLnName, fNew, numGotos) { //v2.0
+  //Copyright 1997, 2000 Macromedia, Inc. All rights reserved.
+  var i,j,tmLn,props,keyFrm,sprite,numKeyFr,firstKeyFr,lastKeyFr,propNum,theObj;
+  if (document.MM_Time == null) MM_initTimelines(); //if *very* 1st time
+  tmLn = document.MM_Time[tmLnName];
+  if (numGotos != null)
+    if (tmLn.gotoCount == null) tmLn.gotoCount = 1;
+    else if (tmLn.gotoCount++ >= numGotos) {tmLn.gotoCount=0; return}
+  jmpFwd = (fNew > tmLn.curFrame);
+  for (i = 0; i < tmLn.length; i++) {
+    sprite = (jmpFwd)? tmLn[i] : tmLn[(tmLn.length-1)-i]; //count bkwds if jumping back
+    if (sprite.charAt(0) == "s") {
+      numKeyFr = sprite.keyFrames.length;
+      firstKeyFr = sprite.keyFrames[0];
+      lastKeyFr = sprite.keyFrames[numKeyFr - 1];
+      if ((jmpFwd && fNew<firstKeyFr) || (!jmpFwd && lastKeyFr<fNew)) continue; //skip if untouchd
+      for (keyFrm=1; keyFrm<numKeyFr && fNew>=sprite.keyFrames[keyFrm]; keyFrm++);
+      for (j=0; j<sprite.values.length; j++) {
+        props = sprite.values[j];
+        if (numKeyFr == props.length) propNum = keyFrm-1 //keyframes only
+        else propNum = Math.min(Math.max(0,fNew-firstKeyFr),props.length-1); //or keep in legal range
+        if (sprite.obj != null) {
+          if (props.prop2 == null) sprite.obj[props.prop] = props[propNum];
+          else        sprite.obj[props.prop2][props.prop] = props[propNum];
+      } }
+    } else if (sprite.charAt(0)=='b' && fNew == sprite.frame) eval(sprite.value);
+  }
+  tmLn.curFrame = fNew;
+  if (tmLn.ID == 0) eval('MM_timelinePlay(tmLnName)');
+}
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+
+function MM_initTimelines() { //v4.0
+    //MM_initTimelines() Copyright 1997 Macromedia, Inc. All rights reserved.
+    var ns = navigator.appName == "Netscape";
+    var ns4 = (ns && parseInt(navigator.appVersion) == 4);
+    var ns5 = (ns && parseInt(navigator.appVersion) > 4);
+    document.MM_Time = new Array(21);
+    document.MM_Time[0] = new Array(3);
+    document.MM_Time["Timeline1"] = document.MM_Time[0];
+    document.MM_Time[0].MM_Name = "Timeline1";
+    document.MM_Time[0].fps = 15;
+    document.MM_Time[0][0] = new String("behavior");
+    document.MM_Time[0][0].frame = 90;
+    document.MM_Time[0][0].value = "MM_timelineStop('Timeline1');MM_showHideLayers('tghq','','hide')";
+    document.MM_Time[0][1] = new String("behavior");
+    document.MM_Time[0][1].frame = 1;
+    document.MM_Time[0][1].value = "MM_timelinePlay('Timeline1');MM_showHideLayers('tghq','','show','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','hide','opshktc','','hide')";
+    document.MM_Time[0][2] = new String("behavior");
+    document.MM_Time[0][2].frame = 91;
+    document.MM_Time[0][2].value = "MM_timelineGoto('Timeline1','1')";
+    document.MM_Time[0].lastFrame = 91;
+    document.MM_Time[1] = new Array(3);
+    document.MM_Time["Timeline2"] = document.MM_Time[1];
+    document.MM_Time[1].MM_Name = "Timeline2";
+    document.MM_Time[1].fps = 15;
+    document.MM_Time[1][0] = new String("behavior");
+    document.MM_Time[1][0].frame = 90;
+    document.MM_Time[1][0].value = "MM_timelineStop('Timeline2');MM_showHideLayers('tgktc','','hide')";
+    document.MM_Time[1][1] = new String("behavior");
+    document.MM_Time[1][1].frame = 91;
+    document.MM_Time[1][1].value = "MM_timelineGoto('Timeline2','1')";
+    document.MM_Time[1][2] = new String("behavior");
+    document.MM_Time[1][2].frame = 1;
+    document.MM_Time[1][2].value = "MM_showHideLayers('tghq','','hide','tgktc','','show','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','hide','opshktc','','hide');MM_timelinePlay('Timeline2')";
+    document.MM_Time[1].lastFrame = 91;
+    document.MM_Time[2] = new Array(3);
+    document.MM_Time["Timeline3"] = document.MM_Time[2];
+    document.MM_Time[2].MM_Name = "Timeline3";
+    document.MM_Time[2].fps = 15;
+    document.MM_Time[2][0] = new String("behavior");
+    document.MM_Time[2][0].frame = 1;
+    document.MM_Time[2][0].value = "MM_timelinePlay('Timeline3');MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','show','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','hide','opshktc','','hide')";
+    document.MM_Time[2][1] = new String("behavior");
+    document.MM_Time[2][1].frame = 90;
+    document.MM_Time[2][1].value = "MM_timelineStop('Timeline3');MM_showHideLayers('tgctc','','hide')";
+    document.MM_Time[2][2] = new String("behavior");
+    document.MM_Time[2][2].frame = 91;
+    document.MM_Time[2][2].value = "MM_timelineGoto('Timeline3','1')";
+    document.MM_Time[2].lastFrame = 91;
+    document.MM_Time[3] = new Array(3);
+    document.MM_Time["Timeline4"] = document.MM_Time[3];
+    document.MM_Time[3].MM_Name = "Timeline4";
+    document.MM_Time[3].fps = 15;
+    document.MM_Time[3][0] = new String("behavior");
+    document.MM_Time[3][0].frame = 1;
+    document.MM_Time[3][0].value = "MM_timelinePlay('Timeline4');MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','show','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','hide','opshktc','','hide')";
+    document.MM_Time[3][1] = new String("behavior");
+    document.MM_Time[3][1].frame = 90;
+    document.MM_Time[3][1].value = "MM_timelineStop('Timeline4');MM_showHideLayers('tghktc','','hide')";
+    document.MM_Time[3][2] = new String("behavior");
+    document.MM_Time[3][2].frame = 91;
+    document.MM_Time[3][2].value = "MM_timelineGoto('Timeline4','1')";
+    document.MM_Time[3].lastFrame = 91;
+    document.MM_Time[4] = new Array(3);
+    document.MM_Time["Timeline5"] = document.MM_Time[4];
+    document.MM_Time[4].MM_Name = "Timeline5";
+    document.MM_Time[4].fps = 15;
+    document.MM_Time[4][0] = new String("behavior");
+    document.MM_Time[4][0].frame = 1;
+    document.MM_Time[4][0].value = "MM_timelinePlay('Timeline5');MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','show','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','hide','opshktc','','hide')";
+    document.MM_Time[4][1] = new String("behavior");
+    document.MM_Time[4][1].frame = 90;
+    document.MM_Time[4][1].value = "MM_timelineStop('Timeline5');MM_showHideLayers('tgytc','','hide')";
+    document.MM_Time[4][2] = new String("behavior");
+    document.MM_Time[4][2].frame = 91;
+    document.MM_Time[4][2].value = "MM_timelineGoto('Timeline5','1')";
+    document.MM_Time[4].lastFrame = 91;
+    document.MM_Time[5] = new Array(3);
+    document.MM_Time["Timeline6"] = document.MM_Time[5];
+    document.MM_Time[5].MM_Name = "Timeline6";
+    document.MM_Time[5].fps = 15;
+    document.MM_Time[5][0] = new String("behavior");
+    document.MM_Time[5][0].frame = 1;
+    document.MM_Time[5][0].value = "MM_timelinePlay('Timeline6');MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','show','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','hide','opshktc','','hide')";
+    document.MM_Time[5][1] = new String("behavior");
+    document.MM_Time[5][1].frame = 90;
+    document.MM_Time[5][1].value = "MM_timelineStop('Timeline6');MM_showHideLayers('tgttc','','hide')";
+    document.MM_Time[5][2] = new String("behavior");
+    document.MM_Time[5][2].frame = 91;
+    document.MM_Time[5][2].value = "MM_timelineGoto('Timeline6','1')";
+    document.MM_Time[5].lastFrame = 91;
+    document.MM_Time[6] = new Array(3);
+    document.MM_Time["Timeline7"] = document.MM_Time[6];
+    document.MM_Time[6].MM_Name = "Timeline7";
+    document.MM_Time[6].fps = 15;
+    document.MM_Time[6][0] = new String("behavior");
+    document.MM_Time[6][0].frame = 1;
+    document.MM_Time[6][0].value = "MM_timelinePlay('Timeline7');MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','show','tgkt','','hide','tgnte','','hide','opshq','','hide','opselb','','hide','opsktc','','hide','opsctc','','hide','opsnt','','hide','opssc','','hide')";
+    document.MM_Time[6][1] = new String("behavior");
+    document.MM_Time[6][1].frame = 90;
+    document.MM_Time[6][1].value = "MM_timelineStop('Timeline7');MM_showHideLayers('tgnt','','hide')";
+    document.MM_Time[6][2] = new String("behavior");
+    document.MM_Time[6][2].frame = 91;
+    document.MM_Time[6][2].value = "MM_timelineGoto('Timeline7','1')";
+    document.MM_Time[6].lastFrame = 91;
+    document.MM_Time[7] = new Array(3);
+    document.MM_Time["Timeline8"] = document.MM_Time[7];
+    document.MM_Time[7].MM_Name = "Timeline8";
+    document.MM_Time[7].fps = 15;
+    document.MM_Time[7][0] = new String("behavior");
+    document.MM_Time[7][0].frame = 1;
+    document.MM_Time[7][0].value = "MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','show','tgnte','','hide','opshq','','hide','opselb','','hide','opsktc','','hide','opsctc','','hide','opsnt','','hide','opssc','','hide','opsktgo','','hide','opsst','','hide','opsft','','hide','opsstgo','','hide','opsylgo','','hide','opstpgo','','hide');MM_timelinePlay('Timeline8')";
+    document.MM_Time[7][1] = new String("behavior");
+    document.MM_Time[7][1].frame = 90;
+    document.MM_Time[7][1].value = "MM_timelineStop('Timeline8');MM_showHideLayers('tgkt','','hide')";
+    document.MM_Time[7][2] = new String("behavior");
+    document.MM_Time[7][2].frame = 91;
+    document.MM_Time[7][2].value = "MM_timelineGoto('Timeline8','1')";
+    document.MM_Time[7].lastFrame = 91;
+    document.MM_Time[8] = new Array(3);
+    document.MM_Time["Timeline9"] = document.MM_Time[8];
+    document.MM_Time[8].MM_Name = "Timeline9";
+    document.MM_Time[8].fps = 15;
+    document.MM_Time[8][0] = new String("behavior");
+    document.MM_Time[8][0].frame = 1;
+    document.MM_Time[8][0].value = "MM_timelinePlay('Timeline9');MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','show','opshq','','hide')";
+    document.MM_Time[8][1] = new String("behavior");
+    document.MM_Time[8][1].frame = 90;
+    document.MM_Time[8][1].value = "MM_timelineStop('Timeline9');MM_showHideLayers('tgnte','','hide')";
+    document.MM_Time[8][2] = new String("behavior");
+    document.MM_Time[8][2].frame = 91;
+    document.MM_Time[8][2].value = "MM_timelineGoto('Timeline9','1')";
+    document.MM_Time[8].lastFrame = 91;
+    document.MM_Time[9] = new Array(3);
+    document.MM_Time["Timeline10"] = document.MM_Time[9];
+    document.MM_Time[9].MM_Name = "Timeline10";
+    document.MM_Time[9].fps = 15;
+    document.MM_Time[9][0] = new String("behavior");
+    document.MM_Time[9][0].frame = 91;
+    document.MM_Time[9][0].value = "MM_timelineGoto('Timeline10','1')";
+    document.MM_Time[9][1] = new String("behavior");
+    document.MM_Time[9][1].frame = 90;
+    document.MM_Time[9][1].value = "MM_timelineStop('Timeline10');MM_showHideLayers('opshq','','hide')";
+    document.MM_Time[9][2] = new String("behavior");
+    document.MM_Time[9][2].frame = 1;
+    document.MM_Time[9][2].value = "MM_timelinePlay('Timeline10');MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','show','opselb','','hide','opsktc','','hide','opsctc','','hide','opsnt','','hide','opssc','','hide','opsktgo','','hide','opsst','','hide','opsft','','hide','opsstgo','','hide','opsylgo','','hide','opstpgo','','hide')";
+    document.MM_Time[9].lastFrame = 91;
+    document.MM_Time[10] = new Array(2);
+    document.MM_Time["Timeline11"] = document.MM_Time[10];
+    document.MM_Time[10].MM_Name = "Timeline11";
+    document.MM_Time[10].fps = 15;
+    document.MM_Time[10][0] = new String("behavior");
+    document.MM_Time[10][0].frame = 90;
+    document.MM_Time[10][0].value = "MM_timelineStop('Timeline11');MM_showHideLayers('opselb','','hide')";
+    document.MM_Time[10][1] = new String("behavior");
+    document.MM_Time[10][1].frame = 1;
+    document.MM_Time[10][1].value = "MM_timelinePlay('Timeline11');MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','hide','opselb','','show','opsktc','','hide','opsctc','','hide','opsnt','','hide','opssc','','hide','opsktgo','','hide','opsst','','hide','opsft','','hide','opsstgo','','hide','opsylgo','','hide','opstpgo','','hide')";
+    document.MM_Time[10].lastFrame = 90;
+    document.MM_Time[11] = new Array(2);
+    document.MM_Time["Timeline12"] = document.MM_Time[11];
+    document.MM_Time[11].MM_Name = "Timeline12";
+    document.MM_Time[11].fps = 15;
+    document.MM_Time[11][0] = new String("behavior");
+    document.MM_Time[11][0].frame = 1;
+    document.MM_Time[11][0].value = "MM_timelinePlay('Timeline12');MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','hide','opselb','','hide','opsktc','','show','opsctc','','hide','opsnt','','hide','opssc','','hide','opsktgo','','hide','opsst','','hide','opsft','','hide','opsstgo','','hide','opsylgo','','hide','opstpgo','','hide')";
+    document.MM_Time[11][1] = new String("behavior");
+    document.MM_Time[11][1].frame = 90;
+    document.MM_Time[11][1].value = "MM_timelineStop('Timeline12');MM_showHideLayers('opsktc','','hide')";
+    document.MM_Time[11].lastFrame = 90;
+    document.MM_Time[12] = new Array(2);
+    document.MM_Time["Timeline13"] = document.MM_Time[12];
+    document.MM_Time[12].MM_Name = "Timeline13";
+    document.MM_Time[12].fps = 15;
+    document.MM_Time[12][0] = new String("behavior");
+    document.MM_Time[12][0].frame = 1;
+    document.MM_Time[12][0].value = "MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','hide','opselb','','hide','opsktc','','hide','opsctc','','show','opsnt','','hide','opssc','','hide','opsktgo','','hide','opsst','','hide','opsft','','hide','opsstgo','','hide','opsylgo','','hide','opstpgo','','hide');MM_timelinePlay('Timeline13')";
+    document.MM_Time[12][1] = new String("behavior");
+    document.MM_Time[12][1].frame = 90;
+    document.MM_Time[12][1].value = "MM_showHideLayers('opsctc','','hide');MM_timelineStop('Timeline13')";
+    document.MM_Time[12].lastFrame = 90;
+    document.MM_Time[13] = new Array(2);
+    document.MM_Time["Timeline14"] = document.MM_Time[13];
+    document.MM_Time[13].MM_Name = "Timeline14";
+    document.MM_Time[13].fps = 15;
+    document.MM_Time[13][0] = new String("behavior");
+    document.MM_Time[13][0].frame = 1;
+    document.MM_Time[13][0].value = "MM_timelinePlay('Timeline14');MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','hide','opselb','','hide','opsktc','','hide','opsctc','','hide','opsnt','','show','opssc','','hide','opsktgo','','hide','opsst','','hide','opsft','','hide','opsstgo','','hide','opsylgo','','hide','opstpgo','','hide')";
+    document.MM_Time[13][1] = new String("behavior");
+    document.MM_Time[13][1].frame = 90;
+    document.MM_Time[13][1].value = "MM_timelineStop('Timeline14');MM_showHideLayers('opsnt','','hide')";
+    document.MM_Time[13].lastFrame = 90;
+    document.MM_Time[14] = new Array(2);
+    document.MM_Time["Timeline15"] = document.MM_Time[14];
+    document.MM_Time[14].MM_Name = "Timeline15";
+    document.MM_Time[14].fps = 15;
+    document.MM_Time[14][0] = new String("behavior");
+    document.MM_Time[14][0].frame = 1;
+    document.MM_Time[14][0].value = "MM_timelinePlay('Timeline15');MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','hide','opselb','','hide','opsktc','','hide','opsctc','','hide','opsnt','','hide','opssc','','show','opsktgo','','hide','opsst','','hide','opsft','','hide','opsstgo','','hide','opsylgo','','hide','opstpgo','','hide')";
+    document.MM_Time[14][1] = new String("behavior");
+    document.MM_Time[14][1].frame = 90;
+    document.MM_Time[14][1].value = "MM_timelineStop('Timeline15');MM_showHideLayers('opssc','','hide')";
+    document.MM_Time[14].lastFrame = 90;
+    document.MM_Time[15] = new Array(2);
+    document.MM_Time["opsktgo"] = document.MM_Time[15];
+    document.MM_Time[15].MM_Name = "opsktgo";
+    document.MM_Time[15].fps = 15;
+    document.MM_Time[15][0] = new String("behavior");
+    document.MM_Time[15][0].frame = 1;
+    document.MM_Time[15][0].value = "MM_timelinePlay('opsktgo');MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','hide','opselb','','hide','opsktc','','hide','opsctc','','hide','opsnt','','hide','opssc','','hide','opsktgo','','show','opsst','','hide','opsft','','hide','opsstgo','','hide','opsylgo','','hide','opstpgo','','hide')";
+    document.MM_Time[15][1] = new String("behavior");
+    document.MM_Time[15][1].frame = 90;
+    document.MM_Time[15][1].value = "MM_timelineStop('opsktgo');MM_showHideLayers('opsktgo','','hide')";
+    document.MM_Time[15].lastFrame = 90;
+    document.MM_Time[16] = new Array(2);
+    document.MM_Time["opsst"] = document.MM_Time[16];
+    document.MM_Time[16].MM_Name = "opsst";
+    document.MM_Time[16].fps = 15;
+    document.MM_Time[16][0] = new String("behavior");
+    document.MM_Time[16][0].frame = 1;
+    document.MM_Time[16][0].value = "MM_timelinePlay('opsst');MM_showHideLayers('tghq','','hide','tgktc','','hide','tgctc','','hide','tghktc','','hide','tgytc','','hide','tgttc','','hide','tgnt','','hide','tgkt','','hide','tgnte','','hide','opshq','','hide','opselb','','hide','opsktc','','hide','opsctc','','hide','opsnt','','hide','opssc','','hide','opsktgo','','hide','opsst','','show','opsft','','hide','opsstgo','','hide','opsylgo','','hide','opstpgo','','hide')";
+    document.MM_Time[16][1] = new String("behavior");
+    document.MM_Time[16][1].frame = 90;
+    document.MM_Time[16][1].value = "MM_timelineStop('opsst');MM_showHideLayers('opsst','','hide')";
+    document.MM_Time[16].lastFrame = 90;
+    document.MM_Time[17] = new Array(2);
+    document.MM_Time["opsft"] = document.MM_Time[17];
+    document.MM_Time[17].MM_Name = "opsft";
+    document.MM_Time[17].fps = 15;
+    document.MM_Time[17][0] = new String("behavior");
+    document.MM_Time[17][0].frame = 1;
+    document.MM_Time[17][0].value = "MM_timelinePlay('opsft');MM_showHideLayers('opshq','','hide','opselb','','hide','opsktc','','hide','opsctc','','hide','opsnt','','hide','opssc','','hide','opsktgo','','hide','opsst','','hide','opsft','','show','opsstgo','','hide','opsylgo','','hide','opstpgo','','hide')";
+    document.MM_Time[17][1] = new String("behavior");
+    document.MM_Time[17][1].frame = 90;
+    document.MM_Time[17][1].value = "MM_timelineStop('opsft');MM_showHideLayers('opsft','','hide')";
+    document.MM_Time[17].lastFrame = 90;
+    document.MM_Time[18] = new Array(2);
+    document.MM_Time["opsstgo"] = document.MM_Time[18];
+    document.MM_Time[18].MM_Name = "opsstgo";
+    document.MM_Time[18].fps = 15;
+    document.MM_Time[18][0] = new String("behavior");
+    document.MM_Time[18][0].frame = 1;
+    document.MM_Time[18][0].value = "MM_timelinePlay('opsstgo');MM_showHideLayers('opshq','','hide','opselb','','hide','opsktc','','hide','opsctc','','hide','opsnt','','hide','opssc','','hide','opsktgo','','hide','opsst','','hide','opsft','','hide','opsstgo','','show','opsylgo','','hide','opstpgo','','hide')";
+    document.MM_Time[18][1] = new String("behavior");
+    document.MM_Time[18][1].frame = 90;
+    document.MM_Time[18][1].value = "MM_timelineStop('opsstgo');MM_showHideLayers('opsstgo','','hide')";
+    document.MM_Time[18].lastFrame = 90;
+    document.MM_Time[19] = new Array(2);
+    document.MM_Time["opsylgo"] = document.MM_Time[19];
+    document.MM_Time[19].MM_Name = "opsylgo";
+    document.MM_Time[19].fps = 15;
+    document.MM_Time[19][0] = new String("behavior");
+    document.MM_Time[19][0].frame = 1;
+    document.MM_Time[19][0].value = "MM_timelinePlay('opsylgo');MM_showHideLayers('opshq','','hide','opselb','','hide','opsktc','','hide','opsctc','','hide','opsnt','','hide','opssc','','hide','opsktgo','','hide','opsst','','hide','opsft','','hide','opsstgo','','hide','opsylgo','','show','opstpgo','','hide')";
+    document.MM_Time[19][1] = new String("behavior");
+    document.MM_Time[19][1].frame = 90;
+    document.MM_Time[19][1].value = "MM_timelineStop('opsylgo');MM_showHideLayers('opsylgo','','hide')";
+    document.MM_Time[19].lastFrame = 90;
+    document.MM_Time[20] = new Array(2);
+    document.MM_Time["opstpgo"] = document.MM_Time[20];
+    document.MM_Time[20].MM_Name = "opstpgo";
+    document.MM_Time[20].fps = 15;
+    document.MM_Time[20][0] = new String("behavior");
+    document.MM_Time[20][0].frame = 1;
+    document.MM_Time[20][0].value = "MM_timelinePlay('opstpgo');MM_showHideLayers('opshq','','hide','opselb','','hide','opsktc','','hide','opsctc','','hide','opsnt','','hide','opssc','','hide','opsktgo','','hide','opsst','','hide','opsft','','hide','opsstgo','','hide','opsylgo','','hide','opstpgo','','show')";
+    document.MM_Time[20][1] = new String("behavior");
+    document.MM_Time[20][1].frame = 90;
+    document.MM_Time[20][1].value = "MM_timelineStop('opstpgo');MM_showHideLayers('opstpgo','','hide')";
+    document.MM_Time[20].lastFrame = 90;
+    for (i=0; i<document.MM_Time.length; i++) {
+        document.MM_Time[i].ID = null;
+        document.MM_Time[i].curFrame = 0;
+        document.MM_Time[i].delay = 1000/document.MM_Time[i].fps;
+    }
+}
+//-->
+</script>
+<link href="../../cas.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+
+<body background="../../images/bg_01.gif" vlink="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="MM_preloadImages('../../images/b_main_on.gif','../../images/b_about_on.gif','../../images/b_org_on.gif','../../images/b_info_on.gif','../../images/b_public_on.gif','../../images/b_notice_on.gif','../../images/b_enquiry_on.gif','../../images/top_tc/mainbar1_f2.gif','../../images/top_tc/mainbar2_f2.gif','../../images/top_tc/mainbar3_f2.gif','../../images/top_tc/mainbar4_f2.gif','../../images/top_tc/mainbar8_f2.gif','../../images/top_tc/mainbar9_f2.gif','../../images/top_tc/mainbar10_f2.gif')">
+<table width="760" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="760" align="left" valign="top"><table width="760" border="0" height="87" cellpadding="0" cellspacing="0" background="../../images/top_tc/bkgdtexture.gif">
+      <form name="form1" method="get" action="javascript:GIC_search();">
+        <tr align="left" valign="top">
+          <td height="66" colspan="6" class="sidebar" background="../../images/top_sc/bkgdtexture.gif"><a href="../../index.html"><img src="../../images/top_caslogoc.gif" alt="香港民眾安全服務隊" width="450" height="65" border="0"></a></td>
+          <td height="60" colspan="4" align="right" valign="top" background="../../images/top_tc/bkgdtexture.gif"><input type=hidden name=tpl_id value="cas"><input type=hidden name=ui_lang value="zh-hk"><input type=hidden name=ui_charset value="big5"><input type=hidden name=gp0 value="cas_home"><input type=hidden name=gp1 value="cas_home"><input type=hidden name=web value="this">
+              <!--Search language setting "1 "= Eng "15 = CHINESE-->
+            <div align="right"><a href="http://www.brandhk.gov.hk/brandhk/" target="_blank"><img src="../../images/top_tc/Brandhk.gif" alt="香港品牌形象" name="brandhk" width="190" height="60" border="0"></a></div></td>
+      </tr>
+        <tr align="left" valign="top">
+          <td width="153" height="19" valign="bottom"><a href="http://www.gov.hk/tc/residents/" target="_blank"  onMouseOver="MM_swapImage('mainbar11','','../../images/top_tc/mainbar1_f2.gif',1)" onMouseOut="MM_swapImgRestore()" ><img src="../../images/top_tc/mainbar1.gif" alt="政府資訊中心" name="mainbar11" width="170" height="19" border="0" id="mainbar11"></a></td>
+          <td width="77" valign="bottom"><a href="javascript:chglang('tctext')" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image211','','../../images/top_tc/mainbar2_f2.gif',1)"><img src="../../images/top_tc/mainbar2.gif" alt="Text Only" name="Image211" width="77" height="19" border="0" id="Image211"></a></td>
+          <td width="49" valign="bottom"><a href="javascript:chglang('gb')" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image61','','../../images/top_tc/mainbar3_f2.gif',1)"><img src="../../images/top_tc/mainbar3.gif" alt="簡體版/Simple Chinese" name="Image61" width="49" height="19" border="0" id="Image61"></a></td>
+          <td width="56" valign="bottom"><a href="javascript:chglang('en')" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image221','','../../images/top_tc/mainbar4_f2.gif',1)"><img src="../../images/top_tc/mainbar4.gif" alt="ENGLISH" name="Image221" width="56" height="19" border="0" id="Image221"></a></td>
+          <td width="139" height="19" valign="bottom"><img src="../../images/top_tc/mainbar5_f2.gif" alt="1" name="mainbar51" width="130" height="19" border="0" id="mainbar51"></td>
+          <td width="36" height="19" valign="bottom" background="../../images/top_tc/bkgdtexture.gif"><img src="../../images/top_tc/mainbar6.gif" alt="搜尋" name="mainbar61" width="36" height="19" border="0" id="mainbar61"></td>
+          <td height="19" valign="bottom" background="../../images/top_tc/bkgdtexture.gif" width="106"><input type="text" name="query" size="10"></td>
+          <td width="22" height="19" valign="bottom" background="../../images/top_tc/bkgdtexture.gif"><a href="javascript:document.forms[0].submit()" onMouseOut="MM_swapImgRestore()"  onMouseOver="MM_swapImage('mainbar81','','../../images/top_tc/mainbar8_f2.gif',1)" ><img src="../../images/top_tc/mainbar8.gif" alt="搜尋" name="mainbar81" width="22" height="19" border="0" id="mainbar81"></a></td>
+          <td width="97" height="19" valign="bottom" background="../../images/top_tc/bkgdtexture.gif"><a href="../sitemap.html" onMouseOut="MM_swapImgRestore()"  onMouseOver="MM_swapImage('mainbar91','','../../images/top_tc/mainbar9_f2.gif',1)" ><img src="../../images/top_tc/mainbar9.gif" alt="網頁指南" name="mainbar91" width="67" height="19" border="0" id="mainbar91"></a></td>
+          <td width="29" height="19" valign="bottom" background="../../images/top_tc/bkgdtexture.gif"><a href="mailto:casenq@cas.gov.hk" onMouseOut="MM_swapImgRestore()"  onMouseOver="MM_swapImage('mainbar101','','../../images/top_tc/mainbar10_f2.gif',1)" ><img src="../../images/top_tc/mainbar10.gif" alt="聯絡我們" name="mainbar101" width="29" height="19" border="0" id="mainbar101"></a></td>
+        </tr>
+        <tr align="left" valign="top" bgcolor="#BB3333">
+          <td height="2" colspan="10"><img src="../../images/top_tc/reddot.gif" alt="2" width="760" height="2"></td>
+        </tr>
+      </form>
+    </table>
+    <table width="760" height="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr valign="top">
+          <td width="153"><label>
+            <table width="153" border="0" align="center" cellpadding="0" cellspacing="0">
+              
+              <tr>
+                <td width="153" align="center" valign="top"><div align="center"><a href="../welcome.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image24','','../../images/b_main_on.gif',1);MM_showHideLayers('public','','hide','about','','hide','about2','','hide','info','','hide','info2','','hide','public2','','hide')"><img src="../../images/b_main.gif" alt="主頁" name="Image24" width="129" height="28" border="0"></a></div></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><div align="center"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image14','','../../images/b_about_on.gif',1);MM_showHideLayers('public','','hide','about','','show','about2','','show','org','','hide','org2','','hide','info','','hide','info2','','hide','public2','','hide')"><img src="../../images/b_about.gif" alt="關於我們" name="Image14" width="129" height="28" border="0"></a></div></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><div align="center"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image16','','../../images/b_org_on.gif',1);MM_showHideLayers('public','','hide','about','','hide','about2','','hide','org','','show','org2','','show','info','','hide','info2','','hide','public2','','hide')"><img src="../../images/b_org.gif" alt="組織架構" name="Image16" width="129" height="28" border="0"></a></div></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><div align="center"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image18','','../../images/b_info_on.gif',1);MM_showHideLayers('public','','hide','about','','hide','about2','','hide','org','','hide','org2','','hide','info','','show','info2','','show','public2','','hide')"><img src="../../images/b_info.gif" alt="部隊訊息" name="Image18" width="129" height="28" border="0"></a></div></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><div align="center"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image191','','../../images/b_public_on.gif',1);MM_showHideLayers('public','','show','about','','hide','about2','','hide','org','','hide','org2','','hide','info','','hide','info2','','hide','public2','','show')"><img src="../../images/b_public.gif" alt="公共服務" name="Image191" width="129" height="28" border="0" id="Image191"></a></div></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><div align="center"><a href="../notice.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image19','','../../images/b_notice_on.gif',1);MM_showHideLayers('public','','hide','about','','hide','org','','hide','info','','hide')"><img src="../../images/b_notice.gif" alt="通告事項" name="Image19" width="129" height="28" border="0"></a></div></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><div align="center"><a href="../enquiry.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image25','','../../images/b_enquiry_on.gif',1);MM_showHideLayers('public','','hide','about','','hide','org','','hide','info','','hide')"><img src="../../images/b_enquiry.gif" alt="查詢" name="Image25" width="129" height="28" border="0"></a></div></td>
+              </tr>
+              <tr>
+                <td></td>
+              </tr>
+              <tr>
+                <td align="center" valign="middle">&nbsp;</td>
+              </tr>
+              <tr>
+                <td valign="top"><!-- InstanceBeginEditable name="icon" --><!-- InstanceEndEditable --></td>
+              </tr>
+          </table></label></label></td>
+          <td><!-- InstanceBeginEditable name="contents" -->
+		
+            <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td valign="top"><table width="607" height="60" border="0" cellpadding="10" cellspacing="0">
+                    <tr>
+                      <td valign="top" background="../../images/bg_cloud.jpg" class="title1">辦事處及訓練中心</td>
+                    </tr>
+                  </table>
+                    <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td width="400" valign="top">
+                          <table width="420" height="100%" border="0" cellpadding="10" cellspacing="0">
+                            <tr valign="top">
+                              <td width="420"><table width="400" border="0" cellpadding="0" cellspacing="0">
+                                  <tr valign="top">
+                                    <td width="150" height="63" valign="top" class="title2">&nbsp;</td>
+                                    <td width="0" height="63"><img src="../../images/map_tgcentre1.gif" width="250" height="67"></td>
+                                  </tr>
+                                  <tr valign="top">
+                                    <td colspan="2"><img src="../../images/map_tgcentre2.gif" width="400" height="144" border="0" usemap="#Map2"></td>
+                                  </tr>
+                                  <tr valign="top">
+                                    <td colspan="2"><img src="../../images/map_tgcentre3.gif" width="400" height="91" border="0" usemap="#Map">
+<map name="Map">
+  <area shape="circle" coords="257,14,11" href="#" onMouseOver="MM_timelinePlay('Timeline5');MM_showHideLayers('tghq','','hide','tghktc','','show','tgytc','','hide','tgttc','','hide')">
+</map></td>
+                                  </tr>
+                                </table>
+                                  <map name="Map2">
+                                    <area shape="circle" coords="143,86,11" href="#" onMouseOver="MM_timelinePlay('Timeline5');MM_showHideLayers('tghq','','hide','tghktc','','hide','tgytc','','show','tgttc','','hide')">
+                                <area shape="circle" coords="353,45,12" href="#" onMouseOver="MM_showHideLayers('tghq','','hide','tghktc','','hide','tgytc','','hide','tgttc','','show');MM_timelinePlay('Timeline5')">
+                                <area shape="circle" coords="233,129,12" href="#" onMouseOver="MM_timelinePlay('Timeline5');MM_showHideLayers('tghq','','show','tghktc','','hide','tgytc','','hide','tgttc','','hide')">
+                                </map></td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td width="1" background="../images/bg_dot.gif"> </td>
+                        <td valign="top">&nbsp;</td>
+                      </tr>
+                    </table>
+                </td>
+              </tr>
+            </table>
+<div id="tghq" style="position:absolute; left:580px; top:150px; width:170px; height:212px; z-index:11; visibility: hidden;">
+  <table width="170" border="0" cellpadding="2" cellspacing="0" bgcolor="#FFFFFF">
+    <tr>
+      <td width="15"><font color="#6666FF"><img src="../../images/arrow_2.gif" width="13" height="13"></font></td>
+      <td width="155" class="text"><font color="#6666FF">總部</font></td>
+    </tr>
+    <tr>
+      <td colspan="2"><table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td align="right" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td><table width="160" border="0" cellpadding="0" cellspacing="0" class="boarder2">
+                      <tr>
+                        <td width="160"><strong><img src="../../pic/tc_hq2.jpg" width="160" height="110"></strong></td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td valign="top"><img src="../../images/pic_shadow.gif" width="160" height="8"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="2">
+          <tr valign="top" class="subtext">
+            <td width="38">地址：</td>
+            <td width="121">香港九龍油麻地<br>
+              渡華路八號</td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td width="38">電話：</td>
+            <td>(852) 2805 6020</td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td width="38">傳真：</td>
+            <td>(852) 2576 3021</td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td colspan="2"><img src="../../images/spacer.gif" width="150" height="4"></td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td colspan="2"><a href=javascript:MM_openBrWindow('info_tghq.html','','toolbar=no,scrollbars=yes,resizable=no,width=640,height=400')></a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="tghktc" style="position:absolute; left:580px; top:150px; width:170px; height:219px; z-index:14; visibility: hidden;">
+  <table width="170" border="0" cellpadding="2" cellspacing="0" bgcolor="#FFFFFF">
+    <tr>
+      <td width="15"><font color="#6666FF"><img src="../../images/arrow_2.gif" width="13" height="13"></font></td>
+      <td width="155" class="text"><font color="#6666FF">港島訓練中心</font></td>
+    </tr>
+    <tr>
+      <td colspan="2"><table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td align="right" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td><table width="160" border="0" cellpadding="0" cellspacing="0" class="boarder2">
+                      <tr>
+                        <td width="160"><img src="../../pic/tc_hktc1.jpg" width="160" height="110"></td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td valign="top"><img src="../../images/pic_shadow.gif" width="160" height="8"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="2">
+          <tr valign="top" class="subtext">
+            <td width="38">地址：</td>
+            <td width="121">香港銅鑼灣摩頓台銅鑼灣徑12號</td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td width="38">電話：</td>
+            <td>(852) 2121 0676</td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td width="38">傳真：</td>
+            <td>(852) 2121 0882</td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td colspan="2"><img src="../../images/spacer.gif" width="150" height="4"></td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td colspan="2"><a href=javascript:MM_openBrWindow('info_tghktc.html','','toolbar=no,scrollbars=yes,resizable=no,width=640,height=400')></a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="tgytc" style="position:absolute; left:580px; top:150px; width:170px; height:205px; z-index:15; visibility: hidden;">
+  <table width="170" border="0" cellpadding="2" cellspacing="0" bgcolor="#FFFFFF">
+    <tr>
+      <td width="15"><font color="#6666FF"><img src="../../images/arrow_2.gif" width="13" height="13"></font></td>
+      <td width="155" class="text"><font color="#6666FF">圓墩訓練營</font></td>
+    </tr>
+    <tr>
+      <td colspan="2"><table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td align="right" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td><table width="160" border="0" cellpadding="0" cellspacing="0" class="boarder2">
+                      <tr>
+                        <td width="160"><img src="../../pic/tc_ytc1.jpg" width="160" height="110"></td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td valign="top"><img src="../../images/pic_shadow.gif" width="160" height="8"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="2">
+          <tr valign="top" class="subtext">
+            <td width="38">地址：</td>
+            <td width="115">新界荃灣青龍頭圓墩</td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td width="38">電話：</td>
+            <td>(852) 2491 0852</td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td colspan="2"><img src="../../images/spacer.gif" width="150" height="4"></td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td colspan="2"><a href=javascript:MM_openBrWindow('info_tgytc.html','','toolbar=no,scrollbars=yes,resizable=no,width=640,height=400')></a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="tgttc" style="position:absolute; left:580px; top:150px; width:170px; height:201px; z-index:16; visibility: hidden;">
+  <table width="170" border="0" cellpadding="2" cellspacing="0" bgcolor="#FFFFFF">
+    <tr>
+      <td width="15"><font color="#6666FF"><img src="../../images/arrow_2.gif" width="13" height="13"></font></td>
+      <td width="155" class="text"><font color="#6666FF">大灘訓練營</font></td>
+    </tr>
+    <tr>
+      <td colspan="2"><table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td align="right" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td><table width="160" border="0" cellpadding="0" cellspacing="0" class="boarder2">
+                      <tr>
+                        <td width="160"><img src="../../pic/tc_ttc1.jpg" width="160" height="110"></td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td valign="top"><img src="../../images/pic_shadow.gif" width="160" height="8"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="2">
+          <tr valign="top" class="subtext">
+            <td width="38">地址：</td>
+            <td width="118">西貢大灘</td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td width="38">電話：</td>
+            <td>(852) 2328 2390</td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td width="38">傳真：</td>
+            <td>(852) 2328 2341</td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td colspan="2"><img src="../../images/spacer.gif" width="150" height="4"></td>
+          </tr>
+          <tr valign="top" class="subtext">
+            <td colspan="2"><a href=javascript:MM_openBrWindow('info_tgttc.html','','toolbar=no,scrollbars=yes,resizable=no,width=640,height=400')></a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<!-- InstanceEndEditable --> </td>
+        </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td width="760" valign="bottom"><table width="760" height="60" border="0" cellpadding="5" cellspacing="0">
+      <tr>
+        <td>&nbsp;</td>
+        <td colspan="2"><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+          <tr>
+            <td></td>
+          </tr>
+        </table></td>
+    </tr>
+      <tr>
+        <td width="143">&nbsp;</td>
+        <td width="250"><span class="subtext">2007 &copy;&nbsp;| </span><span class="button"><a href="#" onClick="MM_openBrWindow('../notice/notice_important.html','otherwindows','toolbar=yes,scrollbars=yes,resizable=yes,width=640,height=450')"> 重要告示</a></span></td>
+        <td align="right"><span class="subtext">最後更新於：</span> <!-- InstanceBeginEditable name="date" -->
+          <span class="subtext">2006年8月29日</span> <!-- InstanceEndEditable --></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+<div id="public" style="position:absolute; left:137px; top:200px; width:140px; height:19px; z-index:8; visibility: hidden;" onMouseOver="MM_showHideLayers('public2','','show','public','','show')" onMouseOut="MM_showHideLayers('public2','','hide','public','','hide')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="1" cellpadding="6">
+          <tr>
+            <td bgcolor="#FFFFFF" class="button">． <a href="info_mountainsafe.html">登山活動安全須知</a>
+              <hr width="96%" size="1" color="#DDDDDD">
+              <a href="../info_mountsafe.html"> </a>． <a href="info_trainsafe.html">安全訓練顧問服務</a>
+              <hr width="96%" size="1" color="#DDDDDD">
+              <a href="../info_mountsafe.html"> </a>． <a href="info_usefultel.html">相關電話</a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="about" style="position:absolute; left:137px; top:116px; width:140px; height:160px; z-index:2; visibility: hidden;" onMouseOver="MM_showHideLayers('about2','','show','about','','show')" onMouseOut="MM_showHideLayers('about2','','hide','about','','hide')">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#CCCCCC" class="boarder1">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="0" cellpadding="6">
+          <tr>
+            <td valign="top" bgcolor="#FFFFFF" class="button"> ．<a href="../about/about_intro.html"> 部隊簡介</a>
+                <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../about/about_service.html">服務範圍</a>
+              <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../about/about_performance.html">服務水準及目標</a>
+              <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../about/about_mission.html">理想、使命與信念</a>
+              <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../about/about_ordinance.html">條例及規例述要</a>
+		  </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+</table></div>
+<div id="org" style="position:absolute; left:137px; top:144px; width:140px; height:34px; z-index:4; visibility: hidden;" onMouseOver="MM_showHideLayers('org2','','show','org','','show')" onMouseOut="MM_showHideLayers('org2','','hide','org','','hide')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="1" cellpadding="6">
+          <tr>
+            <td bgcolor="#FFFFFF" class="button">． <a href="../org/org_dept.html">民眾安全服務處</a><br>
+                                  <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../org/org_volunteer.html">民眾安全服務隊</a><a href="../org/org_dept.html"></a><a href="../org/org_volunteer.html"></a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="info" style="position:absolute; left:137px; top:172px; width:140px; height:110px; z-index:6; visibility: hidden;" onMouseOut="MM_showHideLayers('info2','','hide','info','','hide')" onMouseOver="MM_showHideLayers('info2','','show','info','','show')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="1" cellpadding="6">
+          <tr>
+            <td bgcolor="#FFFFFF" class="button">． <a href="info_tgcentre.html">辦事處及訓練中心</a>
+                <hr width="96%" size="1" color="#DDDDDD">
+              <a href="../info_mountsafe.html"> </a>． <a href="info_download.html">下載區</a><br>
+              <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="info_publications.html">民安隊刊物</a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<!--
+<div id="notice" style="position:absolute; left:137px; top:245px; width:140px; height:30px; z-index:10; visibility: hidden;" onMouseOver="MM_showHideLayers('notice2','','show','notice','','show')" onMouseOut="MM_showHideLayers('notice2','','hide','notice','','hide')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="1" cellpadding="6">
+          <tr>
+            <td bgcolor="#FFFFFF" class="button"> ． <a href="../chi/report_tender.html">招標通告</a> </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="notice2" style="position:absolute; left:140px; top:248px; width:140px; height:30px; z-index:9; background-color: #000000;  border: 1px none #000000; visibility: hidden;" class="shadow"></div>-->
+</body>
+<!-- InstanceEnd --></html>

@@ -1,0 +1,3 @@
+#URL numOfLanguagesOfEachWebsite
+http://www.cas.gov.hk 2
+http://www.hongkongpost.com 0

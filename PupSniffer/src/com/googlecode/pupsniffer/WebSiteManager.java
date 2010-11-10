@@ -243,7 +243,7 @@ public class WebSiteManager {
 				    	        		else 
 				    	        		{  
 				    	        		   try{
-				    	        		      readte = readte.substring(readte.indexOf("<->")+3,readte.length()-9)+"	"+readte.substring(0,readte.indexOf("<->"))+"	t	"+readte.substring(readte.length()-8);    //中英文url位置互换,各字段以tab为分界符,t为繁体标识
+				    	        		      readte = readte.substring(readte.indexOf("<->")+3,readte.length()-9)+"	"+readte.substring(0,readte.indexOf("<->"))+"	t	"+readte.substring(readte.length()-8);    //Exchange url, use 'tab\n' as a delimiter,t stands for traditional Chinese.
 				    	           	          outtesf.write(readte+"	"+patternte+"\n");
 				    	        		   }catch(IOException e)
 				    	        		   {
@@ -278,7 +278,7 @@ public class WebSiteManager {
 				    	        		   patternte = readte.substring(11);
 				    	        		else
 				    	        		{  
-				    	        		   readte = readte.substring(0,readte.indexOf("<->"))+"	"+readte.substring(readte.indexOf("<->")+3,readte.length()-9)+"	t	"+readte.substring(readte.length()-8);  //将分割符设置为tab,t为繁体标识
+				    	        		   readte = readte.substring(0,readte.indexOf("<->"))+"	"+readte.substring(readte.indexOf("<->")+3,readte.length()-9)+"	t	"+readte.substring(readte.length()-8);  //use 'tab\n' as a delimiter,t stands for traditional Chinese.
 				    	           	       outtesf.write(readte+"	"+patternte+"\n");
 				    	        		}
 				    	           	}catch (IOException e) {
@@ -313,7 +313,7 @@ public class WebSiteManager {
 					    	        	else
 					    	        	{   
 					    	        		try{
-					    	        			readse = readse.substring(readse.indexOf("<->")+3,readse.length()-9)+"	"+readse.substring(0,readse.indexOf("<->"))+"	s	"+readse.substring(readse.length()-8);  //中英文url位置互换,各字段以tab为分界符,s为简体标识
+					    	        			readse = readse.substring(readse.indexOf("<->")+3,readse.length()-9)+"	"+readse.substring(0,readse.indexOf("<->"))+"	s	"+readse.substring(readse.length()-8);  //Exchange url, use 'tab\n' as a delimiter,s stands for simplified Chinese.
 					    	        			outsesf.write(readse+"	"+patternse+"\n");
 					    	        		   }catch(IOException e)
 					    	        		   {
@@ -347,7 +347,7 @@ public class WebSiteManager {
 				    	        			patternse = readse.substring(11);
 					    	        	else
 					    	        	{
-					    	        		readse = readse.substring(0,readse.indexOf("<->"))+"	"+readse.substring(readse.indexOf("<->")+3,readse.length()-9)+"	s	"+readse.substring(readse.length()-8);   //将分割符设置为tab,s为简体标识
+					    	        		readse = readse.substring(0,readse.indexOf("<->"))+"	"+readse.substring(readse.indexOf("<->")+3,readse.length()-9)+"	s	"+readse.substring(readse.length()-8);   //use 'tab\n' as a delimiter, s stands for simplified Chinese.
 					    	           	    outsesf.write(readse+"	"+patternse+"\n");
 					    	        	}
 				    	           	}catch (IOException e) {

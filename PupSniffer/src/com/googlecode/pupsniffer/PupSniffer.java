@@ -14,7 +14,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.SimpleLayout;
 
 import com.torunski.crawler.Crawler;
 import com.torunski.crawler.MultiThreadedCrawler;
@@ -37,9 +40,6 @@ public class PupSniffer {
 
 	/** crawl only local file system or online*/
 	private boolean local;
-
-	/** whether to use the crawler when local=true*/
-	private boolean useCrawler;
 	/**
 	 * A URL list PupSniffer should sniff at.
 	 */
@@ -49,8 +49,6 @@ public class PupSniffer {
 	 * The set of file extensions (such as "html", "css") to sniff at.
 	 */
 	private String[] fileExtList;
-
-	private String[] fileExtExclusionList;
 
 	/**
 	 * Webpage encoding detection.
@@ -81,8 +79,6 @@ public class PupSniffer {
 	 * Threshold for dictionary lookup. Decrease this value returns more results.
 	 */
 	private double threshold = 1.0;
-
-	private String fileSeparator = System.getProperty("file.separator");
 
 	/**
 	 * Constructor
@@ -126,15 +122,6 @@ public class PupSniffer {
 			System.exit(-1);
 		}
 
-		if (prop.getProperty("use_crawler_in_local_version").toLowerCase().equals("yes"))
-			useCrawler = true;
-		else if (prop.getProperty("use_crawler_in_local_version").toLowerCase().equals("no"))
-			useCrawler = false;
-		else {
-			log.error("crawler in conf/pussniffer.properties must be either yes or no");
-			System.exit(-1);
-		}
-
 		urlList = prop.getProperty("urlList").split(",");
 		if (urlList==null || urlList.length==0) {
 			log.error("urlList in conf/pussniffer.properties has the " +
@@ -158,15 +145,9 @@ public class PupSniffer {
 			fileExtList = new String[]{"html", "htm"};
 		}
 
-		fileExtExclusionList = prop.getProperty("noSuffixList").split(",");
-		if (fileExtExclusionList==null || fileExtExclusionList.length==0) {
-			log.error("suffixList in conf/pussniffer.properties has the " +
-					"wrong format. Using defaults (html,htm)");
-		}
-
 		saveDir = prop.getProperty("saveDir");
-		if (!saveDir.endsWith(this.fileSeparator))
-			saveDir += this.fileSeparator;
+		if (!saveDir.endsWith("/"))
+			saveDir += "/";
 
 		threshold = Double.parseDouble(prop.getProperty("threshold"));
 		if (threshold > 1.0 || threshold <= 0) threshold = 1.0;
@@ -191,7 +172,7 @@ public class PupSniffer {
 		saveMapping = new HashMap<String,String>();
 		siteMapping = new HashMap<String,Site>();
 
-		String summaryFile = saveDir+"WebsiteSummary.txt";
+		String summaryFile = saveDir+"/WebsiteSummary.txt";
 		BufferedWriter out = null;
 		try {
 			File sf = new File(summaryFile);
@@ -216,18 +197,16 @@ public class PupSniffer {
 
 			if (!local)
 				crawler.setParser(new SimpleHttpClientParser());
-			else if (useCrawler) {
+			else {
 				FileSystemParser fileSystemParser = new FileSystemParser();
 				// could be either http:// or https://
 				String path = saveDir+url.substring(url.indexOf("/")+2);
 		    	fileSystemParser.addMapping(url, new File(path));
 		        crawler.setParser(fileSystemParser);
 			}
-			if (!(local && !useCrawler)) {
-		        // use MaxIterationsModel instead of MaxDepthModel for high speed and low memory.
-				crawler.setModel(new MaxIterationsModel(MaxIterationsModel.NO_LIMIT_ITERATIONS));
-				crawler.setLinkFilter(LinkFilterUtil.and(fileExtFilter, serverFilter));
-			}
+	        // use MaxIterationsModel instead of MaxDepthModel for high speed and low memory.
+			crawler.setModel(new MaxIterationsModel(MaxIterationsModel.NO_LIMIT_ITERATIONS));
+			crawler.setLinkFilter(LinkFilterUtil.and(fileExtFilter, serverFilter));
 
 			dir = saveDir+url.substring(url.indexOf("/")+2);
 			if (!local) {
@@ -237,51 +216,45 @@ public class PupSniffer {
 					System.exit(-1);
 				}
 			}
-
 			saveMapping.put(url, dir);
 			site = new Site(url, threshold, encDetector, langDetector);
 			siteMapping.put(url, site);
-			if (!(local && !useCrawler)) {
-				crawler.getModel().add(null, url);
-		        crawler.addParserListener(new PupDownloadEventListener(saveMapping, siteMapping, local));
-			}
+			crawler.getModel().add(null, url);
 
+
+	        crawler.addParserListener(new PupDownloadEventListener(saveMapping, siteMapping, local));
 	        try {
 	        	if (!local)
 	        		crawler.start();
-	        	else if (useCrawler) {
+	        	else
 	        		crawler.start(url, "/index.html");
-	        	} else {
-	        		// local and not useCrawler
-	        		FileTraveler traveler = new FileTraveler(url.substring(url.indexOf("/")+2), this.saveDir, site, this.fileExtList, this.fileExtExclusionList);
-	        		traveler.start();
-	        		site = traveler.getSite();
-	        	}
 	        } catch (java.lang.StringIndexOutOfBoundsException e) {
 	        	e.printStackTrace();
 	        }
 
-	        if (!(local && !useCrawler)) {
-				String visit;
+			ArrayList<String> URLs = new ArrayList<String>();
+			String visit;
 
-		        visitedLinks = crawler.getModel().getVisitedURIs();
-		        log.info("Links visited=" + visitedLinks.size());
+	        visitedLinks = crawler.getModel().getVisitedURIs();
+	        log.info("Links visited=" + visitedLinks.size());
 
-		        Iterator<Link> list = visitedLinks.iterator();
-		        while (list.hasNext()) {
-		        	visit = list.next().getURI();
-		        	log.info(visit);
-		        }
-
-		        notVisitedLinks = crawler.getModel().getToVisitURIs();
-
-		        log.info("Links NOT visited=" + notVisitedLinks.size());
-		        Iterator<Link> listNot = notVisitedLinks.iterator();
-		        while (listNot.hasNext()) {
-		        	visit = listNot.next().getURI();
-		        	log.info(visit);
-		        }
+	        Iterator<Link> list = visitedLinks.iterator();
+	        while (list.hasNext()) {
+	        	visit = list.next().getURI();
+	        	URLs.add(visit);
+	        	log.info(visit);
 	        }
+
+	        notVisitedLinks = crawler.getModel().getToVisitURIs();
+
+	        log.info("Links NOT visited=" + notVisitedLinks.size());
+	        Iterator<Link> listNot = notVisitedLinks.iterator();
+	        while (listNot.hasNext()) {
+	        	visit = listNot.next().getURI();
+	        	URLs.add(visit);
+	        	log.info(visit);
+	        }
+
 
 	        log.info("Crawling Website done: "+this.saveMapping.keySet());
 

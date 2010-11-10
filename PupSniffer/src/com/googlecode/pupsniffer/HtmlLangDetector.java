@@ -242,17 +242,8 @@ public class HtmlLangDetector
 		url = "http://alias-i.com/lingpipe/demos/tutorial/langid/read-me.html";
 		url = "http://www.cas.gov.hk/eng/notice/notice_remove.html";
 		url = "http://www.wsd.gov.hk/tc/job_opportunities/index_t.html";
-		url = "http://www.cas.gov.hk/eng/about/about_performance2005.html";
-        url = "http://www.islam.org.hk/big5/child1/ReadNews.asp?NewsID=577&BigClassName=锟紾锟斤拷锟絇锟斤拷&BigClassID=49&SmallClassID=58&SmallClassName=锟紾锟斤拷&SpecialID=6";
-        url = "http://www.hkjc.com/chinese/racing/Track_Result.asp?txtHorse_BrandNo=J329";
-        url = "http://www.hkjc.com/chinese/racing/Track_Result.asp?txtHorse_BrandNo=J329";
-        url = "http://www.baby-and-me.biz/en/category/16_88/product/item/1344/product_detail.html";
-        url = "http://www.123smile.com.hk/index.php?sp=&p=6&cat2=144&cat1=55&cat0=27&id=2025&cat1=55&cat0=27&new=&more=&s=cdd649fc3f737c443a7eb30ca655d0d0&lang=gb";
-        //url = "http://www.hkjc.com/chinese/pressrelease/mcs01_showhtml.asp?SelType=NEWS&filename=20100831_185650_C_NEWS.htm";
-        url = "http://www.hongkongpost.gov.hk/product/download/root/img/smartid_ca.cacert";
-        url = "http://webstat.cis.gov.hk/webstat/jsp/country.jsp?dept=ldtss&period=20101";
-        url = "http://www.hkqf.gov.hk/guie/RC_evt_20051108.asp";
-        
+		url = "http://www.wsd.gov.hk/sc/customer_services_and_water_bills/application_for_water_supply/water_supply_for_new_buildings/index_t.html";
+
 		//html = HtmlLangDetector.fetch(url);
 		//html = "证券简称,今日开盘价,昨日收盘价,最近成交价,最高成交价,最低成交价,买入价";
 		//html = "证券简称，今日开盘价，昨日收盘价，最近成交价，最高成交价，最低成交价，买入价";

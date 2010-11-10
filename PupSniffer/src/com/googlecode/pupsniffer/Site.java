@@ -107,10 +107,7 @@ public class Site {
 
 		try {
 			enc = encDetector.detectFromRaw(raw, oriEnc);
-			if (oriEnc != null)
-				raw = new String(raw.getBytes(oriEnc), enc);
-			else
-				raw = new String(raw.getBytes(), enc);
+			raw = new String(raw.getBytes(oriEnc), enc);
 
 			enc = enc.toUpperCase();
 			if (enc != null) {

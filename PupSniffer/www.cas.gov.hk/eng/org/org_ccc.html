@@ -1,0 +1,518 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<meta http-equiv="Page-Enter" content="blendTrans(Duration=0.5)">
+<meta http-equiv="Page-Exit" content="blendTrans(Duration=0.5)">
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>Civil Aid Service Hong Kong</title>
+<!-- TemplateEndEditable -->
+<link href="../../cas.css" rel="stylesheet" type="text/css">
+<!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<script language="JavaScript" src="../../lang_function.js"></script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+//GIC_search
+
+function GIC_search()
+	{
+		var currentUrl = location.href.toString();
+		var url = "http://search.gov.hk/search.html";
+		var SearchWin;
+		var mode = document.form1.mode.value;
+		var qu = document.form1.qu.value;
+	
+		SearchWin=window.open(eval('url +"?mode=" + mode + "&la=1&gr_1=cas&ma=100&ft_1=alltype&so=0&nu=10&ca=0&ta=all&fu=&fd=&qu=" + qu'));
+		document.location.href = currentUrl;
+		SearchWin.focus();
+	}
+
+
+
+function MM_timelinePlay(tmLnName, myID) { //v1.2
+  //Copyright 1997, 2000 Macromedia, Inc. All rights reserved.
+  var i,j,tmLn,props,keyFrm,sprite,numKeyFr,firstKeyFr,propNum,theObj,firstTime=false;
+  if (document.MM_Time == null) MM_initTimelines(); //if *very* 1st time
+  tmLn = document.MM_Time[tmLnName];
+  if (myID == null) { myID = ++tmLn.ID; firstTime=true;}//if new call, incr ID
+  if (myID == tmLn.ID) { //if Im newest
+    setTimeout('MM_timelinePlay("'+tmLnName+'",'+myID+')',tmLn.delay);
+    fNew = ++tmLn.curFrame;
+    for (i=0; i<tmLn.length; i++) {
+      sprite = tmLn[i];
+      if (sprite.charAt(0) == 's') {
+        if (sprite.obj) {
+          numKeyFr = sprite.keyFrames.length; firstKeyFr = sprite.keyFrames[0];
+          if (fNew >= firstKeyFr && fNew <= sprite.keyFrames[numKeyFr-1]) {//in range
+            keyFrm=1;
+            for (j=0; j<sprite.values.length; j++) {
+              props = sprite.values[j]; 
+              if (numKeyFr != props.length) {
+                if (props.prop2 == null) sprite.obj[props.prop] = props[fNew-firstKeyFr];
+                else        sprite.obj[props.prop2][props.prop] = props[fNew-firstKeyFr];
+              } else {
+                while (keyFrm<numKeyFr && fNew>=sprite.keyFrames[keyFrm]) keyFrm++;
+                if (firstTime || fNew==sprite.keyFrames[keyFrm-1]) {
+                  if (props.prop2 == null) sprite.obj[props.prop] = props[keyFrm-1];
+                  else        sprite.obj[props.prop2][props.prop] = props[keyFrm-1];
+        } } } } }
+      } else if (sprite.charAt(0)=='b' && fNew == sprite.frame) eval(sprite.value);
+      if (fNew > tmLn.lastFrame) tmLn.ID = 0;
+  } }
+}
+
+
+function MM_timelineStop(tmLnName) { //v1.2
+  //Copyright 1997, 2000 Macromedia, Inc. All rights reserved.
+  if (document.MM_Time == null) MM_initTimelines(); //if *very* 1st time
+  if (tmLnName == null)  //stop all
+    for (var i=0; i<document.MM_Time.length; i++) document.MM_Time[i].ID = null;
+  else document.MM_Time[tmLnName].ID = null; //stop one
+}
+
+function MM_timelineGoto(tmLnName, fNew, numGotos) { //v2.0
+  //Copyright 1997, 2000 Macromedia, Inc. All rights reserved.
+  var i,j,tmLn,props,keyFrm,sprite,numKeyFr,firstKeyFr,lastKeyFr,propNum,theObj;
+  if (document.MM_Time == null) MM_initTimelines(); //if *very* 1st time
+  tmLn = document.MM_Time[tmLnName];
+  if (numGotos != null)
+    if (tmLn.gotoCount == null) tmLn.gotoCount = 1;
+    else if (tmLn.gotoCount++ >= numGotos) {tmLn.gotoCount=0; return}
+  jmpFwd = (fNew > tmLn.curFrame);
+  for (i = 0; i < tmLn.length; i++) {
+    sprite = (jmpFwd)? tmLn[i] : tmLn[(tmLn.length-1)-i]; //count bkwds if jumping back
+    if (sprite.charAt(0) == "s") {
+      numKeyFr = sprite.keyFrames.length;
+      firstKeyFr = sprite.keyFrames[0];
+      lastKeyFr = sprite.keyFrames[numKeyFr - 1];
+      if ((jmpFwd && fNew<firstKeyFr) || (!jmpFwd && lastKeyFr<fNew)) continue; //skip if untouchd
+      for (keyFrm=1; keyFrm<numKeyFr && fNew>=sprite.keyFrames[keyFrm]; keyFrm++);
+      for (j=0; j<sprite.values.length; j++) {
+        props = sprite.values[j];
+        if (numKeyFr == props.length) propNum = keyFrm-1 //keyframes only
+        else propNum = Math.min(Math.max(0,fNew-firstKeyFr),props.length-1); //or keep in legal range
+        if (sprite.obj != null) {
+          if (props.prop2 == null) sprite.obj[props.prop] = props[propNum];
+          else        sprite.obj[props.prop2][props.prop] = props[propNum];
+      } }
+    } else if (sprite.charAt(0)=='b' && fNew == sprite.frame) eval(sprite.value);
+  }
+  tmLn.curFrame = fNew;
+  if (tmLn.ID == 0) eval('MM_timelinePlay(tmLnName)');
+}
+
+
+function GIC_search()
+	{
+		var currentUrl = location.href.toString();
+		var url = "http://search.info.gov.hk/cgi-bin/se.cgi";
+		var SearchWin;
+		var mode = document.form1.mode.value;
+		var qu = document.form1.qu.value;
+	
+		SearchWin=window.open(eval('url +"?mode=" + mode + "&la=1&gr_1=cas&ma=100&ft_1=alltype&so=0&nu=10&ca=0&ta=all&fu=&fd=&qu=" + qu'));
+		document.location.href = currentUrl;
+		SearchWin.focus();
+	}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+//-->
+</script>
+</head>
+
+<body background="../../images/bg_01.gif" vlink="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="MM_preloadImages('../../images/top_e/mainbar1_f2.gif','../../images/top_e/mainbar8_f2.gif','../../images/top_e/mainbar9_f2.gif','../../images/top_e/mainbar10_f2.gif','../../images/top_e/mainbar1_f2.gif','../../images/top_e/mainbar2_f2.gif','../../images/top_e/mainbar3_f2.gif','../../images/top_e/mainbar4_f2.gif','../../images/top_e/mainbar8_f2.gif','../../images/top_e/mainbar9_f2.gif','../../images/top_e/mainbar10_f2.gif','../../images/b_ehome_on.gif','../../images/b_eabout_on.gif','../../images/b_eorg_on.gif','../../images/b_einfo_on.gif','../../images/b_epublic_on.gif','../../images/b_eenquiry_on.gif','../../images/b_notice_on.gif','../../images/b_enotice_on.gif')">
+<table width="760" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="left" valign="top"><table width="760" border="0" height="73" cellpadding="0" cellspacing="0" background="../../images/top_e/bkgdtexture.gif">
+      <form name="form1" method="get" action="javascript:GIC_search();">
+        <tr align="left" valign="top">
+          <td height="49" colspan="10" background="../../images/top_e/bkgdtexture.gif" class="sidebar"><a href="../../index.htm"></a>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="450"><a href="../../index.htm"><img src="../../images/top_caslogoe.gif" alt="Civil Aid Service" width="450" height="65" border="0"></a></td>
+                <td align="right"><div align="right"><a href="http://www.brandhk.gov.hk/brandhk/eindex.htm" target="_blank"><img name="BrandHK" src="../../images/top_e/BrandHK.gif" width="190" height="60" border="0" alt="Brand Hong Kong"></a></div></td>
+              </tr>
+            </table>
+            <INPUT name=mode type=hidden value=1>
+              <!--Search language setting "1 "= Eng "15 = CHINESE-->
+              <INPUT name=la type=hidden value=1>
+              <INPUT name=gr_1 type=hidden value="cas">
+              <INPUT name=ma type=hidden value=100>
+              <INPUT name=ft_1 type=hidden value="alltype">
+              <INPUT name=so type=hidden value=0></td>
+      </tr>
+        
+        <tr align="left" valign="top">
+          <td width="171" height="19" valign="bottom" background="../../images/top_e/bkgdtexture.gif"><a href="http://www.gov.hk/en/residents/" target="_blank"  onMouseOver="MM_swapImage('mainbar1','','../../images/top_e/mainbar1_f2.gif',1)" onMouseOut="MM_swapImgRestore()" ><img name="mainbar1" src="../../images/top_e/mainbar1.gif" width="171" height="20" border="0" alt="Government Information Centre"></a></td>
+          <td width="67" valign="bottom"><a href="javascript:chglang('entext')" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image21','','../../images/top_e/mainbar2_f2.gif',1)"><img src="../../images/top_e/mainbar2.gif" alt="Text Only" name="Image21" width="67" height="20" border="0"></a></td>
+          <td width="51" valign="bottom"><a href="javascript:chglang('tc')" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image6','','../../images/top_e/mainbar3_f2.gif',1)"><img src="../../images/top_e/mainbar3.gif" alt="繁體版/Traditional Chinese" name="Image6" width="51" height="20" border="0"></a></td>
+          <td width="50" valign="bottom"><a href="javascript:chglang('gb')" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image22','','../../images/top_e/mainbar4_f2.gif',1)"><img src="../../images/top_e/mainbar4.gif" alt="簡體版/Simple Chinese" name="Image22" width="50" height="20" border="0"></a></td>
+          <td height="19" valign="bottom"><img src="../../images/top_e/mainbar5.gif" alt="5" name="mainbar5" width="80" height="20" border="0"></td>
+          <td width="54" height="19" valign="bottom" background="../../images/top_e/bkgdtexture.gif"><img name="mainbar6" src="../../images/top_e/mainbar6.gif" width="54" height="20" border="0" alt="Search"></td>
+          <td width="99" height="19" align="left" valign="bottom" background="../../images/top_e/bkgdtexture.gif"><input type="text" name="qu" size="10"></td>
+          <td width="22" height="19" align="right" valign="bottom" background="../../images/top_e/bkgdtexture.gif"><a href="javascript:document.forms[0].submit()" onMouseOut="MM_swapImgRestore()"  onMouseOver="MM_swapImage('mainbar8','','../../images/top_e/mainbar8_f2.gif',1)" ><img name="mainbar8" src="../../images/top_e/mainbar8.gif" width="22" height="20" border="0" alt="Search"></a></td>
+          <td width="97" height="19" align="right" valign="bottom" background="../../images/top_e/bkgdtexture.gif"><a href="../../eng/sitemap.html" onMouseOut="MM_swapImgRestore()"  onMouseOver="MM_swapImage('mainbar9','','../../images/top_e/mainbar9_f2.gif',1)" ><img name="mainbar9" src="../../images/top_e/mainbar9.gif" width="65" height="20" border="0" alt="Site Map"></a></td>
+          <td width="97" height="19" align="right" valign="bottom" background="../../images/top_e/bkgdtexture.gif"><a href="mailto:casenq@cas.gov.hk" onMouseOut="MM_swapImgRestore()"  onMouseOver="MM_swapImage('mainbar10','','../../images/top_e/mainbar10_f2.gif',1)" ><img name="mainbar10" src="../../images/top_e/mainbar10.gif" width="36" height="20" border="0" alt="Contact us"></a></td>
+        </tr>
+        <tr align="left" valign="top" bgcolor="#BB3333">
+          <td height="2" colspan="10"><img src="../../images/top_e/reddot.gif" alt="1" width="1" height="1"></td>
+        </tr>
+      </form>
+    </table>
+      <table width="760" height="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr valign="top">
+          <td width="153"><table width="153" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="153" align="center" valign="top"><a href="../../eng/welcome.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image24','','../../images/b_ehome_on.gif',1);MM_showHideLayers('info','','hide','org','','hide','about','','hide','public','','hide')"><img src="../../images/b_ehome.gif" alt="Home" name="Image24" width="129" height="28" border="0"></a></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image14','','../../images/b_eabout_on.gif',1);MM_showHideLayers('info','','hide','org','','hide','about','','show','public','','hide')"><img src="../../images/b_eabout.gif" alt="About Us" name="Image14" width="129" height="28" border="0"></a></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image15','','../../images/b_eorg_on.gif',1);MM_showHideLayers('info','','hide','org','','show','about','','hide','public','','hide')"><img src="../../images/b_eorg.gif" alt="Organization" name="Image15" width="129" height="28" border="0"></a></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image26','','../../images/b_einfo_on.gif',1);MM_showHideLayers('info','','show','org','','hide','about','','hide','public','','hide')"><img src="../../images/b_einfo.gif" alt="Information" name="Image26" width="129" height="28" border="0"></a></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image161','','../../images/b_epublic_on.gif',1);MM_showHideLayers('info','','hide','org','','hide','about','','hide','public','','show')"><img src="../../images/b_epublic.gif" alt="Notice Board" name="Image161" width="129" height="28" border="0" id="Image161"></a></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><a href="../../eng/notice.html" onMouseOver="MM_swapImage('Image20','','../../images/b_enotice_on.gif',1)" onMouseOut="MM_swapImgRestore()" ondragover="MM_showHideLayers('info','','hide','org','','hide','about','','hide','public','','hide')"><img src="../../images/b_enotice.gif" alt="Notice" name="Image20" width="129" height="28" border="0"></a><a href="../../eng/notice.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image20','','../../images/b_notice_on.gif',1)"></a><a href="../../eng/notice.html" onMouseOver="MM_swapImage('Image16','','../../images/b_enotice_on.gif',1),1;MM_showHideLayers('info','','hide','org','','hide','about','','hide','public','','hide')" onMouseOut="MM_swapImgRestore()"></a></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><a href="../../eng/enquiry.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image25','','../../images/b_eenquiry_on.gif',1);MM_showHideLayers('info','','hide','org','','hide','about','','hide','public','','hide')"><img src="../../images/b_eenquiry.gif" alt="Equiry" name="Image25" width="129" height="28" border="0"></a></td>
+              </tr>
+              <tr>
+                <td align="center"><img src="../../images/spacer.gif" alt="12" width="153" height="10" onMouseOver="MM_showHideLayers('info','','hide')"></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top">&nbsp;</td>
+              </tr>
+          </table>
+          <!-- TemplateBeginEditable name="icon" --> <!-- TemplateEndEditable --></td>
+          <td>
+		  <table width="100%" height="70" border="0">
+            <tr>
+              <td height="70" background="../../images/bg_cloud.jpg">&nbsp;</td>
+            </tr>
+          </table>
+		  <!-- TemplateBeginEditable name="contents" --> 
+		  <table width="100%" border="0">
+		    <tr>
+		      <td><p align="center" class="title1">CAS Central Command Centre</p></td>
+		      </tr>
+		    </table>
+			<br>
+			<table width="607" border="0" cellspacing="0" cellpadding="10">
+                  <tr valign="top">
+                    <td width="400"><p class="etitle2">Background</p>
+                      <p align="justify" class="etext">The CAS Central
+                        Command Centre (CASCCC) was established on 1 October,
+                        1999 to centralize the incident control
+                        function of the three Regional headquarters
+                        in the former establishment with the aim to
+                        further enhance operational efficiency.</p>
+                      <p class="etitle2">Organization</p>
+                      <p align="justify" class="etext">The routine
+                        work of the CASCCC is managed
+                        by the Command Core which is headed by the
+                        Deputy Commissioner/Operations and composed
+                        of the Senior Assistant Commissioner/Operations,
+                        the Chief Operations Officer (1),(2), the Principal
+                        Staff Officer and six Command Teams. Each Command
+                        Team has eight CAS officers at the rank of
+                        the senior officer or section leader for call-out
+                        service. The Command Core now has an establishment
+                        of 53 officers.</p>
+                      <p class="etitle2">Roles and Responsibilities</p>
+                      <p align="justify" class="etext">CAS is required
+                        to undertake various duties and provide support
+                        to the regular emergency forces and government
+                        departments. When the Service is involved in
+                        emergency duties, the Command Core assumes
+                        the roles of operation command and coordination.</p>
+                      <p align="justify" class="etext">In execution
+                        of rescue duties, the Duty Commander of the
+                        CASCCC takes overall charge
+                        of the command, control and resources deployment.
+                        In emergencies, the CASCCC also acts as a liaison
+                        point of CAS with other government departments,
+                        non-government organizations and public utilities
+                        companies.</p>
+                      <p align="justify" class="etext">The CASCCC often deploys
+                        liaison officers to the control centres of other government
+                        departments and the Emergency Monitoring
+                        and Support Centre of the Security Bureau to
+                        provide latest information about the Service
+                        and coordinate with other emergency services.</p>
+                      <p class="etitle2">Manning / Call-out</p>
+                      <p align="justify" class="etext">When the CASCCC is opened,
+                        the Command Core will deploy the duty Commander, either
+                        at the Regional, Force or Corps Commander level,
+                        to take charge of the command and control of
+                        the operation; while two deputy duty commanders,
+                        who are under the same Region of the duty Commander
+                        or deployed by the Service, will station at
+                        the CASCCC to handle all kinds
+                        of emergency work. The other team members will
+                        assist in issuing deployment orders, keeping
+                        record of events, coordinating with all the
+                        duty personnel, updating all information for
+                        the efficient maneuvering of the resources
+                        by the duty Commander.</p>
+                      <p align="justify"><span class="etext">In addition
+                        to the Command Core, the working units of
+                        the Support Force such
+                        as detachments from the Communications, Transport,
+                        Welfare and Stores Companies are also directed
+                        to provide supporting services to the field
+                        units during operation.</span></p>
+                      </td>
+                    <td width="167" align="center"><table width="165" border="0" cellpadding="3" cellspacing="0" bgcolor="#FFFFFF" class="boarder1">
+                        <tr>
+                          <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
+                              <tr>
+                                <td height="1" class="etitle3"><font color="#999999"><font color="#FF9900" size="2">INFORMATION:</font></font></td>
+                              </tr>
+                              <tr>
+                                <td height="1"><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                                    <tr>
+                                      <td><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                                          <tr>
+                                            <td></td>
+                                          </tr>
+                                        </table>                                      </td>
+                                    </tr>
+                                  </table>                                </td>
+                              </tr>
+                              <tr valign="top">
+                                <td class="esubtext"><strong>Address:</strong></td>
+                              </tr>
+                              <tr valign="top">
+                                <td class="esubtext">Rm 618, 6/F, CAS Headquarters</td>
+                                </tr>
+                              <tr valign="top">
+                                <td><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                                    <tr>
+                                      <td><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                                          <tr>
+                                            <td></td>
+                                          </tr>
+                                        </table>                                      </td>
+                                    </tr>
+                                  </table>                                </td>
+                              </tr>
+                              <tr valign="top">
+                                <td class="esubtext"><strong>Tel:</strong></td>
+                              </tr>
+                              <tr valign="top">
+                                <td><span class="esubtext">(852) 2711 9171 </span></td>
+                              </tr>
+                              <tr valign="top">
+                                <td><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                                  <tr>
+                                    <td><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                                        <tr>
+                                          <td></td>
+                                        </tr>
+                                    </table></td>
+                                  </tr>
+                                </table></td>
+                                </tr>
+                              <tr valign="top">
+                                <td class="esubtext"><strong>Fax:</strong></td>
+                              </tr>
+                              <tr valign="top">
+                                <td><span class="esubtext">(852) 2624 6405 </span></td>
+                              </tr>
+                              
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                        <br>
+                        <table border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td align="right"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td valign="top"><table width="160" border="0" cellpadding="1" cellspacing="0" bgcolor="#CCCCCC">
+                                      <tr>
+                                        <td><table width="160" border="0" cellpadding="1" cellspacing="0" bgcolor="#FFFFFF">
+                                            <tr>
+                                              <td><a href="#"><img src="../../pic/tc_ccc1.jpg" alt="pic_CASCCC" width="160" height="120" border="0" onClick="MM_openBrWindow('../picture/pic_tcccc.html','otherwindows','scrollbars=yes,resizable=yes,width=640,height=460')"></a></td>
+                                            </tr>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td height="9" valign="top"><img src="../../images/pic_shadow.gif" alt="1" width="130" height="8"></td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="ecaption"><font color="#FF9900">．CASCCC </font></td>
+                          </tr>
+                        </table>
+                        <p>&nbsp;</p></td>
+                  </tr>
+                </table>
+		  <!-- TemplateEndEditable --> </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td align="left" valign="bottom"><table width="760" height="60" border="0" cellpadding="5" cellspacing="0">
+      <tr valign="middle" class="esubtext">
+        <td width="143">&nbsp;</td>
+        <td colspan="2"><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+            <tr>
+              <td></td>
+            </tr>
+        </table></td>
+      </tr>
+      <tr valign="middle" class="esubtext">
+        <td>&nbsp;</td>
+        <td width="377" valign="bottom">2010&copy;&nbsp;&nbsp;| <a href="#"><span class="ebutton" onClick="MM_openBrWindow('../../eng/notice/notice_important.html','otherwindows','scrollbars=yes,resizable=yes,width=630,height=400')">Important
+          Notice</span></a></a></td>
+        <td width="210" align="right" valign="bottom">Last Revision Date:<!-- TemplateBeginEditable name="date" -->22.2.2010<!-- TemplateEndEditable --></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+<div id="info" style="position:absolute; left:137px; top:170px; width:170px; height:140px; z-index:6; visibility: hidden;" onMouseOut="MM_showHideLayers('info','','hide','info2','','hide')" onMouseOver="MM_showHideLayers('info','','show','info2','','show')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="1" cellpadding="6">
+          <tr>
+            <td valign="top" bgcolor="#FFFFFF" class="button"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="15">．</td>
+                  <td><a href="../../eng/info/info_tgcentre.html"><span class="ebutton">Offices &amp; Training
+                        Centres</span></a></td>
+                </tr>
+              </table>
+                <hr width="96%" size="1" color="#DDDDDD">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr valign="top">
+                    <td width="15">．</td>
+                    <td><a href="../../eng/info/info_download.html"> <span class="ebutton">Download
+                          Area</span></a></td>
+                  </tr>
+                </table>
+                <hr width="96%" size="1" color="#DDDDDD">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr valign="top">
+                    <td width="15">．</td>
+                    <td><a href="../../eng/info/info_publications.html"> <span class="ebutton">CAS
+                          Publications</span></a></td>
+                  </tr>
+                </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="org" style="position:absolute; left:137px; top:142px; width:183px; height:55px; z-index:4; visibility: hidden;" onMouseOver="MM_showHideLayers('org2','','show','org','','show')" onMouseOut="MM_showHideLayers('org2','','hide','org','','hide')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="1" cellpadding="6">
+          <tr>
+            <td bgcolor="#FFFFFF" class="button">． <a href="../../eng/org/org_dept.html"><span class="ebutton">Civil Aid Service (Department)</span></a><br>
+                                <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../../eng/org/org_volunteer.html" class="ebutton">Civil Aid Service </a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="about" style="position:absolute; left:137px; top:112px; width:170px; height:180px; z-index:2; visibility: hidden;" onMouseOver="MM_showHideLayers('about2','','show','about','','show')" onMouseOut="MM_showHideLayers('about2','','hide','about','','hide')">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#CCCCCC" class="boarder1">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="0" cellpadding="6">
+          <tr>
+            <td valign="top" bgcolor="#FFFFFF" class="button"> ． <a href="../../eng/about/about_intro.html" class="ebutton">Introduction</a>
+                <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../../eng/about/about_service.html" class="ebutton">Services
+              Delivered</a>
+              <hr width="96%" size="1" color="#DDDDDD">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="15"><span class="ebutton">．</span></td>
+                  <td><span class="ebutton"><a href="../../eng/about/about_performance.html">Performance
+                        Standard &amp; Target</a></span></td>
+                </tr>
+              </table>
+              <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../../eng/about/about_mission.html" class="ebutton">Vision,
+              Mission &amp; Values</a>
+              <hr width="96%" size="1" color="#DDDDDD">
+            ． <a href="../../eng/about/about_ordinance.html" class="ebutton">Ordinance</a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+</table></div>
+<div id="public" style="position:absolute; left:137px; top:200px; width:170px; height:57px; z-index:8; visibility: hidden;" onMouseOver="MM_showHideLayers('public2','','show','public','','show')" onMouseOut="MM_showHideLayers('public2','','hide','public','','hide')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="1" cellpadding="6">
+          <tr>
+            <td bgcolor="#FFFFFF" class="button">． <a href="../../eng/info/info_mountainsafe.html" class="ebutton">Safe
+                Mountaineering</a>
+                                    <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../../eng/info/info_trainsafe.html"><span class="ebutton">Safety
+              Training</span></a>
+              <hr width="96%" size="1" color="#DDDDDD">
+． <a href="../../eng/info/info_usefultel.html"><span class="ebutton">Useful Telephone</span></a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

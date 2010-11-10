@@ -92,8 +92,8 @@ public class HTML2TEXT {
 		String urlName, line, html="";
 		//String fileName = "/home/xcyao/CityU/work/welcome.html";
 		//String url = "http://news.sina.com.cn";
-		urlName = "http://am.npgps.edu.hk/alumni/main.html";
-                  
+		urlName = "http://www.cas.gov.hk/sctext/welcome.html";
+
 		//System.out.println(HTML2TEXT.getText(urlName));
 
 		BufferedReader in=null;

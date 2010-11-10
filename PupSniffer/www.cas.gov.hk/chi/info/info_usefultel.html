@@ -1,0 +1,424 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<meta http-equiv="Page-Enter" content="blendTrans(Duration=0.5)">
+<meta http-equiv="Page-Exit" content="blendTrans(Duration=0.5)">
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>香港民眾安全服務隊</title>
+<!-- TemplateEndEditable -->
+<script language="JavaScript" src="../../lang_function.js"></script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+function GIC_search(){ //GIC_search
+	var currentUrl = location.href.toString();
+	var url = "http://search.gov.hk/search.html";
+	var SearchWin;
+	var mode = document.form1.mode.value;
+	var qu = document.form1.qu.value;
+	
+	SearchWin=window.open(eval('url +"?mode=" + mode + "&la=1&gr_1=cas&ma=100&ft_1=alltype&so=0&nu=10&ca=0&ta=all&fu=&fd=&qu=" + qu'));
+	document.location.href = currentUrl;
+	SearchWin.focus();
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_timelinePlay(tmLnName, myID) { //v1.2
+  //Copyright 1997, 2000 Macromedia, Inc. All rights reserved.
+  var i,j,tmLn,props,keyFrm,sprite,numKeyFr,firstKeyFr,propNum,theObj,firstTime=false;
+  if (document.MM_Time == null) MM_initTimelines(); //if *very* 1st time
+  tmLn = document.MM_Time[tmLnName];
+  if (myID == null) { myID = ++tmLn.ID; firstTime=true;}//if new call, incr ID
+  if (myID == tmLn.ID) { //if Im newest
+    setTimeout('MM_timelinePlay("'+tmLnName+'",'+myID+')',tmLn.delay);
+    fNew = ++tmLn.curFrame;
+    for (i=0; i<tmLn.length; i++) {
+      sprite = tmLn[i];
+      if (sprite.charAt(0) == 's') {
+        if (sprite.obj) {
+          numKeyFr = sprite.keyFrames.length; firstKeyFr = sprite.keyFrames[0];
+          if (fNew >= firstKeyFr && fNew <= sprite.keyFrames[numKeyFr-1]) {//in range
+            keyFrm=1;
+            for (j=0; j<sprite.values.length; j++) {
+              props = sprite.values[j]; 
+              if (numKeyFr != props.length) {
+                if (props.prop2 == null) sprite.obj[props.prop] = props[fNew-firstKeyFr];
+                else        sprite.obj[props.prop2][props.prop] = props[fNew-firstKeyFr];
+              } else {
+                while (keyFrm<numKeyFr && fNew>=sprite.keyFrames[keyFrm]) keyFrm++;
+                if (firstTime || fNew==sprite.keyFrames[keyFrm-1]) {
+                  if (props.prop2 == null) sprite.obj[props.prop] = props[keyFrm-1];
+                  else        sprite.obj[props.prop2][props.prop] = props[keyFrm-1];
+        } } } } }
+      } else if (sprite.charAt(0)=='b' && fNew == sprite.frame) eval(sprite.value);
+      if (fNew > tmLn.lastFrame) tmLn.ID = 0;
+  } }
+}
+
+function MM_timelineStop(tmLnName) { //v1.2
+  //Copyright 1997, 2000 Macromedia, Inc. All rights reserved.
+  if (document.MM_Time == null) MM_initTimelines(); //if *very* 1st time
+  if (tmLnName == null)  //stop all
+    for (var i=0; i<document.MM_Time.length; i++) document.MM_Time[i].ID = null;
+  else document.MM_Time[tmLnName].ID = null; //stop one
+}
+
+function MM_timelineGoto(tmLnName, fNew, numGotos) { //v2.0
+  //Copyright 1997, 2000 Macromedia, Inc. All rights reserved.
+  var i,j,tmLn,props,keyFrm,sprite,numKeyFr,firstKeyFr,lastKeyFr,propNum,theObj;
+  if (document.MM_Time == null) MM_initTimelines(); //if *very* 1st time
+  tmLn = document.MM_Time[tmLnName];
+  if (numGotos != null)
+    if (tmLn.gotoCount == null) tmLn.gotoCount = 1;
+    else if (tmLn.gotoCount++ >= numGotos) {tmLn.gotoCount=0; return}
+  jmpFwd = (fNew > tmLn.curFrame);
+  for (i = 0; i < tmLn.length; i++) {
+    sprite = (jmpFwd)? tmLn[i] : tmLn[(tmLn.length-1)-i]; //count bkwds if jumping back
+    if (sprite.charAt(0) == "s") {
+      numKeyFr = sprite.keyFrames.length;
+      firstKeyFr = sprite.keyFrames[0];
+      lastKeyFr = sprite.keyFrames[numKeyFr - 1];
+      if ((jmpFwd && fNew<firstKeyFr) || (!jmpFwd && lastKeyFr<fNew)) continue; //skip if untouchd
+      for (keyFrm=1; keyFrm<numKeyFr && fNew>=sprite.keyFrames[keyFrm]; keyFrm++);
+      for (j=0; j<sprite.values.length; j++) {
+        props = sprite.values[j];
+        if (numKeyFr == props.length) propNum = keyFrm-1 //keyframes only
+        else propNum = Math.min(Math.max(0,fNew-firstKeyFr),props.length-1); //or keep in legal range
+        if (sprite.obj != null) {
+          if (props.prop2 == null) sprite.obj[props.prop] = props[propNum];
+          else        sprite.obj[props.prop2][props.prop] = props[propNum];
+      } }
+    } else if (sprite.charAt(0)=='b' && fNew == sprite.frame) eval(sprite.value);
+  }
+  tmLn.curFrame = fNew;
+  if (tmLn.ID == 0) eval('MM_timelinePlay(tmLnName)');
+}
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+//-->
+</script>
+<link href="../../cas.css" rel="stylesheet" type="text/css">
+<!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+</head>
+
+<body background="../../images/bg_01.gif" vlink="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="MM_preloadImages('../../images/b_main_on.gif','../../images/b_about_on.gif','../../images/b_org_on.gif','../../images/b_info_on.gif','../../images/b_public_on.gif','../../images/b_notice_on.gif','../../images/b_enquiry_on.gif','../../images/top_tc/mainbar1_f2.gif','../../images/top_tc/mainbar2_f2.gif','../../images/top_tc/mainbar3_f2.gif','../../images/top_tc/mainbar4_f2.gif','../../images/top_tc/mainbar8_f2.gif','../../images/top_tc/mainbar9_f2.gif','../../images/top_tc/mainbar10_f2.gif')">
+<table width="760" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="760" align="left" valign="top"><table width="760" border="0" height="87" cellpadding="0" cellspacing="0" background="../../images/top_tc//bkgdtexture.gif">
+      <form name="form1" method="get" action="javascript:GIC_search();">
+        <tr align="left" valign="top">
+          <td height="66" colspan="6" class="sidebar" background="../../images/top_sc/bkgdtexture.gif"><a href="../../index.html"><img src="../../images/top_caslogoc.gif" alt="香港民眾安全服務隊" width="450" height="65" border="0"></a></td>
+          <td height="60" colspan="4" align="right" valign="top" background="../../images/top_tc//bkgdtexture.gif"><INPUT name=mode type=hidden value=15>
+              <!--Search language setting "1 "= Eng "15 = CHINESE-->
+              <INPUT name=la type=hidden value=1>
+              <INPUT name=gr_1 type=hidden value="cas">
+              <INPUT name=ma type=hidden value=100>
+              <INPUT name=ft_1 type=hidden value="alltype">
+              <INPUT name=so type=hidden value=0>
+              <INPUT name=nu type=hidden value=10>
+              <INPUT name=ca type=hidden value=0>
+              <INPUT name=ta type=hidden value="all">
+              <INPUT name=fu type=hidden value="">
+              <INPUT name=fd type=hidden value="">
+            <div align="right"><a href="http://www.brandhk.gov.hk/brandhk/" target="_blank"><img src="../../images/top_tc/Brandhk.gif" alt="香港品牌形象" name="brandhk" width="190" height="60" border="0"></a></div></td>
+      </tr>
+        <tr align="left" valign="top">
+          <td width="153" height="19" valign="bottom"><a href="http://www.gov.hk/tc/residents/" target="_blank"  onMouseOver="MM_swapImage('mainbar11','','../../images/top_tc/mainbar1_f2.gif',1)" onMouseOut="MM_swapImgRestore()" ><img src="../../images/top_tc/mainbar1.gif" alt="政府資訊中心" name="mainbar11" width="170" height="19" border="0" id="mainbar11"></a></td>
+          <td width="77" valign="bottom"><a href="javascript:chglang('tctext')" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image211','','../../images/top_tc/mainbar2_f2.gif',1)"><img src="../../images/top_tc//mainbar2.gif" alt="Text Only" name="Image211" width="77" height="19" border="0" id="Image211"></a></td>
+          <td width="49" valign="bottom"><a href="javascript:chglang('gb')" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image61','','../../images/top_tc/mainbar3_f2.gif',1)"><img src="../../images/top_tc//mainbar3.gif" alt="簡體版/Simple Chinese" name="Image61" width="49" height="19" border="0" id="Image61"></a></td>
+          <td width="56" valign="bottom"><a href="javascript:chglang('en')" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image221','','../../images/top_tc/mainbar4_f2.gif',1)"><img src="../../images/top_tc//mainbar4.gif" alt="ENGLISH" name="Image221" width="56" height="19" border="0" id="Image221"></a></td>
+          <td width="139" height="19" valign="bottom"><img src="../../images/top_tc/mainbar5_f2.gif" alt="1" name="mainbar51" width="130" height="19" border="0" id="mainbar51"></td>
+          <td width="36" height="19" valign="bottom" background="../../images/top_tc/bkgdtexture.gif"><img src="../../images/top_tc//mainbar6.gif" alt="搜尋" name="mainbar61" width="36" height="19" border="0" id="mainbar61"></td>
+          <td height="19" valign="bottom" background="../../images/top_tc//bkgdtexture.gif" width="106"><input type="text" name="qu" size="10"></td>
+          <td width="22" height="19" valign="bottom" background="../../images/top_tc//bkgdtexture.gif"><a href="javascript:document.forms[0].submit()" onMouseOut="MM_swapImgRestore()"  onMouseOver="MM_swapImage('mainbar81','','../../images/top_tc/mainbar8_f2.gif',1)" ><img src="../../images/top_tc//mainbar8.gif" alt="搜尋" name="mainbar81" width="22" height="19" border="0" id="mainbar81"></a></td>
+          <td width="97" height="19" valign="bottom" background="../../images/top_tc//bkgdtexture.gif"><a href="../../chi/sitemap.html" onMouseOut="MM_swapImgRestore()"  onMouseOver="MM_swapImage('mainbar91','','../../images/top_tc/mainbar9_f2.gif',1)" ><img src="../../images/top_tc//mainbar9.gif" alt="網頁指南" name="mainbar91" width="67" height="19" border="0" id="mainbar91"></a></td>
+          <td width="29" height="19" valign="bottom" background="../../images/top_tc//bkgdtexture.gif"><a href="mailto:casenq@cas.gov.hk" onMouseOut="MM_swapImgRestore()"  onMouseOver="MM_swapImage('mainbar101','','../../images/top_tc/mainbar10_f2.gif',1)" ><img src="../../images/top_tc//mainbar10.gif" alt="聯絡我們" name="mainbar101" width="29" height="19" border="0" id="mainbar101"></a></td>
+        </tr>
+        <tr align="left" valign="top" bgcolor="#BB3333">
+          <td height="2" colspan="10"><img src="../../images/top_tc//reddot.gif" alt="2" width="760" height="2"></td>
+        </tr>
+      </form>
+    </table>
+    <table width="760" height="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr valign="top">
+          <td width="153"><label>
+            <table width="153" border="0" align="center" cellpadding="0" cellspacing="0">
+              
+              <tr>
+                <td width="153" align="center" valign="top"><div align="center"><a href="../../chi/welcome.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image24','','../../images/b_main_on.gif',1);MM_showHideLayers('public','','hide','about','','hide','about2','','hide','info','','hide','info2','','hide','public2','','hide')"><img src="../../images/b_main.gif" alt="主頁" name="Image24" width="129" height="28" border="0"></a></div></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><div align="center"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image14','','../../images/b_about_on.gif',1);MM_showHideLayers('public','','hide','about','','show','about2','','show','org','','hide','org2','','hide','info','','hide','info2','','hide','public2','','hide')"><img src="../../images/b_about.gif" alt="關於我們" name="Image14" width="129" height="28" border="0"></a></div></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><div align="center"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image16','','../../images/b_org_on.gif',1);MM_showHideLayers('public','','hide','about','','hide','about2','','hide','org','','show','org2','','show','info','','hide','info2','','hide','public2','','hide')"><img src="../../images/b_org.gif" alt="組織架構" name="Image16" width="129" height="28" border="0"></a></div></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><div align="center"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image18','','../../images/b_info_on.gif',1);MM_showHideLayers('public','','hide','about','','hide','about2','','hide','org','','hide','org2','','hide','info','','show','info2','','show','public2','','hide')"><img src="../../images/b_info.gif" alt="部隊訊息" name="Image18" width="129" height="28" border="0"></a></div></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><div align="center"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image191','','../../images/b_public_on.gif',1);MM_showHideLayers('public','','show','about','','hide','about2','','hide','org','','hide','org2','','hide','info','','hide','info2','','hide','public2','','show')"><img src="../../images/b_public.gif" alt="公共服務" name="Image191" width="129" height="28" border="0" id="Image191"></a></div></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><div align="center"><a href="../../chi/notice.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image19','','../../images/b_notice_on.gif',1);MM_showHideLayers('public','','hide','about','','hide','org','','hide','info','','hide')"><img src="../../images/b_notice.gif" alt="通告事項" name="Image19" width="129" height="28" border="0"></a></div></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"><div align="center"><a href="../../chi/enquiry.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image25','','../../images/b_enquiry_on.gif',1);MM_showHideLayers('public','','hide','about','','hide','org','','hide','info','','hide')"><img src="../../images/b_enquiry.gif" alt="查詢" name="Image25" width="129" height="28" border="0"></a></div></td>
+              </tr>
+              <tr>
+                <td></td>
+              </tr>
+              <tr>
+                <td align="center" valign="middle">&nbsp;</td>
+              </tr>
+              <tr>
+                <td valign="top"><!-- TemplateBeginEditable name="icon" --><!-- TemplateEndEditable --></td>
+              </tr>
+          </table></label></label></td>
+          <td><table width="100%" height="70" border="0">
+            <tr>
+              <td height="70" background="../../images/bg_cloud.jpg">&nbsp;</td>
+            </tr>
+          </table>
+		  <!-- TemplateBeginEditable name="contents" -->
+		  <table width="100%" border="0">
+		    <tr>
+		      <td><p align="center" class="title1"><span class="title1">有關電話</span></p></td>
+		      </tr>
+		    </table>
+			<br>
+			<table width="100%" border="0" cellpadding="4" cellspacing="0" dwcopytype="CopyTableRow">
+                      <tr>
+                        <td colspan="2" valign="top" class="text">民安隊值日長官（24小時）</td>
+                        <td width="47%" align="right" valign="top" class="text">(852)
+                          7584 3270, 
+                          (852) 9489 4836</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" valign="top" class="text"><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                            <tr>
+                              <td><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                                  <tr>
+                                    <td></td>
+                                  </tr>
+                                </table>                              </td>
+                            </tr>
+                          </table>                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" valign="top" class="text">民安隊少年團值日長官（24小時）</td>
+                        <td width="47%" align="right" valign="top" class="text">(852)
+                          7308 1313, 
+                          (852) 9389 4836</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" valign="top" class="text"><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                            <tr>
+                              <td><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                                  <tr>
+                                    <td></td>
+                                  </tr>
+                                </table>                              </td>
+                            </tr>
+                          </table>                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" valign="top" class="text">民安隊指揮中心行動指揮官</td>
+                        <td width="47%" align="right" valign="top" class="text">(852)
+                          2711 9171</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" valign="top" class="text"><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                            <tr>
+                              <td><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                                  <tr>
+                                    <td></td>
+                                  </tr>
+                                </table>                              </td>
+                            </tr>
+                          </table>                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" valign="top" class="text">香港天文台</td>
+                        <td align="right" valign="top" class="text">&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td width="2%" valign="top" class="text">&nbsp;</td>
+                        <td width="51%" valign="top" class="text">- 天氣預告錄音</td>
+                        <td align="right" valign="top" class="text"> (852)
+                          187 8200 </td>
+                      </tr>
+                      <tr>
+                        <td valign="top" class="text">&nbsp;</td>
+                        <td valign="top" class="text">- 查詢</td>
+                        <td width="47%" align="right" valign="top" class="text">(852) 2926 8473</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" valign="top" class="text"><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                          <tr>
+                            <td><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+                                <tr>
+                                  <td></td>
+                                </tr>
+                              </table>                            </td>
+                          </tr>
+                        </table></td>
+                        </tr>
+                      <tr>
+                        <td colspan="2" valign="top" class="text">漁農自然護理署山火控制中心</td>
+                        <td align="right" valign="top" class="text">(852) 2720
+                          0777</td>
+                      </tr>
+                      <tr>
+                        <td valign="top" class="text">&nbsp;</td>
+                        <td valign="top" class="text">- 每年十月至翌年四月通用</td>
+                        <td align="right" valign="top" class="text">(852) 2728 1211</td>
+                      </tr>
+                    </table>
+		   <!-- TemplateEndEditable --> </td>
+        </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td width="760" valign="bottom"><table width="760" height="60" border="0" cellpadding="5" cellspacing="0">
+      <tr>
+        <td>&nbsp;</td>
+        <td colspan="2"><table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" background="../../images/bg_dot.gif">
+          <tr>
+            <td></td>
+          </tr>
+        </table></td>
+    </tr>
+      <tr>
+        <td width="143">&nbsp;</td>
+        <td width="250" align="left" valign="bottom"><span class="subtext">2010&copy;&nbsp;| </span><span class="button"><a href="#" onClick="MM_openBrWindow('../../chi/notice/notice_important.html','otherwindows','toolbar=yes,scrollbars=yes,resizable=yes,width=640,height=450')"> 重要告示</a></span></td>
+        <td align="right" valign="bottom"><span class="subtext">最後更新於：</span> <!-- TemplateBeginEditable name="date" --><span class="subtext">2010年2月22日</span><!-- TemplateEndEditable --></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+<div id="public" style="position:absolute; left:137px; top:200px; width:140px; height:19px; z-index:8; visibility: hidden;" onMouseOver="MM_showHideLayers('public2','','show','public','','show')" onMouseOut="MM_showHideLayers('public2','','hide','public','','hide')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="1" cellpadding="6">
+          <tr>
+            <td bgcolor="#FFFFFF" class="button">． <a href="chi/info/info_mountainsafe.html">登山活動安全須知</a>
+              <hr width="96%" size="1" color="#DDDDDD">
+              <a href="chi/info/info_mountsafe.html"> </a>． <a href="../../chi/info/info_trainsafe.html">安全訓練顧問服務</a>
+              <hr width="96%" size="1" color="#DDDDDD">
+              <a href="../../chi/info/info_mountsafe.html"> </a>． <a href="../../chi/info/info_usefultel.html">相關電話</a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="about" style="position:absolute; left:137px; top:116px; width:140px; height:160px; z-index:2; visibility: hidden;" onMouseOver="MM_showHideLayers('about2','','show','about','','show')" onMouseOut="MM_showHideLayers('about2','','hide','about','','hide')">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#CCCCCC" class="boarder1">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="0" cellpadding="6">
+          <tr>
+            <td valign="top" bgcolor="#FFFFFF" class="button"> ．<a href="../../chi/about/about_intro.html"> 部隊簡介</a>
+                <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../../chi/about/about_service.html">服務範圍</a>
+              <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../../chi/about/about_performance.html">服務水準及目標</a>
+              <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../../chi/about/about_mission.html">理想、使命與信念</a>
+              <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../../chi/about/about_ordinance.html">條例及規例述要</a>
+		  </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+</table></div>
+<div id="org" style="position:absolute; left:137px; top:144px; width:140px; height:34px; z-index:4; visibility: hidden;" onMouseOver="MM_showHideLayers('org2','','show','org','','show')" onMouseOut="MM_showHideLayers('org2','','hide','org','','hide')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="1" cellpadding="6">
+          <tr>
+            <td bgcolor="#FFFFFF" class="button">． <a href="../../chi/org/org_dept.html">民眾安全服務處</a><br>
+                                  <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../../chi/org/org_volunteer.html">民眾安全服務隊</a><a href="../../chi/org/org_dept.html"></a><a href="../../chi/org/org_volunteer.html"></a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="info" style="position:absolute; left:137px; top:172px; width:140px; height:110px; z-index:6; visibility: hidden;" onMouseOut="MM_showHideLayers('info2','','hide','info','','hide')" onMouseOver="MM_showHideLayers('info2','','show','info','','show')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="1" cellpadding="6">
+          <tr>
+            <td bgcolor="#FFFFFF" class="button">． <a href="../../chi/info/info_tgcentre.html">辦事處及訓練中心</a>
+                <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../../chi/info/info_download.html">下載區</a><br>
+              <hr width="96%" size="1" color="#DDDDDD">
+              ． <a href="../../chi/info/info_publications.html">民安隊刊物</a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<!--
+<div id="notice" style="position:absolute; left:137px; top:245px; width:140px; height:30px; z-index:10; visibility: hidden;" onMouseOver="MM_showHideLayers('notice2','','show','notice','','show')" onMouseOut="MM_showHideLayers('notice2','','hide','notice','','hide')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="1" cellpadding="6">
+          <tr>
+            <td bgcolor="#FFFFFF" class="button"> ． <a href="../../chi/report_tender.html">招標通告</a> </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="notice2" style="position:absolute; left:140px; top:248px; width:140px; height:30px; z-index:9; background-color: #000000;  border: 1px none #000000; visibility: hidden;" class="shadow"></div>-->
+</body>
+</html>

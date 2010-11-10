@@ -1,0 +1,13 @@
+June 14, 2010
+    Modify FileSystemParser.java to read files with "ISO-8859-1" encoding. More detail:
+    https://crawler.dev.java.net/issues/show_bug.cgi?id=6
+June 13, 2010
+    Moving PageDataFileSystem out of FileSystemParser to be public
+June 2, 2010
+    In Crawler.java, add IllegalArgumentException protection.
+May 17, 2010
+	In SimpleHttpClientParser set httpGet.setFollowRedirects(true);
+	Add workaround for <meta http-equiv="refresh" .../> meta tag to follow redirecting.
+	concrete description: https://crawler.dev.java.net/issues/show_bug.cgi?id=4
+April 27, 2010
+    Add a NO_LIMIT_ITERATIONS field to class MaxIterationsModel to support no limited iterations.
