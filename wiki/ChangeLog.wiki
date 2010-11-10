@@ -2,6 +2,9 @@
 2010-11-04
 
 Add two classes,i.e, WebSiteManager and GetLink based on v1.2. 
+	* WebSiteManager class is used to collect bilingual urls pairs and webisites information.
+	* Getlink class can get all related websites linked by the seed websites list in config.txt.
+
 
 
 2010-05-17  v1.1
