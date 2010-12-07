@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
+
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,47 +22,28 @@ import java.net.URL;
  */
 public class DeepURLDetecting
 {
-	/*
-	private static URL url;   
-	private static HttpURLConnection con;   
-	private static int state = -1;   
+	
 	  
 	/**  
 	 * Detecting whether the current URL is valid,  
-	 * Description：the max times of link is 5, the URL is invalid if the return is not 200 after 5 links.  
-	 * @param urlStr is URL Address  
-	 * @return link result, the URL Address is valid if the return value is 200  
+	 * @param URLNam is URL Address  
+	 * @return boolean result, the URL Address is valid if the return value is true  
 	*/  
-	/*
-	public synchronized static int isConnect(String urlStr) {   
-	   int counts = 0;  
-	   if (urlStr == null || urlStr.length() <= 0) {                          
-	    return 0;                    
-	   }   
-	   while (counts < 5) {   
-	    try {   
-	     
-	     url = new URL(urlStr);   
-	     con = (HttpURLConnection) url.openConnection();   
-	     state = con.getResponseCode();     
-	     break;   
-	    }catch (Exception ex) {   
-	     counts++;   
-	     urlStr = null;   
-	     continue;   
-	    }   
-	   }   
-	   return state;   
-	}   
-  */
 	
-  public static int getResponseCode(String urlString) throws MalformedURLException, IOException {
-	    URL u = new URL(urlString); 
-	    HttpURLConnection huc =  (HttpURLConnection)  u.openConnection(); 
-	    huc.setRequestMethod("GET"); 
-	    huc.connect(); 
-	    return huc.getResponseCode();
-  }
+	public static boolean exists(String URLName){
+	    try {
+	      HttpURLConnection.setFollowRedirects(false);
+	      HttpURLConnection con =
+	         (HttpURLConnection) new URL(URLName).openConnection();
+	      con.setRequestMethod("HEAD");
+	      return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
+	    }
+	    catch (Exception e) {
+	       e.printStackTrace();
+	       return false;
+	    }
+	  }
+
 	
   public static void main(String[] args) throws MalformedURLException, IOException 
   {
@@ -71,11 +53,10 @@ public class DeepURLDetecting
      * args[0] is the candidate bilingual deep URL list text file
      * args[1] is the directory for saving URLPairs_Deep_Detecting.txt including valid bilingual deep URL list 
     */
-	 
-	//System.out.println(isConnect("http://www.weather.gov.hk/wxinfo/climat/world/eng/asia/westasia/dhahran_c.htm"));
-	//System.out.println(getResponseCode("http://www.lwb.gov.hk/eng/speech/07022009.htm"));  
-	//System.out.println(getResponseCode("http://www.lwb.gov.hk/chi/speech/07022009.htm"));
-	   
+	
+	//System.out.println(exists("http://http://www.lwb.gov.hk/chi/speech/07022009.htm"));
+	//System.out.println(exists("http://http://www.lwb.gov.hk/chi/speech/07022009.htm"));
+	  
     String RwfFile = args[1]+"/URLPairs_Deep_Detecting.txt";   
     BufferedWriter outrwf = null;
     try {
@@ -116,7 +97,7 @@ public class DeepURLDetecting
         	//curl = "www.housingauthority.gov.hk/tc/residential/shos/safetyguarantee/0,,1-162-265,00.html ";
 		    try
 		    {
-        	     if ((getResponseCode("http://" + eurl[i])==200) && (getResponseCode("http://" + curl[i])==200))
+        	     if (exists("http://" + eurl[i]) && (exists("http://" + curl[i])))
 		         {	 
 		              outrwf.write(eurl[i] + "	" + curl[i] + "\n");
 		              System.out.println("[" +  i  + "] Good:	http://" + eurl[i]+ " | http://" + curl[i]);
