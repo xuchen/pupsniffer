@@ -31,7 +31,7 @@ public class DeepURLDetecting
 	 * @return link result, the URL Address is valid if the return value is 200  
 	*/  
 	
-	public synchronized static int isConnect(String urlStr) {   
+	public static int isConnect(String urlStr) {   
 	   int counts = 0;  
 	   if (urlStr == null || urlStr.length() <= 0) {                          
 	    return 0;                    
@@ -61,6 +61,9 @@ public class DeepURLDetecting
      * args[1] is the directory for saving URLPairs_Deep_Detecting.txt including valid bilingual deep URL list 
     */
 	  
+	  
+	//System.out.println(isConnect("http://www.weather.gov.hk/wxinfo/climat/world/eng/asia/westasia/dhahran_c.htm"));
+	 
     String RwfFile = args[1]+"/URLPairs_Deep_Detecting.txt";   
     BufferedWriter outrwf = null;
     try {
