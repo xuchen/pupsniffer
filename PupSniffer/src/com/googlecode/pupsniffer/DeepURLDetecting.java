@@ -58,7 +58,7 @@ public class DeepURLDetecting
     /**   
      * @param args
      * args[0] is the candidate bilingual deep URL list text file
-     * args[1] is the directory for saving URLPairs_Deep_Detecting.txt  
+     * args[1] is the directory for saving URLPairs_Deep_Detecting.txt including valid bilingual deep URL list 
     */
 	  
     String RwfFile = args[1]+"/URLPairs_Deep_Detecting.txt";   
